@@ -1,0 +1,131 @@
+/* message.wxss  */
+.message-scroll-view{
+  height: 100%;
+}
+page{
+  background: #F6F6F6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  color: #323233;
+  height: 100%;
+}
+.message-bar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  font-size: 30px;
+  background: #fff;
+  text-align: center;
+  z-index: 99;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.message-bar-title,
+.message-bar-icon{
+  display: inline-block;
+  vertical-align: middle;
+}
+.message-bar-title{
+  width: 660px;
+}
+.message-bar-icon{
+  width: 40px;
+  height: 40px;
+  text-align: right;
+}
+.message-header{
+  width: 700px;
+  padding: 20px 25px;
+  margin-top: 110px;
+  background: #fff;
+  overflow: hidden;
+}
+.message-header-icon{
+  float: left;
+  width: 80px;
+  height: 80px;
+}
+.message-header-info{
+  float: right;
+}
+.message-header-title{
+  font-size: 30px;
+  font-weight: 500;
+  color: #323233;
+  margin-left: 20px;
+}
+.message-header-content{
+  width: 600px;
+  display: -webkit-box;  
+  word-break: break-all;
+  text-overflow: ellipsis;
+  font-size: 28px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  margin-left: 20px;
+  color: #999;
+}
+.message-notice{
+  width: 700px;
+  padding: 20px 25px;
+  margin-top: 20px;
+  font-size: 30px;
+  background: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.message-notice-fixed{
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+}
+.message-list-item{
+  width: 725px;
+  padding: 0 0 0 25px;
+  font-size: 28px;
+  background: #fff;
+}
+.message-list-avatar,
+.message-list-detail{
+  display: inline-block;
+  vertical-align: middle;
+}
+.message-list-avatar{
+  width: 80px;
+  height: 80px;
+  margin: 20px 0;
+  border-radius: 50%;
+}
+.message-list-detail{
+  width: 625px;
+  padding: 20px 0;
+  margin-left: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.message-list-icon,
+.message-list-time{
+  display: inline-block;
+  vertical-align: middle;
+}
+.message-list-icon{
+  width: 25px;
+  height: 25px;
+}
+.message-list-time{
+  color: #999;
+  margin-left: 10px;
+}
+.message-list-nomore{
+  text-align: center;
+  padding: 20px 0 40px;
+  font-size: 28px;
+  color: #999;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.message-list-noline{
+  border: none;
+}
