@@ -1,16 +1,11 @@
 import { Block } from '@tarojs/components';
+import 'taro-ui/dist/style/index.scss';
 import Taro from '@tarojs/taro';
-import withWeapp from '@tarojs/with-weapp';
 import './app.scss';
-// app.js
-const qcloud = require('./vendor/wafer2-client-sdk/index.js');
-const config = require('./config.js');
 
 class App extends Taro.Component {
   componentWillMount() {
     this.$app.globalData = this.globalData;
-
-    qcloud.setLoginUrl(config.service.loginUrl);
   }
 
   config = {
@@ -30,7 +25,8 @@ class App extends Taro.Component {
       navigationBarBackgroundColor: '#FFF',
       navigationBarTitleText: '知小乎',
       navigationBarTextStyle: 'black',
-      enablePullDownRefresh: true
+      enablePullDownRefresh: true,
+      onReachBottomDistance: 50
     },
     tabBar: {
       backgroundColor: '#fff',

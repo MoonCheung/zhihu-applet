@@ -23,8 +23,8 @@ class _C extends Taro.Component {
       questionTitle: options.title
     });
   }
-
-  getDetaileList = () => {
+  // 获取详情列表API
+  getDetailList = () => {
     var that = this;
     api.http('titleDetailApi', {}, res => {
       // console.log(res.data); //用来查看接口数据
@@ -46,7 +46,7 @@ class _C extends Taro.Component {
   };
 
   componentDidMount() {
-    this.getDetaileList();
+    this.getDetailList();
   }
 
   config = {};

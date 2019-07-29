@@ -1,15 +1,7 @@
-import {
-  Block,
-  View,
-  Image,
-  Text,
-  ScrollView,
-  Swiper,
-  SwiperItem
-} from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import { Block, View, Image, Text, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import withWeapp from '@tarojs/with-weapp';
-import util from '@/utils/index'
+import util from '@/utils/index';
+import Taro from '@tarojs/taro';
 import api from '@/api/index';
 import './findMore.scss';
 
@@ -288,7 +280,7 @@ class _C extends Taro.Component {
                     )}
                   </View>
                   <View className="find-focus-introduce">
-                    {item.time + '小时前'}
+                    { '发布于'+ item.time }
                   </View>
                   {!hotFocusList[index] && (
                     <View

@@ -1,13 +1,4 @@
-import {
-  Block,
-  View,
-  Image,
-  Text,
-  Input,
-  Swiper,
-  SwiperItem,
-  ScrollView
-} from '@tarojs/components';
+import { Block, View, Image, Text, Input, Swiper, SwiperItem, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import withWeapp from '@tarojs/with-weapp';
 import util from '@/utils/index';

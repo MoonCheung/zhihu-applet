@@ -1,19 +1,11 @@
 import { Block, View, Image, Text, Input, Textarea } from '@tarojs/components';
-import qcloud from '@/vendor/wafer2-client-sdk/index'
-import withWeapp from '@tarojs/with-weapp';
 import util from '@/utils/index';
 import Taro from '@tarojs/taro';
 import api from '@/api/index';
-import config from '@/config'
 import './index.scss';
 
-@withWeapp('Page')
-class _C extends Taro.Component {
+class Index extends Taro.Component {
   state = {
-    userInfo: {},
-    logged: false,
-    takeSession: false,
-    requestResult: '' /* 以上登录模块 */,
     isShow: false,
     isShowQues: false,
     historyList: [],
@@ -32,119 +24,74 @@ class _C extends Taro.Component {
     isLoading: false,
     loadMore: '加载更多'
   };
-  sendRequest = () => {
-    Taro.request({
-      url: 'https://wx.ikmoons.com/api/data/Android/10/1',
-      header: {
-        'Content-Type': 'application/json'
-      },
-      method: 'GET',
-      success: function(res) {
-        var data = res.data;
-        console.log(data);
-      }
-    });
-  };
-  switchRequestMode = e => {
-    this.setData({
-      takeSession: e.detail.value
-    });
-    this.doRequest();
-  };
-  doRequest = () => {
-    util.showBusy('请求中...');
-    var that = this;
-    var options = {
-      url: config.service.requestUrl,
-      login: true,
-      success(result) {
-        util.showSuccess('请求成功完成');
-        console.log('request success', result);
-        that.setData({
-          requestResult: JSON.stringify(result.data)
-        });
-      },
-      fail(error) {
-        util.showModel('请求失败', error);
-        console.log('request fail', error);
-      }
-    };
-    if (this.data.takeSession) {
-      // 使用 qcloud.request 带登录态登录
-      qcloud.request(options);
-    } else {
-      // 使用 wx.request 则不带登录态
-      Taro.request(options);
-    }
-  };
   showMack = () => {
-    var that = this;
-    that.setData({
+    let that = this;
+    that.setState({
       isShow: true,
       searchVal: ''
     });
   };
   showQuesMask = () => {
-    var that = this;
-    that.setData({
+    let that = this;
+    that.setState({
       isShowQues: true
     });
   };
   hideMask = () => {
-    var that = this;
-    that.setData({
+    let that = this;
+    that.setState({
       isShow: false
     });
   };
   hideQuesMask = () => {
-    var that = this;
-    that.setData({
+    let that = this;
+    that.setState({
       isShowQues: false
     });
   };
   searchTopic = evet => {
-    var history = [],
-      that = this;
+    let history = []; 
+    let that = this;
     Taro.getStorage({
       key: 'searchHistory',
       success: function(res) {
-        that.setData({
-          historyList: res.data
+        that.setState({
+          historyList: res.state.historyList
         });
       }
     });
     console.log('--- 存储搜索历史 ---');
     evet.detail.value &&
-      that.data.historyList.indexOf(evet.detail.value) === -1 &&
-      that.setData({
-        historyList: that.data.historyList.concat(evet.detail.value)
+      that.state.historyList.indexOf(evet.detail.value) === -1 &&
+      that.setState({
+        historyList: that.state.historyList.concat(evet.detail.value)
       });
     Taro.setStorage({
       key: 'searchHistory',
-      data: that.data.historyList
+      data: that.state.historyList
     });
     Taro.navigateTo({
       url: '../../pages/searchResult/searchResult?key=' + evet.detail.value,
       complete: function(res) {
         console.log(res, '跳转到搜索结果页');
-        that.setData({
+        that.setState({
           isShow: false
         });
       }
     });
   };
   clearItem = event => {
-    var that = this;
+    let that = this;
     // 获取当前点击的Index
-    var index = event.target.dataset.index;
-    that.data.historyList.splice(index, 1);
-    console.log('删除成功:', that.data.historyList);
-    that.setData({
-      historyList: that.data.historyList
+    let index = event.target.dataset.index;
+    that.state.historyList.splice(index, 1);
+    console.log('删除成功:', that.state.historyList);
+    that.setState({
+      historyList: that.state.historyList
     });
     Taro.setStorage({
       key: 'searchHistory',
-      data: that.data.historyList
+      data: that.state.historyList
     });
   };
   clearAll = event => {
@@ -155,42 +102,40 @@ class _C extends Taro.Component {
         console.log(res, '清除成功');
       }
     });
-    that.setData({
+    that.setState({
       historyList: []
     });
   };
   setActive = event => {
-    var that = this;
+    let that = this;
     // 获取当前点击的index
-    var index = event.target.dataset.index;
+    let index = event.target.dataset.index;
     // 初始化动画数据
-    var animation = Taro.createAnimation({
+    let animation = Taro.createAnimation({
       duration: 500,
       timingFunction: 'ease-out',
       delay: 0
     });
     animation.left(index * 250 + 'rpx').step();
     // 设置动画
-    that.setData({
+    that.setState({
       isActive: index,
       animationData: animation['export']() // 输出生成样式表
     });
   };
   // 获得关注列表API
   getFocusList = flag => {
-    var that = this;
+    let that = this;
     api.http('focusListApi', {}, res => {
       if (res.errMsg) {
         util.showModel(res.errMsg);
       } else {
-        that.setData({
+        that.setState({
           focusList: res.list
         });
-        console.log('---请求关注列表数据---');
         if (flag) {
-          console.log('---刷新关注列表数据---');
-          that.setData({
-            focusList: res.list.concat(that.data.focusList) // 多个数组会返回新的数组
+          that.setState({
+            focusList: res.list.concat(that.state.focusList) // 多个数组会返回新的数组
           });
           Taro.stopPullDownRefresh();
           Taro.hideNavigationBarLoading();
@@ -201,7 +146,7 @@ class _C extends Taro.Component {
   };
   getMorefocusList = () => {
     var that = this;
-    that.setData({
+    that.setState({
       isLoading: true,
       loadMore: '正在加载...'
     });
@@ -210,21 +155,19 @@ class _C extends Taro.Component {
   // 获得推荐列表API
   getRecommendList = flag => {
     console.log('flag:', flag);
-    var that = this;
+    let that = this;
     api.http('recommendListApi', {}, res => {
       if (res.errMsg) {
         util.showModel(res.errMsg);
       } else {
         if (!flag) {
-          console.log('---设置数据---');
-          that.setData({
+          that.setState({
             recList: res.list
           });
         }
-        console.log('---请求推荐列表数据---');
         if (flag) {
-          that.setData({
-            recList: res.list.concat(that.data.recList)
+          that.setState({
+            recList: res.list.concat(that.state.recList)
           });
           console.log('---刷新推荐列表数据---');
           Taro.stopPullDownRefresh();
@@ -260,24 +203,27 @@ class _C extends Taro.Component {
         event.target.dataset.like
     });
   };
+  // 获取更多推荐列表
   getMoreRecList = () => {
     var that = this;
-    that.setData({
+    that.setState({
       isLoading: true,
       loadMore: '正在加载...'
     });
     api.http('recommendListApi', {}, res => {
       !res.errMsg
-        ? that.setData({ recList: that.data.recList.concat(res.list) })
+        ? that.setState({ 
+          recList: that.state.recList.concat(res.list) 
+        })
         : util.showModel(res.errMsg);
       console.log('---请求更多推荐列表数据---');
-      that.setData({
+      that.setState({
         isLoading: false,
         loadMore: '加载更多'
       });
     });
   };
-  // 获得热榜列表API
+  // 获取热榜列表API
   getHotList = flag => {
     var that = this;
     api.http('hotListApi', {}, res => {
@@ -286,14 +232,14 @@ class _C extends Taro.Component {
       } else {
         if (!flag) {
           console.log('---设置数据---');
-          that.setData({
+          that.setState({
             hotList: res.list
           });
         }
         console.log('---请求热门列表数据---');
         if (flag) {
-          that.setData({
-            hotList: res.list.concat(that.data.hotList)
+          that.setState({
+            hotList: res.list.concat(that.state.hotList)
           });
           console.log('---刷新热门列表数据---');
           Taro.stopPullDownRefresh();
@@ -303,27 +249,29 @@ class _C extends Taro.Component {
       }
     });
   };
+  // 获取更多热榜列表
   getMoreHotList = () => {
     var that = this;
-    that.setData({
+    that.setState({
       isLoading: true,
       loadMore: '正在加载...'
     });
     api.http('hotListApi', {}, res => {
       !res.errMsg
-        ? that.setData({ hotList: that.data.hotList.concat(res.list) })
+        ? that.setState({ hotList: that.state.hotList.concat(res.list) })
         : util.showModel(res.errMsg);
       console.log('---请求更多热门列表数据---');
-      that.setData({
+      that.setState({
         isLoading: false,
         loadMore: '加载更多'
       });
     });
   };
+  // 监听用户下拉动作
   onPullDownRefresh = () => {
-    if (!this.data.isShow && !this.data.isShowQues) {
+    if (!this.state.isShow && !this.state.isShowQues) {
       Taro.showNavigationBarLoading();
-      switch (+this.data.isActive) {
+      switch (+this.state.isActive) {
         case 1:
           this.getRecommendList(true);
           break;
@@ -331,13 +279,14 @@ class _C extends Taro.Component {
           this.getHotList(true);
           break;
         default:
-          break;
+          return;
       }
     }
   };
+  //页面上拉触底事件的处理函数
   onReachBottom = () => {
-    if (!this.data.isShow && !this.data.isShowQues) {
-      switch (+this.data.isActive) {
+    if (!this.state.isShow && !this.state.isShowQues) {
+      switch (+this.state.isActive) {
         case 1:
           this.getMoreRecList();
           break;
@@ -345,7 +294,7 @@ class _C extends Taro.Component {
           this.getMoreHotList();
           break;
         default:
-          break;
+          return;
       }
     }
   };
@@ -501,68 +450,63 @@ class _C extends Taro.Component {
         </View>
         {/*  tab标题 end   */}
         {/*  tab选项内容begin   */}
-        {focusList.map((item, index) => {
-          return (
-            <View
-              className={'tab-content ' + (isActive == 0 ? 'show' : 'hide')}
-            >
-              {focusList.length > 0 && (
-                <Block>
-                  {focusList.map((item, index) => {
-                    return (
-                      <View className="tab-content-focus" key={index.id}>
-                        <View className="content-category">
-                          <Image
-                            className="category-avatar"
-                            src={item.avatar}
-                          />
-                          <Text className="category-title">
-                            {item.category}
-                          </Text>
-                        </View>
-                      </View>
-                    );
-                  })}
-                </Block>
-              )}
-              {focusList.length == 0 && (
-                <View>
-                  <Image
-                    className="to-recommend-img"
-                    src={require('../../assets/images/to-recommend.png')}
-                  />
-                  <View className="to-recommend-title">还没关注的人</View>
-                  <View className="to-recommend-tip">去【推荐】看看吧</View>
-                </View>
-              )}
-              {focusList.length != 0 && (
-                <View className="load-more" onClick={this.getMorefocusList}>
-                  {isLoading && (
-                    <Image
-                      className="is-loading"
-                      src={require('../../assets/images/loading.gif')}
-                    />
-                  )}
-                  {loadMore}
-                </View>
-              )}
+        {/* 关注内容 */}
+        <View className={'tab-content ' + (isActive == 0 ? 'show' : 'hide')}>
+          {focusList.length > 0 && (
+            <Block>
+              {focusList.map((item, itemIndex) => {
+                return (
+                  <View className="tab-content-focus" key={itemIndex}>
+                    <View className="content-category">
+                      <Image
+                        className="category-avatar"
+                        src={item.avatar}
+                      />
+                      <Text className="category-title">
+                        {item.category}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })}
+            </Block>
+          )}
+          {focusList.length == 0 && (
+            <View>
+              <Image
+                className="to-recommend-img"
+                src={require('../../assets/images/to-recommend.png')}
+              />
+              <View className="to-recommend-title">还没关注的人</View>
+              <View className="to-recommend-tip">去【推荐】看看吧</View>
             </View>
-          );
-        })}
+          )}
+          {focusList.length != 0 && (
+            <View className="load-more" onClick={this.getMorefocusList}>
+              {isLoading && (
+                <Image
+                  className="is-loading"
+                  src={require('../../assets/images/loading.gif')}
+                />
+              )}
+              {loadMore}
+            </View>
+          )}
+        </View>
+        {/* 推荐内容 */}
         <View className={'tab-content ' + (isActive == 1 ? 'show' : 'hide')}>
           {recList.map((item, index) => {
             return (
               <View className="tab-content-recommend" key={index}>
                 <View className="content-category">
                   <Image className="category-avatar" src={item.avatar} />
-                  <Text className="category-title">{item.category}</Text>
+                  <Text className="category-title">{item.author}</Text>
                 </View>
                 <View
                   className="recommend-title"
                   data-id={item.id}
                   data-title={item.title}
-                  onClick={this.goTitleDetail}
-                >
+                  onClick={this.goTitleDetail}>
                   {item.title}
                 </View>
                 <View
@@ -602,6 +546,7 @@ class _C extends Taro.Component {
             {loadMore}
           </View>
         </View>
+        {/* 热榜内容 */}
         <View className={'tab-content ' + (isActive == 2 ? 'show' : 'hide')}>
           {hotList.map((item, index) => {
             return (
@@ -634,4 +579,4 @@ class _C extends Taro.Component {
   }
 }
 
-export default _C;
+export default Index;

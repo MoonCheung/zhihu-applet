@@ -1,39 +1,48 @@
-const base =
-  'https://www.easy-mock.com/mock/5a39d3d2717d4953ed48bd47/weChatApp';
+const base = 'https://www.easy-mock.com/mock/59127536acb959185b0c62b9/applet';
 const api = {
+  // 关注列表API
   focusListApi: {
-    development: `${base}/zhixiaohu/home/focusList`
+    development: `${base}/focusList`
   },
+  // 推荐列表API
   recommendListApi: {
-    development: `${base}/zhixiaohu/home/recommendList`
+    development: `${base}/recommendList`
   },
+  // 热榜列表API
   hotListApi: {
-    development: `${base}/zhixiaohu/home/hotList`
+    development: `${base}/hotList`
   },
   // 没找到
-  searchApi: {
-    development: `${base}/zhixiaohu/home/searchResult`
-  },
+  // searchApi: {
+  //   development: `${base}/zhixiaohu/home/searchResult`
+  // },
+  // 用户列表API
   userListApi: {
-    development: `${base}/zhixiaohu/userList`
+    development: `${base}/userList`
   },
+  // 讨论列表API
   discussListApi: {
-    development: `${base}/zhixiaohu/findMore/discusstList`
+    development: `${base}/discusstList`
   },
+  // 推荐关注列表API
   recFocusListApi: {
-    development: `${base}/zhixiaohu/findMore/recFocusList`
+    development: `${base}/recFocusList`
   },
+  // 推荐热门列表API
   recHotListApi: {
-    development: `${base}/zhixiaohu/findMore/recHotList`
+    development: `${base}/recHotList`
   },
+  // 市场列表API
   marketListApi: {
-    development: `${base}/zhixiaohu/market/marketList`
+    development: `${base}/marketList`
   },
+  // 用户消息列表API
   messageListApi: {
-    development: `${base}/zhixiaohu/message/messageList`
+    development: `${base}/messageList`
   },
+  // 详情列表API
   titleDetailApi: {
-    development: `${base}/zhixiaohu/detail/titleDetail`
+    development: `${base}/titleDetail`
   }
 };
 

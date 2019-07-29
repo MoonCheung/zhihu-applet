@@ -16,6 +16,7 @@ class _C extends Taro.Component {
     messageHeader: '',
     messageList: []
   };
+  // 获取用户消息列表API
   getUserCenterList = () => {
     var that = this;
     api.http('messageListApi', {}, res => {
