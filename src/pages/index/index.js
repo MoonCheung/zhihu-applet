@@ -5,25 +5,29 @@ import api from '@/api/index';
 import './index.scss';
 
 class Index extends Taro.Component {
-  state = {
-    isShow: false,
-    isShowQues: false,
-    historyList: [],
-    searchVal: '',
-    isActive: 1 /* tab选项 */,
-    animationData: {},
-    focusList: [],
-    recList: [],
-    hotList: [],
-    footerTip: {
-      topic: '去文章列表',
-      question: '关注话题',
-      column: '去往专栏',
-      live: '全部live'
-    },
-    isLoading: false,
-    loadMore: '加载更多'
-  };
+  constructor() {
+    super(...arguments);
+    this.state = {
+      isShow: false,
+      isShowQues: false,
+      historyList: [],
+      searchVal: '',
+      isActive: 1 /* tab选项 */,
+      animationData: {},
+      focusList: [],
+      recList: [],
+      hotList: [],
+      footerTip: {
+        topic: '去文章列表',
+        question: '关注话题',
+        column: '去往专栏',
+        live: '全部live'
+      },
+      isLoading: false,
+      loadMore: '加载更多'
+    };
+  }
+
   showMack = () => {
     let that = this;
     that.setState({
@@ -50,7 +54,7 @@ class Index extends Taro.Component {
     });
   };
   searchTopic = evet => {
-    let history = []; 
+    let history = [];
     let that = this;
     Taro.getStorage({
       key: 'searchHistory',
@@ -212,9 +216,9 @@ class Index extends Taro.Component {
     });
     api.http('recommendListApi', {}, res => {
       !res.errMsg
-        ? that.setState({ 
-          recList: that.state.recList.concat(res.list) 
-        })
+        ? that.setState({
+            recList: that.state.recList.concat(res.list)
+          })
         : util.showModel(res.errMsg);
       console.log('---请求更多推荐列表数据---');
       that.setState({
@@ -327,17 +331,11 @@ class Index extends Taro.Component {
       <View className="container">
         <View className="search-wrap">
           <View className="search-input" onClick={this.showMack}>
-            <Image
-              className="search-input-icon"
-              src={require('../../assets/images/search.png')}
-            />
+            <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
             <Text className="search-input-text">搜索内容提问</Text>
           </View>
           <View className="search-button">
-            <Image
-              className="search-button-icon"
-              src={require('../../assets/images/edit.png')}
-            />
+            <Image className="search-button-icon" src={require('../../assets/images/edit.png')} />
             <Text className="search-button-text" onClick={this.showQuesMask}>
               提问
             </Text>
@@ -346,10 +344,7 @@ class Index extends Taro.Component {
         {/*  隐藏搜索或者提问蒙层  */}
         <View className={'search-mask ' + (isShow ? 'show' : 'hide')}>
           <View className="search-input-wrap">
-            <Image
-              className="search-mask-icon"
-              src={require('../../assets/images/search.png')}
-            />
+            <Image className="search-mask-icon" src={require('../../assets/images/search.png')} />
             <Input
               className="search-mask-input"
               type="text"
@@ -402,10 +397,7 @@ class Index extends Taro.Component {
         <View className={'question-mask ' + (isShowQues ? 'show' : 'hide')}>
           <View className="question-input-wrap">
             <View className="question-title-wrap">
-              <View
-                className="question-mask-cancel"
-                onClick={this.hideQuesMask}
-              >
+              <View className="question-mask-cancel" onClick={this.hideQuesMask}>
                 取消
               </View>
               <Text className="mask-title">提问</Text>
@@ -428,22 +420,13 @@ class Index extends Taro.Component {
         {/*  提问end   */}
         {/*  tab标题 begin   */}
         <View className="tab-wrap" onClick={this.setActive}>
-          <View
-            className={'tab-item ' + (isActive == 0 ? 'tab-item-active' : '')}
-            data-index="0"
-          >
+          <View className={'tab-item ' + (isActive == 0 ? 'tab-item-active' : '')} data-index="0">
             关注
           </View>
-          <View
-            className={'tab-item ' + (isActive == 1 ? 'tab-item-active' : '')}
-            data-index="1"
-          >
+          <View className={'tab-item ' + (isActive == 1 ? 'tab-item-active' : '')} data-index="1">
             推荐
           </View>
-          <View
-            className={'tab-item ' + (isActive == 2 ? 'tab-item-active' : '')}
-            data-index="2"
-          >
+          <View className={'tab-item ' + (isActive == 2 ? 'tab-item-active' : '')} data-index="2">
             热榜
           </View>
           <View className="tab-item-line" animation={animationData} />
@@ -454,17 +437,12 @@ class Index extends Taro.Component {
         <View className={'tab-content ' + (isActive == 0 ? 'show' : 'hide')}>
           {focusList.length > 0 && (
             <Block>
-              {focusList.map((item, itemIndex) => {
+              {focusList.map((item, index) => {
                 return (
-                  <View className="tab-content-focus" key={itemIndex}>
+                  <View className="tab-content-focus" key={index}>
                     <View className="content-category">
-                      <Image
-                        className="category-avatar"
-                        src={item.avatar}
-                      />
-                      <Text className="category-title">
-                        {item.category}
-                      </Text>
+                      <Image className="category-avatar" src={item.avatar} />
+                      <Text className="category-title">{item.category}</Text>
                     </View>
                   </View>
                 );
@@ -484,10 +462,7 @@ class Index extends Taro.Component {
           {focusList.length != 0 && (
             <View className="load-more" onClick={this.getMorefocusList}>
               {isLoading && (
-                <Image
-                  className="is-loading"
-                  src={require('../../assets/images/loading.gif')}
-                />
+                <Image className="is-loading" src={require('../../assets/images/loading.gif')} />
               )}
               {loadMore}
             </View>
@@ -517,8 +492,7 @@ class Index extends Taro.Component {
                   data-content={item.fineAnswer.content}
                   data-like={item.fineAnswer.like}
                   data-comment={item.fineAnswer.comment}
-                  onClick={this.goContentDetail}
-                >
+                  onClick={this.goContentDetail}>
                   {item.fineAnswer.content}
                 </View>
                 <View className="recommend-footer">
@@ -538,10 +512,7 @@ class Index extends Taro.Component {
           })}
           <View className="load-more" onClick={this.getMoreRecList}>
             {isLoading && (
-              <Image
-                className="is-loading"
-                src={require('../../assets/images/loading.gif')}
-              />
+              <Image className="is-loading" src={require('../../assets/images/loading.gif')} />
             )}
             {loadMore}
           </View>
@@ -551,8 +522,7 @@ class Index extends Taro.Component {
           {hotList.map((item, index) => {
             return (
               <View className="tab-content-hot" key={index}>
-                <Text 
-                  className={'hot-index ' + (index < 3 ? 'hot-index-hot' : '')} >
+                <Text className={'hot-index ' + (index < 3 ? 'hot-index-hot' : '')}>
                   {index + 1}
                 </Text>
                 <Text className="hot-title">{item.title}</Text>
@@ -565,10 +535,7 @@ class Index extends Taro.Component {
           })}
           <View className="load-more" onClick={this.getMoreHotList}>
             {isLoading && (
-              <Image
-                className="is-loading"
-                src={require('../../assets/images/loading.gif')}
-              />
+              <Image className="is-loading" src={require('../../assets/images/loading.gif')} />
             )}
             {loadMore}
           </View>

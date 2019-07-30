@@ -1,17 +1,19 @@
 import { Block, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import withWeapp from '@tarojs/with-weapp';
 import './searchResult.scss';
 
-@withWeapp('Page')
-class _C extends Taro.Component {
-  state = {
-    searchKey: ''
-  };
+class SearchResult extends Taro.Component {
+  // 构造器函数
+  constructor() {
+    super(...arguments);
+    this.state = {
+      searchKey: ''
+    };
+  }
 
   componentWillMount(options = this.$router.params || {}) {
-    var that = this;
-    that.setData({
+    let that = this;
+    that.setState({
       searchKey: options.key
     });
   }
@@ -40,4 +42,4 @@ class _C extends Taro.Component {
   }
 }
 
-export default _C;
+export default SearchResult;

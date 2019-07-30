@@ -5,13 +5,17 @@ import util from '@/utils/index';
 import api from '@/api/index';
 import './userCenter.scss';
 
-class Index extends Taro.Component {
-  state = {
-    privateList: [],
-    walletList: [],
-    controlList: [],
-    userCenterList: []
-  };
+class UserCenter extends Taro.Component {
+  constructor() {
+    super(...arguments);
+    this.state = {
+      privateList: [],
+      walletList: [],
+      controlList: [],
+      userCenterList: []
+    };
+  }
+
   config = {};
   // 获取用户列表API
   getUserCenterList = () => {
@@ -25,10 +29,7 @@ class Index extends Taro.Component {
           privateList: res.privateList || [],
           walletList: res.walletList || [],
           controlList: res.controlList || [],
-          userCenterList: [res.privateList].concat(
-            [res.walletList],
-            [res.controlList]
-          )
+          userCenterList: [res.privateList].concat([res.walletList], [res.controlList])
         });
       }
     });
@@ -68,10 +69,7 @@ class Index extends Taro.Component {
                       />
                     )}
                     {i.theme && (
-                      <Switch
-                        className="user-list-switch"
-                        checked={i.theme !== 'light'}
-                      />
+                      <Switch className="user-list-switch" checked={i.theme !== 'light'} />
                     )}
                   </View>
                 );
@@ -84,4 +82,4 @@ class Index extends Taro.Component {
   }
 }
 
-export default Index;
+export default UserCenter;

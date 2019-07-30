@@ -1,38 +1,39 @@
 import { Block, View, Image, Text, Input, Textarea } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import withWeapp from '@tarojs/with-weapp';
 import util from '@/utils/index';
 import api from '@/api/index';
 import './titleDetail.scss';
 
-@withWeapp('Page')
-class _C extends Taro.Component {
-  state = {
-    isShow: false,
-    isShowQues: false,
-    historyList: [],
-    searchVal: '',
-    questionTitle: '',
-    isLoading: false,
-    loadMore: '加载更多'
-  };
+class TitleDetail extends Taro.Component {
+  constructor() {
+    super(...arguments);
+    this.state = {
+      isShow: false,
+      isShowQues: false,
+      historyList: [],
+      searchVal: '',
+      questionTitle: '',
+      isLoading: false,
+      loadMore: '加载更多'
+    };
+  }
 
   componentWillMount(options = this.$router.params || {}) {
-    var that = this;
-    that.setData({
+    let that = this;
+    that.setState({
       questionTitle: options.title
     });
   }
   // 获取详情列表API
   getDetailList = () => {
-    var that = this;
+    let that = this;
     api.http('titleDetailApi', {}, res => {
       // console.log(res.data); //用来查看接口数据
       if (res.errMsg) {
         util.showModel(res.errMsg);
       } else {
         console.log('---请求提问详细列表---');
-        that.setData({
+        that.setState({
           title: res.data.title || '',
           describe: res.data.describe || '',
           answerNumber: res.data.answerNumber || '',
@@ -66,17 +67,11 @@ class _C extends Taro.Component {
       <View className="container">
         <View className="search-wrap">
           <View className="search-input" onClick={this.showMack}>
-            <Image
-              className="search-input-icon"
-              src={require('../../assets/images/search.png')}
-            />
+            <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
             <Text className="search-input-text">搜索内容提问</Text>
           </View>
           <View className="search-button">
-            <Image
-              className="search-button-icon"
-              src={require('../../assets/images/edit.png')}
-            />
+            <Image className="search-button-icon" src={require('../../assets/images/edit.png')} />
             <Text className="search-button-text" onClick={this.showQuesMask}>
               提问
             </Text>
@@ -85,10 +80,7 @@ class _C extends Taro.Component {
         {/*  隐藏搜索或者提问蒙层  */}
         <View className={'search-mask ' + (isShow ? 'show' : 'hide')}>
           <View className="search-input-wrap">
-            <Image
-              className="search-mask-icon"
-              src={require('../../assets/images/search.png')}
-            />
+            <Image className="search-mask-icon" src={require('../../assets/images/search.png')} />
             <Input
               className="search-mask-input"
               type="text"
@@ -141,10 +133,7 @@ class _C extends Taro.Component {
         <View className={'question-mask ' + (isShowQues ? 'show' : 'hide')}>
           <View className="question-input-wrap">
             <View className="question-title-wrap">
-              <View
-                className="question-mask-cancel"
-                onClick={this.hideQuesMask}
-              >
+              <View className="question-mask-cancel" onClick={this.hideQuesMask}>
                 取消
               </View>
               <Text className="mask-title">提问</Text>
@@ -172,9 +161,7 @@ class _C extends Taro.Component {
             <View className="title-detail-describe">{describe}</View>
           </View>
           <View className="title-answer-middle">
-            <View className="title-answer-number">
-              {answerNumber + '个回答'}
-            </View>
+            <View className="title-answer-number">{answerNumber + '个回答'}</View>
             <View className="title-answer-sort">默认排序</View>
           </View>
           <View className="title-answer-list">
@@ -185,11 +172,7 @@ class _C extends Taro.Component {
                   <View className="title-answer-nickname">{item.nickname}</View>
                   <View className="title-answer-content">{item.content}</View>
                   <View className="title-answer-footer">
-                    {item.like +
-                      '赞同 · ' +
-                      item.comment +
-                      '评论 · ' +
-                      item.time}
+                    {item.like + '赞同 · ' + item.comment + '评论 · ' + item.time}
                   </View>
                 </View>
               );
@@ -202,4 +185,4 @@ class _C extends Taro.Component {
   }
 }
 
-export default _C;
+export default TitleDetail;

@@ -1,48 +1,38 @@
 import { Block, View, Image, Text, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
-import withWeapp from '@tarojs/with-weapp';
+import { AtAvatar } from 'taro-ui';
 import util from '@/utils/index';
 import Taro from '@tarojs/taro';
 import api from '@/api/index';
 import './findMore.scss';
 
-@withWeapp('Page')
-class _C extends Taro.Component {
-  state = {
-    userInfo: {},
-    logged: false /* 以上登录模块 */,
-    indicatorDots: false,
-    autoplay: true,
-    circular: true,
-    interval: 5000,
-    duration: 200 /* 以上轮播滑块视图 */,
-    discussList: [],
-    recFocusList: [],
-    focusList: [],
-    recHotList: [],
-    showIndex: [],
-    scrollTop: 0
-  };
-  getUserInfo = () => {
-    var that = this;
-    Taro.getStorage({
-      key: 'userInfo',
-      success: function(res) {
-        that.setData({
-          userInfo: res.data,
-          logged: true
-        });
-      }
-    });
-  };
+class FindMore extends Taro.Component {
+  // 构造器函数
+  constructor() {
+    super(...arguments);
+    this.state = {
+      indicatorDots: false,
+      autoplay: true,
+      circular: true,
+      interval: 5000,
+      duration: 200 /* 以上轮播滑块视图 */,
+      discussList: [],
+      recFocusList: [],
+      focusList: [],
+      recHotList: [],
+      showIndex: [],
+      scrollTop: 0
+    };
+  }
+
   // 获取讨论列表API
   getDiscussList = () => {
-    var that = this;
+    let that = this;
     api.http('discussListApi', {}, res => {
       if (res.errMsg) {
         util.showModel(res.errMsg);
       } else {
         console.log('---请求讨论列表---');
-        that.setData({
+        that.setState({
           discussList: res.discussList || []
         });
       }
@@ -50,33 +40,33 @@ class _C extends Taro.Component {
   };
   // 获取推荐关注列表API
   getRecFocusList = () => {
-    var that = this;
+    let that = this;
     api.http('recFocusListApi', {}, res => {
       if (res.errMsg) {
         util.showModel(res.errMsg);
       } else {
         console.log('---请求推荐关注列表---');
-        that.setData({
+        that.setState({
           recFocusList: res.recFocusList || []
         });
       }
     });
   };
   focusIt = event => {
-    var that = this;
-    var index = event.target.dataset.index;
+    let that = this;
+    let index = event.target.dataset.index;
     Taro.showToast({
       title: '关注成功',
       icon: 'success',
       duration: 2000
     });
-    that.data.focusList[index] = !that.data.focusList[index];
-    that.setData({
-      focusList: that.data.focusList
+    that.state.focusList[index] = !that.state.focusList[index];
+    that.setState({
+      focusList: that.state.focusList
     });
   };
   focusAll = () => {
-    var that = this;
+    let that = this;
     Taro.showToast({
       title: '关注成功',
       icon: 'success',
@@ -88,39 +78,38 @@ class _C extends Taro.Component {
   };
   // 获取推荐热门列表API
   getRecHotList = () => {
-    var that = this;
+    let that = this;
     api.http('recHotListApi', {}, res => {
       if (res.errMsg) {
         util.showModel(res.errMsg);
       } else {
         console.log('---请求推荐热门列表---');
-        that.setData({
+        that.setState({
           recHotList: res.hotList || []
         });
       }
     });
   };
   toggleShow = event => {
-    var that = this;
-    var index = event.target.dataset.index;
-    that.data.showIndex[index] = !that.data.showIndex[index];
-    that.setData({
-      showIndex: that.data.showIndex
+    let that = this;
+    let index = event.target.dataset.index;
+    that.state.showIndex[index] = !that.state.showIndex[index];
+    that.setState({
+      showIndex: that.state.showIndex
     });
   };
 
   componentWillMount(options = this.$router.params || {}) {}
 
   componentDidMount() {
-    this.getUserInfo();
     this.getDiscussList();
     this.getRecFocusList();
     this.getRecHotList();
   }
 
   onScroll = event => {
-    var that = this;
-    that.setData({
+    let that = this;
+    that.setState({
       scrollTop: event.detail.scrollTop
     });
   };
@@ -132,8 +121,6 @@ class _C extends Taro.Component {
 
   render() {
     const {
-      logged,
-      userInfo,
       indicatorDots,
       autoplay,
       circular,
@@ -150,13 +137,11 @@ class _C extends Taro.Component {
     return (
       <Block>
         <View className="find-header-wrap">
-          <Image
+          <AtAvatar
             className="find-userinfo-avatar"
-            src={
-              logged ? userInfo.avatarUrl : '/assets/images/user-unlogin.png'
-            }
-            backgroundSize="cover"
-          />
+            circle
+            size="small"
+            openData={{ type: 'userAvatarUrl' }}></AtAvatar>
           <Text className="find-header-title">想法</Text>
           <Text className="find-header-rec">推荐</Text>
         </View>
@@ -167,17 +152,14 @@ class _C extends Taro.Component {
             autoplay={autoplay}
             circular={circular}
             interval={interval}
-            duration={duration}
-          >
+            duration={duration}>
             {discussList.map((item, index) => (
               <Block key={index}>
                 <SwiperItem className="find-swiper">
                   <View className="find-swiper-item">
                     <View className="find-swiper-dis">
                       消息提示:
-                      <Text className="find-swiper-number">
-                        {item.number + '人正在讨论'}
-                      </Text>
+                      <Text className="find-swiper-number">{item.number + '人正在讨论'}</Text>
                     </View>
                     <View className="find-swiper-title">{item.title}</View>
                     <View className="find-swiper-tip">{item.tip}</View>
@@ -189,15 +171,11 @@ class _C extends Taro.Component {
           </Swiper>
           {/*  关注列表   */}
           <View className="find-focus-list">
-            <View className="find-focus-title">
-              关注有趣的人，收货更多好想法
-            </View>
+            <View className="find-focus-title">关注有趣的人，收货更多好想法</View>
             {recFocusList.map((item, index) => (
               <View className="find-focus-item" key={index.id}>
                 <Image className="find-focus-avatar" src={item.avatar} />
-                <View
-                  className={'find-focus-info ' + (index === 3 ? 'last' : '')}
-                >
+                <View className={'find-focus-info ' + (index === 3 ? 'last' : '')}>
                   <Text className="find-focus-nickname">{item.nickname}</Text>
                   <View className="find-icon-wrap">
                     {item.bestAnswer && (
@@ -215,19 +193,12 @@ class _C extends Taro.Component {
                   </View>
                   <View className="find-focus-introduce">{item.introduce}</View>
                   {!focusList[index] && (
-                    <View
-                      className="find-focus-btn"
-                      data-index={index}
-                      onClick={this.focusIt}
-                    >
+                    <View className="find-focus-btn" data-index={index} onClick={this.focusIt}>
                       关注
                     </View>
                   )}
                   {focusList[index] && (
-                    <View
-                      className="find-focus-btn has-focus"
-                      data-index={index}
-                    >
+                    <View className="find-focus-btn has-focus" data-index={index}>
                       已关注
                     </View>
                   )}
@@ -235,16 +206,10 @@ class _C extends Taro.Component {
               </View>
             ))}
             <View className="find-focus-control">
-              <View
-                className="find-focus-button find-focus-refresh"
-                onClick={this.getRecFocusList}
-              >
+              <View className="find-focus-button find-focus-refresh" onClick={this.getRecFocusList}>
                 换一批
               </View>
-              <View
-                className="find-focus-button find-focus-all"
-                onClick={this.focusAll}
-              >
+              <View className="find-focus-button find-focus-all" onClick={this.focusAll}>
                 全部关注
               </View>
             </View>
@@ -264,29 +229,24 @@ class _C extends Taro.Component {
               <View className="find-hot-item" key={index.id}>
                 <Image className="find-hot-avatar" src={item.avatar} />
                 <View className="find-hot-info">
-                  <Text className="find-focus-nickname find-hot-nickname">
-                    {item.nickname}
-                  </Text>
+                  <Text className="find-focus-nickname find-hot-nickname">{item.nickname}</Text>
                   <View className="find-icon-wrap">
                     {item.bestAnswer && (
                       <Image
                         className="find-focus-icon find-icon-best"
-                        src={require('../../assets/images/best-icon.png')} />
+                        src={require('../../assets/images/best-icon.png')}
+                      />
                     )}
                     {item.auth && (
                       <Image
                         className="find-focus-icon find-icon-auth"
-                        src={require('../../assets/images/auth-icon.png')} />
+                        src={require('../../assets/images/auth-icon.png')}
+                      />
                     )}
                   </View>
-                  <View className="find-focus-introduce">
-                    { '发布于'+ item.time }
-                  </View>
+                  <View className="find-focus-introduce">{'发布于' + item.time}</View>
                   {!hotFocusList[index] && (
-                    <View
-                      className="find-hot-btn"
-                      data-index={index}
-                      onClick={this.hotFocus}>
+                    <View className="find-hot-btn" data-index={index} onClick={this.hotFocus}>
                       关注
                     </View>
                   )}
@@ -303,29 +263,16 @@ class _C extends Taro.Component {
                     />
                   </View>
                 </View>
-                <View
-                  className={
-                    'find-hot-content ' +
-                    (!showIndex[index] ? 'text-overflow' : '')
-                  }
-                >
+                <View className={'find-hot-content ' + (!showIndex[index] ? 'text-overflow' : '')}>
                   {item.content}
                 </View>
                 {!showIndex[index] && (
-                  <View
-                    className="find-show-all"
-                    data-index={index}
-                    onClick={this.toggleShow}
-                  >
+                  <View className="find-show-all" data-index={index} onClick={this.toggleShow}>
                     展开全文
                   </View>
                 )}
                 {showIndex[index] && (
-                  <View
-                    className="find-show-all"
-                    data-index={index}
-                    onClick={this.toggleShow}
-                  >
+                  <View className="find-show-all" data-index={index} onClick={this.toggleShow}>
                     收起全文
                   </View>
                 )}
@@ -340,10 +287,7 @@ class _C extends Taro.Component {
                     src={require('../../assets/images/comment.png')}
                   />
                   <Text className="find-hot-text">{item.comment}</Text>
-                  <Image
-                    className="find-hot-img"
-                    src={require('../../assets/images/praise.png')}
-                  />
+                  <Image className="find-hot-img" src={require('../../assets/images/praise.png')} />
                   <Text className="find-hot-text">{item.praise}</Text>
                 </View>
               </View>
@@ -361,4 +305,4 @@ class _C extends Taro.Component {
   }
 }
 
-export default _C;
+export default FindMore;

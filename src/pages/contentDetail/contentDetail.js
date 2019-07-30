@@ -1,22 +1,23 @@
 import { Block, View, Image, Text, Input } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import withWeapp from '@tarojs/with-weapp';
 import './contentDetail.scss';
 
-@withWeapp('Page')
-class _C extends Taro.Component {
-  state = {
-    isShow: false,
-    isShowQues: false,
-    historyList: [],
-    searchVal: '',
-    questionTitle: '',
-    contentDetail: ''
-  };
+class ContentDetail extends Taro.Component {
+  constructor() {
+    super(...arguments);
+    this.state = {
+      isShow: false,
+      isShowQues: false,
+      historyList: [],
+      searchVal: '',
+      questionTitle: '',
+      contentDetail: ''
+    };
+  }
 
   componentWillMount(options = this.$router.params || {}) {
-    var that = this;
-    that.setData({
+    let that = this;
+    that.setState({
       questionTitle: options.title,
       contentDetail: options.content,
       like: options.like,
@@ -49,17 +50,11 @@ class _C extends Taro.Component {
       <View className="container">
         <View className="search-wrap">
           <View className="search-input" onClick={this.showMack}>
-            <Image
-              className="search-input-icon"
-              src={require('../../assets/images/search.png')}
-            />
+            <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
             <Text className="search-input-text">搜索内容提问</Text>
           </View>
           <View className="search-button">
-            <Image
-              className="search-button-icon"
-              src={require('../../assets/images/edit.png')}
-            />
+            <Image className="search-button-icon" src={require('../../assets/images/edit.png')} />
             <Text className="search-button-text" onClick={this.showQuesMask}>
               提问
             </Text>
@@ -68,10 +63,7 @@ class _C extends Taro.Component {
         {/*  隐藏搜索或者提问蒙层  */}
         <View className={'search-mask ' + (isShow ? 'show' : 'hide')}>
           <View className="search-input-wrap">
-            <Image
-              className="search-mask-icon"
-              src={require('../../assets/images/search.png')}
-            />
+            <Image className="search-mask-icon" src={require('../../assets/images/search.png')} />
             <Input
               className="search-mask-input"
               type="text"
@@ -133,10 +125,7 @@ class _C extends Taro.Component {
         </View>
         <View className="content-detail-footer">
           <View className="content-footer-item">
-            <Image
-              className="content-footer-image"
-              src={require('../../assets/images/like.png')}
-            />
+            <Image className="content-footer-image" src={require('../../assets/images/like.png')} />
             <View className="content-footer-text">{'赞同' + like}</View>
           </View>
           <View className="content-footer-item">
@@ -167,4 +156,4 @@ class _C extends Taro.Component {
   }
 }
 
-export default _C;
+export default ContentDetail;

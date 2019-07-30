@@ -1,39 +1,50 @@
-import { Block, View, Image, Text, Input, Swiper, SwiperItem, ScrollView } from '@tarojs/components';
+import {
+  Block,
+  View,
+  Image,
+  Text,
+  Input,
+  Swiper,
+  SwiperItem,
+  ScrollView
+} from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import withWeapp from '@tarojs/with-weapp';
 import util from '@/utils/index';
 import api from '@/api/index';
 import './market.scss';
 
-@withWeapp('Page')
-class _C extends Taro.Component {
-  state = {
-    indicatorDots: false,
-    autoplay: true,
-    circular: true,
-    interval: 5000,
-    duration: 500 /* 以上滑块视图容器 */,
-    bannerList: [],
-    iconList: [],
-    adInfo: {},
-    newsList: [],
-    lessonList: [],
-    partList: [],
-    specialList: [],
-    bookList: [],
-    scrollBanner: [],
-    guessList: [] /* 以上数据接口 */,
-    scoreList: [0, 1, 2, 3, 4] /* 评分星星 */
-  };
+class Market extends Taro.Component {
+  constructor() {
+    super(...arguments);
+    this.state = {
+      indicatorDots: false,
+      autoplay: true,
+      circular: true,
+      interval: 5000,
+      duration: 500 /* 以上滑块视图容器 */,
+      bannerList: [],
+      iconList: [],
+      adInfo: {},
+      newsList: [],
+      lessonList: [],
+      partList: [],
+      specialList: [],
+      bookList: [],
+      scrollBanner: [],
+      guessList: [] /* 以上数据接口 */,
+      scoreList: [0, 1, 2, 3, 4] /* 评分星星 */
+    };
+  }
+
   // 获取市场列表API
   getMarketList = () => {
-    var that = this;
+    let that = this;
     api.http('marketListApi', {}, res => {
       if (res.errMsg) {
         util.showModel(res.errMsg);
       } else {
         console.log('---请求市场列表---');
-        that.setData({
+        that.setState({
           bannerList: res.bannerList || [],
           iconList: res.iconList || [],
           adInfo: res.adInfo || {},
@@ -49,12 +60,12 @@ class _C extends Taro.Component {
     });
   };
   getMoreMarketList = () => {
-    var that = this;
-    that.data.guessList.length < 50 &&
+    let that = this;
+    that.state.guessList.length < 50 &&
       api.http('marketListApi', {}, res => {
         !res.errMsg
-          ? that.setData({
-              guessList: that.data.guessList.concat(res.guessList)
+          ? that.setState({
+              guessList: that.state.guessList.concat(res.guessList)
             })
           : util.showModel(res.errMsg);
       });
@@ -103,10 +114,7 @@ class _C extends Taro.Component {
       <View className="container">
         <View className="search-wrap">
           <View className="search-input" onClick={this.showMack}>
-            <Image
-              className="search-input-icon"
-              src={require('../../assets/images/search.png')}
-            />
+            <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
             <Text className="search-input-text">搜索内容提问</Text>
           </View>
           <View className="search-button">
@@ -117,12 +125,9 @@ class _C extends Taro.Component {
           </View>
         </View>
         {/*  隐藏搜索或者提问蒙层  */}
-        <View className={'search-mask ' + (isShow ? 'show' : 'hide')}>
+        {/* <View className={'search-mask ' + (isShow ? 'show' : 'hide')}>
           <View className="search-input-wrap">
-            <Image
-              className="search-mask-icon"
-              src={require('../../assets/images/search.png')}
-            />
+            <Image className="search-mask-icon" src={require('../../assets/images/search.png')} />
             <Input
               className="search-mask-input"
               type="text"
@@ -143,7 +148,7 @@ class _C extends Taro.Component {
               <View className="search-history-title">搜索历史</View>
               {historyList.map((item, index) => {
                 return (
-                  <View className="search-item" key={index.id}>
+                  <View className="search-item" key={index}>
                     <Image
                       className="search-icon-time"
                       src={require('../../assets/images/time.png')}
@@ -169,7 +174,7 @@ class _C extends Taro.Component {
               )}
             </View>
           )}
-        </View>
+        </View> */}
         {/*  搜索end  */}
         {/*  滑块视图容器   */}
         <Swiper
@@ -178,8 +183,7 @@ class _C extends Taro.Component {
           circular={circular}
           autoplay={autoplay}
           interval={interval}
-          duration={duration}
-        >
+          duration={duration}>
           {bannerList.map((item, index) => {
             return (
               <Block key={index}>
@@ -213,14 +217,9 @@ class _C extends Taro.Component {
           <View className="market-news-header">每日新知</View>
           {newsList.map((item, index) => {
             return (
-              <View className="market-news-item" key={index.id}>
-                <Image
-                  className="market-news-icon"
-                  src={require('../../assets/images/play.png')}
-                />
-                <View className="market-news-title">
-                  {item.keyword + ' : ' + item.title}
-                </View>
+              <View className="market-news-item" key={item.id}>
+                <Image className="market-news-icon" src={require('../../assets/images/play.png')} />
+                <View className="market-news-title">{item.keyword + ' : ' + item.title}</View>
                 <View className="market-news-time">{item.time}</View>
               </View>
             );
@@ -239,22 +238,17 @@ class _C extends Taro.Component {
         {/*  私家课视频   */}
         <View className="market-video">
           <View className="market-video-header">
-            <Image
-              className="market-video-icon"
-              src={require('../../assets/images/video.png')}
-            />
+            <Image className="market-video-icon" src={require('../../assets/images/video.png')} />
             <View className="market-video-text">私家课</View>
           </View>
           <View className="market-video-list">
             {lessonList.map((item, index) => {
               return (
-                <View className="market-video-item" key={index.id}>
+                <View className="market-video-item" key={item.id}>
                   <Image className="market-video-img" src={item.image} />
                   <View className="market-video-area">
                     <View className="market-video-title">{item.title}</View>
-                    <View className="market-video-into">
-                      {item.nickname + ' · ' + item.tip}
-                    </View>
+                    <View className="market-video-into">{item.nickname + ' · ' + item.tip}</View>
                     <View className="market-video-price">{item.price}</View>
                   </View>
                   <View className="market-video-play">
@@ -309,13 +303,9 @@ class _C extends Taro.Component {
                   <Image className="market-lesson-image" src={item.image} />
                   <View className="market-lesson-info">
                     <View className="market-lesson-title">{item.title}</View>
-                    <View className="market-lesson-nickname">
-                      {item.nickname}
-                    </View>
+                    <View className="market-lesson-nickname">{item.nickname}</View>
                     <View className="market-lesson-number">{item.number}</View>
-                    <View className="market-lesson-actprice">
-                      {item.actprice}
-                    </View>
+                    <View className="market-lesson-actprice">{item.actprice}</View>
                     <View className="market-lesson-price">{item.price}</View>
                   </View>
                 </View>
@@ -327,10 +317,7 @@ class _C extends Taro.Component {
         {/*  新书抢先看  */}
         <View className="market-book">
           <View className="market-book-header">
-            <Image
-              className="market-book-icon"
-              src={require('../../assets/images/book.png')}
-            />
+            <Image className="market-book-icon" src={require('../../assets/images/book.png')} />
             <View className="market-book-text">新书抢先看</View>
           </View>
           <View className="market-book-list">
@@ -339,9 +326,7 @@ class _C extends Taro.Component {
                 <View className="market-book-item" key={index}>
                   <Image className="market-book-img" src={item.image} />
                   <View className="market-book-name">{item.name}</View>
-                  <View className="market-book-actprice">
-                    {'¥' + item.actprice}
-                  </View>
+                  <View className="market-book-actprice">{'¥' + item.actprice}</View>
                   <View className="market-book-price">{'¥' + item.price}</View>
                 </View>
               );
@@ -356,11 +341,9 @@ class _C extends Taro.Component {
               return (
                 <View
                   className={
-                    'market-banner-item ' +
-                    (index == scrollBanner.length - 1 ? 'last-item' : '')
+                    'market-banner-item ' + (index == scrollBanner.length - 1 ? 'last-item' : '')
                   }
-                  key={index}
-                >
+                  key={index}>
                   <Image className="market-banner-img" src={item.src} />
                 </View>
               );
@@ -370,21 +353,16 @@ class _C extends Taro.Component {
         {/*  猜您喜欢   */}
         <View className="market-guess">
           <View className="market-guess-header">
-            <Image
-              className="market-guess-icon"
-              src={require('../../assets/images/guess.png')}
-            />
+            <Image className="market-guess-icon" src={require('../../assets/images/guess.png')} />
             <View className="market-guess-text">猜您喜欢</View>
           </View>
           <View className="market-guess-list">
             {guessList.map((item, index) => {
               return (
-                <View className="market-guess-item" key={index.id}>
+                <View className="market-guess-item" key={item.id}>
                   <View className="market-guess-info">
                     <View className="market-guess-title">{item.title}</View>
-                    <View className="market-guess-nickname">
-                      {item.nickname}
-                    </View>
+                    <View className="market-guess-nickname">{item.nickname}</View>
                     {(item.bestAnswer || item.auth) && (
                       <View className="market-guess-wrap">
                         {item.bestAnswer && (
@@ -401,12 +379,10 @@ class _C extends Taro.Component {
                         )}
                       </View>
                     )}
-                    <View className="market-guess-number">
-                      {'· ' + item.number + '人参与'}
-                    </View>
+                    {/* 星星评价有bug需优化 */}
+                    <View className="market-guess-number">{'· ' + item.number + '人参与'}</View>
                     <View className="market-guess-score">
-                      {index <
-                        (item.score % 1 > 0 ? item.score - 1 : item.score) && (
+                      {index < (item.score % 1 > 0 ? item.score - 1 : item.score) && (
                         <Block>
                           {scoreList.map((t, index) => {
                             return (
@@ -425,11 +401,7 @@ class _C extends Taro.Component {
                           src={require('../../assets/images/star-part.png')}
                         />
                       )}
-                      {index <
-                        5 -
-                          (item.score % 1 > 0
-                            ? item.score + 1
-                            : item.score) && (
+                      {index < 5 - (item.score % 1 > 0 ? item.score + 1 : item.score) && (
                         <Block>
                           {scoreList.map((t, index) => {
                             return (
@@ -442,9 +414,7 @@ class _C extends Taro.Component {
                           })}
                         </Block>
                       )}
-                      <View className="market-guess-price">
-                        {'¥' + item.price}
-                      </View>
+                      <View className="market-guess-price">{'¥' + item.price}</View>
                     </View>
                   </View>
                   <Image className="market-guess-img" src={item.image} />
@@ -458,4 +428,4 @@ class _C extends Taro.Component {
   }
 }
 
-export default _C;
+export default Market;

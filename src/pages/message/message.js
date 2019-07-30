@@ -1,21 +1,19 @@
 import { Block, ScrollView, View, Image, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import withWeapp from '@tarojs/with-weapp';
 import util from '@/utils/index';
 import api from '@/api/index';
 import './message.scss';
 
-@withWeapp('Page')
-class _C extends Taro.Component {
-  state = {
-    userInfo: {},
-    logged: false,
-    takeSession: false,
-    requestResult: '' /* 以上登录模块 */,
-    scorllTop: 0,
-    messageHeader: '',
-    messageList: []
-  };
+class Message extends Taro.Component {
+  constructor() {
+    super(...arguments);
+    this.state = {
+      scorllTop: 0,
+      messageHeader: '',
+      messageList: []
+    };
+  }
+
   // 获取用户消息列表API
   getUserCenterList = () => {
     var that = this;
@@ -24,7 +22,7 @@ class _C extends Taro.Component {
         util.showModel(res.errMsg);
       } else {
         console.log('---请求消息列表---');
-        that.setData({
+        that.setState({
           messageHeader: res.data.messageHeader || '',
           messageList: res.data.messageList || []
         });
@@ -33,7 +31,7 @@ class _C extends Taro.Component {
   };
   onScroll = event => {
     var that = this;
-    that.setData({
+    that.setState({
       scorllTop: event.detail.scrollTop
     });
   };
@@ -58,17 +56,10 @@ class _C extends Taro.Component {
   render() {
     const { messageHeader, scorllTop, messageList } = this.state;
     return (
-      <ScrollView
-        className="message-scroll-view"
-        scrollY="true"
-        onScroll={this.onScroll}
-      >
+      <ScrollView className="message-scroll-view" scrollY="true" onScroll={this.onScroll}>
         <View className="message-bar">
           <View className="message-bar-title">消息</View>
-          <Image
-            className="message-bar-icon"
-            src={require('../../assets/images/msg-set.png')}
-          />
+          <Image className="message-bar-icon" src={require('../../assets/images/msg-set.png')} />
         </View>
         <View className="message-header">
           <Image
@@ -97,11 +88,8 @@ class _C extends Taro.Component {
                 <View
                   className={
                     'message-list-detail ' +
-                    (index === messageList.length - 1
-                      ? 'message-list-noline'
-                      : '')
-                  }
-                >
+                    (index === messageList.length - 1 ? 'message-list-noline' : '')
+                  }>
                   {item.isAnswer ? (
                     <View>
                       {item.nickname + '的提问等您来回答:'}
@@ -125,9 +113,7 @@ class _C extends Taro.Component {
                         : '../../assets/images/answer.png'
                     }
                   />
-                  <View className="message-list-time">
-                    {item.time + '小时'}
-                  </View>
+                  <View className="message-list-time">{item.time + '小时'}</View>
                 </View>
               </View>
             );
@@ -139,4 +125,4 @@ class _C extends Taro.Component {
   }
 }
 
-export default _C;
+export default Message;
