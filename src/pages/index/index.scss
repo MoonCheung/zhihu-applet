@@ -1,14 +1,14 @@
 /**index.wxss**/
 page {
-    background: #F6F6F6;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    position: relative;
+  background: #F6F6F6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
 }
 
 /* 搜索 */
-.search-wrap{
+.search-wrap {
   width: 750px;
   height: 100px;
   background: #FFF;
@@ -16,8 +16,9 @@ page {
   top: 0;
   left: 0;
 }
+
 .search-input,
-.search-mask-input{
+.search-mask-input {
   width: 560px;
   height: 70px;
   margin: 15px 20px;
@@ -30,7 +31,8 @@ page {
   line-height: 70px;
   color: #cdcdcd;
 }
-.search-button{
+
+.search-button {
   width: 110px;
   height: 80px;
   font-size: 28px;
@@ -38,20 +40,23 @@ page {
   vertical-align: middle;
   line-height: 80px;
 }
+
 .search-input-icon,
-.search-button-icon{
+.search-button-icon {
   width: 40px;
   height: 40px;
   display: inline-block;
   vertical-align: middle;
 }
-.search-button-text{
+
+.search-button-text {
   color: #1E8AE8;
   display: inline-block;
   vertical-align: middle;
 }
+
 .search-mask,
-.question-mask{
+.question-mask {
   display: none;
   position: fixed;
   top: 0;
@@ -61,69 +66,82 @@ page {
   z-index: 999;
   background: #fff;
 }
-.search-input-wrap{
+
+.search-input-wrap {
   position: relative;
 }
-.search-mask-icon{
+
+.search-mask-icon {
   width: 35px;
   height: 35px;
   position: absolute;
   top: 30px;
   left: 35px;
 }
-.search-mask-input{
+
+.search-mask-input {
   text-align: left;
   padding-left: 60px;
   color: #000;
   caret-color: #1E8AE8;
 }
-.search-mask-cancel{
+
+.search-mask-cancel {
   font-size: 28px;
   color: #1E8AE8;
 }
-.search-history{
+
+.search-history {
   width: 1500px;
   color: #999;
   font-size: 28px;
   padding: 20px;
 }
-.search-history-title{
+
+.search-history-title {
   color: #323233;
   font-size: 30px;
 }
+
 .search-item,
-.search-clear-all{
+.search-clear-all {
   width: 670px;
   padding: 20px 10px;
   margin-right: 10px;
   border-bottom: 1px solid #f6f6f6;
 }
+
 .search-icon-time,
 .search-icon-del,
-.search-del-all{
+.search-del-all {
   width: 30px;
   height: 30px;
 }
+
 .search-icon-time,
 .search-icon-del,
 .search-item-text,
-.search-del-all{
+.search-del-all {
   display: inline-block;
   vertical-align: middle;
 }
+
 .search-icon-time,
-.search-del-all{
+.search-del-all {
   margin-right: 20px;
 }
-.search-icon-del{
+
+.search-icon-del {
   float: right;
 }
+
 /* 暂时提问style  */
-.question-input-wrap{
+.question-input-wrap {
   margin: 10px auto;
-  position: relative; 
+  position: relative;
 }
-.question-title-wrap{
+
+.question-title-wrap {
   width: 700px;
   height: 60px;
   margin: 0 auto;
@@ -132,17 +150,20 @@ page {
   top: 0;
   left: 0;
 }
+
 .question-mask-next,
-.question-mask-cancel{
+.question-mask-cancel {
   font-size: 28px;
   color: #1E8AE8
 }
-.question-mask-cancel{
+
+.question-mask-cancel {
   width: 100px;
   height: 100%;
   float: left;
 }
-.mask-title{
+
+.mask-title {
   width: 60px;
   font-size: 28px;
   font-weight: 600px;
@@ -152,33 +173,39 @@ page {
   left: 345px;
   z-index: 0;
 }
-.question-mask-next{
+
+.question-mask-next {
   width: 100px;
   height: 100%;
   float: right;
 }
+
 .question-mask-input,
-.quesion-mask-text{
+.quesion-mask-text {
   max-width: 700px;
   padding: 10px 25px;
   font-size: 28px;
   border-bottom: 1px solid #f6f6f6;
   caret-color: #1E8AE8;
 }
-.question-mask-input{
+
+.question-mask-input {
   width: 100%;
   height: 50px;
   left: 0;
 }
-.quesion-mask-text{
+
+.quesion-mask-text {
   width: 100%;
   mix-width: 600px;
-  left:0;
+  left: 0;
 }
-.show{
+
+.show {
   display: block;
 }
-.hide{
+
+.hide {
   display: none;
 }
 
@@ -190,8 +217,10 @@ page {
   border-bottom: 1px solid #f6f6f6;
   position: fixed;
   top: 100px;
+  left: 0px;
 }
-.tab-item{
+
+.tab-item {
   display: inline-block;
   width: 250px;
   font-size: 28px;
@@ -200,79 +229,97 @@ page {
   color: #999;
   padding: 12px 0;
 }
-.tab-item-active{
+
+.tab-item-active {
   color: #323233;
 }
-.tab-item-line{
+
+.tab-item-line {
   width: 250px;
   position: absolute;
   left: 250px;
   bottom: 1px;
   border-bottom: 4px solid #323233;
 }
-/* tab选项内容  */
-.tab-content{
+
+/* tabs标签页内容  */
+.tab-container {
+  height: 100vh;
+  overflow: scroll;
+}
+
+.tab-content {
   max-width: 750px;
   background: #f6f6f6;
   font-size: 28px;
-  margin-top: 190px;
+  margin-top: 15px;
 }
+
 .tab-content-focus,
 .tab-content-recommend,
-.tab-content-hot{
+.tab-content-hot {
   max-width: 750px;
   height: 250px;
   padding: 20px;
   background: #fff;
   margin-bottom: 20px;
 }
-.to-recommend-img{
+
+.to-recommend-img {
   width: 200px;
   height: 200px;
   display: block;
   margin: 50px auto;
 }
-.to-recommend-title{
+
+.to-recommend-title {
   font-size: 44px;
   color: #cdcdcd;
   font-weight: 500;
   text-align: center;
 }
-.to-recommend-tip{
+
+.to-recommend-tip {
   color: #1E8AE8;
   font-size: 32px;
   text-align: center;
   margin: 20px;
 }
-.load-more{
+
+.load-more {
   color: #cdcdcd;
   text-align: center;
   margin-right: 15px 0;
 }
-.is-loading{
+
+.is-loading {
   width: 25px;
   height: 25px;
   margin-right: 10px;
 }
-.category-avatar{
+
+.category-avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
 }
-.category-title{
+
+.category-title {
   font-size: 28px;
   color: #999;
   display: inline-block;
   vertical-align: middle;
   margin-left: 20px;
 }
-.recommend-title{
+
+.recommend-title {
   font-size: 32px;
   margin: 10px 0;
 }
-.recommend-content{
+
+.recommend-content {
   max-width: 700px;
   display: -webkit-box;
   word-break: break-all;
@@ -284,33 +331,40 @@ page {
   color: #666;
   line-height: 1.6;
 }
+
 .recommend-footer,
-.hot-footer-text{
+.hot-footer-text {
   margin: 15px 0;
   color: #999;
   font-size: 26px;
 }
-.tab-content-hot{
+
+.tab-content-hot {
   height: 150px;
   margin-bottom: 2px;
 }
+
 .hot-index,
-.hot-title{
+.hot-title {
   display: inline-block;
   vertical-align: top;
 }
+
 .hot-index,
-.hot-title{
+.hot-title {
   font-size: 34px;
 }
-.hot-index{
+
+.hot-index {
   width: 50px;
   color: #E6DA7A;
 }
-.hot-index-hot{
+
+.hot-index-hot {
   color: orangered;
 }
-.hot-title{
+
+.hot-title {
   max-width: 470px;
   display: -webkit-inline-box;
   word-break: break-all;
@@ -321,12 +375,15 @@ page {
   line-height: 1.6;
   margin-right: 20px;
   margin-left: 10px;
+  height: 110px;
 }
-.hot-image{
+
+.hot-image {
   width: 150px;
   height: 100px;
   border-radius: 10px;
 }
-.hot-footer-text{
-  margin-left: 60px;
+
+.hot-footer-text {
+  margin-left: 10px;
 }

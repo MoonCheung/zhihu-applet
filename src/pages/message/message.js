@@ -1,4 +1,5 @@
 import { Block, ScrollView, View, Image, Text } from '@tarojs/components';
+import { AtAvatar } from 'taro-ui';
 import Taro from '@tarojs/taro';
 import util from '@/utils/index';
 import api from '@/api/index';
@@ -16,7 +17,7 @@ class Message extends Taro.Component {
 
   // 获取用户消息列表API
   getUserCenterList = () => {
-    var that = this;
+    let that = this;
     api.http('messageListApi', {}, res => {
       if (res.errMsg) {
         util.showModel(res.errMsg);
@@ -30,7 +31,7 @@ class Message extends Taro.Component {
     });
   };
   onScroll = event => {
-    var that = this;
+    let that = this;
     that.setState({
       scorllTop: event.detail.scrollTop
     });
@@ -58,6 +59,11 @@ class Message extends Taro.Component {
     return (
       <ScrollView className="message-scroll-view" scrollY="true" onScroll={this.onScroll}>
         <View className="message-bar">
+          <AtAvatar
+            className="message-avatar"
+            circle
+            size="small"
+            openData={{ type: 'userAvatarUrl' }}></AtAvatar>
           <View className="message-bar-title">消息</View>
           <Image className="message-bar-icon" src={require('../../assets/images/msg-set.png')} />
         </View>
