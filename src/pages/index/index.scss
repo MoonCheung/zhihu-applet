@@ -1,6 +1,6 @@
 /**index.wxss**/
 page {
-  background: #F6F6F6;
+  background: #f6f6f6;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -11,7 +11,7 @@ page {
 .search-wrap {
   width: 750px;
   height: 100px;
-  background: #FFF;
+  background: #fff;
   position: fixed;
   top: 0;
   left: 0;
@@ -50,7 +50,7 @@ page {
 }
 
 .search-button-text {
-  color: #1E8AE8;
+  color: #1e8ae8;
   display: inline-block;
   vertical-align: middle;
 }
@@ -83,12 +83,12 @@ page {
   text-align: left;
   padding-left: 60px;
   color: #000;
-  caret-color: #1E8AE8;
+  caret-color: #1e8ae8;
 }
 
 .search-mask-cancel {
   font-size: 28px;
-  color: #1E8AE8;
+  color: #1e8ae8;
 }
 
 .search-history {
@@ -154,7 +154,7 @@ page {
 .question-mask-next,
 .question-mask-cancel {
   font-size: 28px;
-  color: #1E8AE8
+  color: #1e8ae8;
 }
 
 .question-mask-cancel {
@@ -186,7 +186,7 @@ page {
   padding: 10px 25px;
   font-size: 28px;
   border-bottom: 1px solid #f6f6f6;
-  caret-color: #1E8AE8;
+  caret-color: #1e8ae8;
 }
 
 .question-mask-input {
@@ -243,9 +243,40 @@ page {
 }
 
 /* tabs标签页内容  */
+.dragUpdatePage {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.downDragBox {
+  width: 100%;
+  top: 0px;
+  background-color: #e6da7a;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  position: absolute;
+}
+
+.upDragBox {
+  bottom: 0px;
+  width: 100%;
+  background-color: #e6da7a;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  position: absolute;
+}
+
 .tab-container {
   height: 100vh;
-  overflow: scroll;
+  // overflow: scroll;
+  position: absolute;
 }
 
 .tab-content {
@@ -280,7 +311,7 @@ page {
 }
 
 .to-recommend-tip {
-  color: #1E8AE8;
+  color: #1e8ae8;
   font-size: 32px;
   text-align: center;
   margin: 20px;
@@ -357,7 +388,7 @@ page {
 
 .hot-index {
   width: 50px;
-  color: #E6DA7A;
+  color: #e6da7a;
 }
 
 .hot-index-hot {
