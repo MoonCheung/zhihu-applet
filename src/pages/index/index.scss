@@ -197,7 +197,7 @@ page {
 
 .quesion-mask-text {
   width: 100%;
-  mix-width: 600px;
+  min-width: 600px;
   left: 0;
 }
 
@@ -252,7 +252,6 @@ page {
 .downDragBox {
   width: 100%;
   top: 0px;
-  background-color: #e6da7a;
   display: flex;
   overflow: hidden;
   justify-content: center;
@@ -262,15 +261,7 @@ page {
 }
 
 .upDragBox {
-  bottom: 0px;
-  width: 100%;
-  background-color: #e6da7a;
-  display: flex;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-  font-size: 30px;
-  position: absolute;
+  height: 30vh;
 }
 
 .tab-container {

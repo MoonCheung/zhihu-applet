@@ -27,18 +27,12 @@ class Index extends Taro.Component {
       // 拖动上下滚动
       dragStyle: {
         top: 0 + 'px'
-        // bottom: 0 + 'px'
       },
       //下拉样式
       downPullStyle: {
         height: 0 + 'px'
       },
       downPullText: '下拉刷新',
-      //上拉样式
-      // upPullStyle: {
-      //   height: 0 + 'px'
-      // },
-      // upPullText: '上拉加载更多',
       creState: {},
       pullState: 0, //刷新状态 0不做操作 1刷新 -1加载更多
       status: 'more'
@@ -141,13 +135,8 @@ class Index extends Taro.Component {
     that.setState({
       dragStyle: {
         top: 0 + 'px',
-        // bottom: 0 + 'px',
         transition: `all ${time}s`
       },
-      // upPullStyle: {
-      //   height: 0 + 'px',
-      //   transition: `all ${time}s`
-      // },
       downPullStyle: {
         height: 0 + 'px',
         transition: `all ${time}s`
@@ -159,11 +148,7 @@ class Index extends Taro.Component {
       that.setState({
         dragStyle: {
           top: 0 + 'px'
-          // bottom: 0 + 'px'
         },
-        // upPullStyle: {
-        //   height: 0 + 'px'
-        // },
         downPullStyle: {
           height: 0 + 'px'
         },
@@ -172,6 +157,7 @@ class Index extends Taro.Component {
       });
     }, time * 1000);
   };
+  // 鼠标点击移动开始触发事件
   touchStart = e => {
     console.log(`touchStart`);
     let that = this;
@@ -179,6 +165,8 @@ class Index extends Taro.Component {
       creState: e.touches[0]
     });
   };
+  //TODO：等会还要处理API
+  // 移动往上触发顶部回弹实现
   touchMove = e => {
     console.log(`touchMove`);
     e.stopPropagation();
@@ -228,34 +216,9 @@ class Index extends Taro.Component {
           scrollY: false
         });
       }
-      // 上拉操作
-      // if (start_y - move_y > 0) {
-      //   if (dragY >= deviationY) {
-      //     this.setState({
-      //       pullState: -1,
-      //       upPullText: '释放加载更多'
-      //     });
-      //   } else {
-      //     this.setState({
-      //       pullState: 0,
-      //       upPullText: '上拉加载更多'
-      //     });
-      //   }
-      //   if (dragY >= maxY) {
-      //     dragY = maxY;
-      //   }
-      //   this.setState({
-      //     dragStyle: {
-      //       top: -dragY + 'px'
-      //     },
-      //     upPullStyle: {
-      //       height: dragY + 'px'
-      //     },
-      //     scrollY: false
-      //   });
-      // }
     }
   };
+  // 鼠标离开且未移动会触发事件
   touchEnd = () => {
     console.log(`touchEnd`);
     let that = this;
@@ -352,45 +315,44 @@ class Index extends Taro.Component {
   };
   // 获取热榜列表API
   getHotList = flag => {
-    // let that = this;
-    // api.http('hotListApi', {}, res => {
-    //   if (res.errMsg) {
-    //     util.showModel(res.errMsg);
-    //   } else {
-    //     if (!flag) {
-    //       console.log('---设置数据---');
-    //       that.setState({ hotList: res.list });
-    //     }
-    //     if (flag) {
-    //       that.setState({
-    //         hotList: res.list.concat(that.state.hotList)
-    //       });
-    //       console.log('---刷新热门列表数据---');
-    //       Taro.stopPullDownRefresh();
-    //       Taro.hideNavigationBarLoading();
-    //       util.showSuccess(res.list.length + '条新内容');
-    //     }
-    //   }
-    // });
     console.log('滚动到顶部事件');
+    let that = this;
+    api.http('hotListApi', {}, res => {
+      if (res.errMsg) {
+        util.showModel(res.errMsg);
+      } else {
+        if (!flag) {
+          console.log('---设置数据---');
+          that.setState({ hotList: res.list });
+        }
+        if (flag) {
+          that.setState({
+            hotList: res.list.concat(that.state.hotList)
+          });
+          console.log('---刷新热门列表数据---');
+          Taro.stopPullDownRefresh();
+          Taro.hideNavigationBarLoading();
+          util.showSuccess(res.list.length + '条新内容');
+        }
+      }
+    });
   };
   // 获取更多热榜列表
   getMoreHotList = () => {
-    // let that = this;
-    // that.setState({
-    //   status: 'loading'
-    // });
-    // setTimeout(() => {
-    //   api.http('hotListApi', {}, res => {
-    //     !res.errorMsg
-    //       ? that.setState({ hotList: that.state.hotList.concat(res.list) })
-    //       : util.showModel(res.errMsg);
-    //     that.setState({
-    //       status: 'more'
-    //     });
-    //   });
-    // }, 500);
-    console.log('滚动到底部事件');
+    let that = this;
+    that.setState({
+      status: 'loading'
+    });
+    setTimeout(() => {
+      api.http('hotListApi', {}, res => {
+        !res.errorMsg
+          ? that.setState({ hotList: that.state.hotList.concat(res.list) })
+          : util.showModel(res.errMsg);
+        that.setState({
+          status: 'more'
+        });
+      });
+    }, 500);
   };
 
   goTitleDetail = event => {
@@ -442,13 +404,11 @@ class Index extends Taro.Component {
       scrollY,
       dragStyle,
       downPullStyle,
-      downPullText
-      // upPullStyle,
-      // upPullText
+      downPullText,
+      status
     } = this.state;
     const tabList = [{ title: '关注' }, { title: '推荐' }, { title: '热榜' }];
-    const upperThreshold = 50;
-    const lowerThreshold = 50;
+    const Threshold = 50;
     const scrollAnimation = true;
     return (
       <View className="container">
@@ -587,57 +547,80 @@ class Index extends Taro.Component {
           </AtTabsPane>
           {/* 推荐内容 */}
           <AtTabsPane current={isActive} index={1}>
-            <ScrollView
-              scrollY
-              className={'tab-container ' + (isActive == 1 ? 'show' : 'hide')}
-              upperThreshold={upperThreshold}
-              lowerThreshold={lowerThreshold}
-              onScrollToUpper={this.getRecommendList}
-              onScrollToLower={this.getMoreRecList}
-              scrollWithAnimation>
-              <View className="tab-content">
-                {recList.map((item, index) => {
-                  return (
-                    <View className="tab-content-recommend" key={index}>
-                      <View className="content-category">
-                        <Image className="category-avatar" src={item.avatar} />
-                        <Text className="category-title">{item.author}</Text>
-                      </View>
-                      <View
-                        className="recommend-title"
-                        data-id={item.id}
-                        data-title={item.title}
-                        onClick={this.goTitleDetail}>
-                        {item.title}
-                      </View>
-                      <View
-                        className="recommend-content"
-                        data-id={item.id}
-                        data-title={item.title}
-                        data-avatar={item.avatar}
-                        data-content={item.fineAnswer.content}
-                        data-like={item.fineAnswer.like}
-                        data-comment={item.fineAnswer.comment}
-                        onClick={this.goContentDetail}>
-                        {item.fineAnswer.content}
-                      </View>
-                      <View className="recommend-footer">
-                        <View className="recommend-footer-text">
-                          <Text>
-                            {item.fineAnswer.like +
-                              (item.from == 'live' ? '感兴趣' : '赞同') +
-                              ' · ' +
-                              item.fineAnswer.comment +
-                              (item.from == 'live' ? '人参与' : '评论')}
-                          </Text>
-                          {item.from && <Text>{'· ' + footerTip[item.from]}</Text>}
+            <View className="dragUpdatePage">
+              <View className="downDragBox" style={downPullStyle}>
+                <AtActivityIndicator content={downPullText}></AtActivityIndicator>
+              </View>
+              <ScrollView
+                style={dragStyle}
+                scrollY={scrollY}
+                className={'tab-container ' + (isActive == 1 ? 'show' : 'hide')}
+                upperThreshold={Threshold}
+                lowerThreshold={Threshold}
+                onTouchStart={this.touchStart}
+                onTouchMove={this.touchMove}
+                onTouchEnd={this.touchEnd}
+                onScrollToUpper={this.getRecommendList}
+                onScrollToLower={this.onReachBottom}
+                scrollWithAnimation={scrollAnimation}>
+                <View className="tab-content">
+                  {recList.map((item, index) => {
+                    return (
+                      <View className="tab-content-recommend" key={index}>
+                        <View className="content-category">
+                          <Image className="category-avatar" src={item.avatar} />
+                          <Text className="category-title">{item.author}</Text>
+                        </View>
+                        <View
+                          className="recommend-title"
+                          data-id={item.id}
+                          data-title={item.title}
+                          onClick={this.goTitleDetail}>
+                          {item.title}
+                        </View>
+                        <View
+                          className="recommend-content"
+                          data-id={item.id}
+                          data-title={item.title}
+                          data-avatar={item.avatar}
+                          data-content={item.fineAnswer.content}
+                          data-like={item.fineAnswer.like}
+                          data-comment={item.fineAnswer.comment}
+                          onClick={this.goContentDetail}>
+                          {item.fineAnswer.content}
+                        </View>
+                        <View className="recommend-footer">
+                          <View className="recommend-footer-text">
+                            <Text>
+                              {item.fineAnswer.like +
+                                (item.from == 'live' ? '感兴趣' : '赞同') +
+                                ' · ' +
+                                item.fineAnswer.comment +
+                                (item.from == 'live' ? '人参与' : '评论')}
+                            </Text>
+                            {item.from && <Text>{'· ' + footerTip[item.from]}</Text>}
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  );
-                })}
-              </View>
-            </ScrollView>
+                    );
+                  })}
+                </View>
+                <View className="upDragBox">
+                  <AtLoadMore
+                    status={status}
+                    moreText="查看数据"
+                    loadingText="数据加载中..."
+                    noMoreText="没有更多了"
+                    noMoreTextStyle={{
+                      boder: 'none'
+                    }}
+                    moreBtnStyle={{
+                      boder: 'none'
+                    }}
+                  />
+                </View>
+              </ScrollView>
+            </View>
           </AtTabsPane>
           {/* 热榜内容 */}
           <AtTabsPane current={isActive} index={2}>
@@ -652,58 +635,48 @@ class Index extends Taro.Component {
                 onTouchStart={this.touchStart}
                 onTouchMove={this.touchMove}
                 onTouchEnd={this.touchEnd}
-                upperThreshold={upperThreshold}
-                lowerThreshold={lowerThreshold}
+                upperThreshold={Threshold}
+                lowerThreshold={Threshold}
                 onScrollToUpper={this.getHotList}
                 onScrollToLower={this.onReachBottom}
                 scrollWithAnimation={scrollAnimation}>
                 <View className="tab-content">
-                  {/* {hotList.map((item, index) => {
-                  return (
-                    <View className="at-row tab-content-hot" key={index}>
-                      <View className="at-col at-col-1">
-                        <Text className={'hot-index ' + (index < 3 ? 'hot-index-hot' : '')}>
-                          {index + 1}
-                        </Text>
-                      </View>
-                      <View className="at-col at-col-8 at-col--wrap">
-                        <Text className="hot-title">{item.title}</Text>
-                        <View className="hot-footer-text">
-                          <Text>{item.comment + '回答 · ' + item.focus + '关注'}</Text>
+                  {hotList.map((item, index) => {
+                    return (
+                      <View className="at-row tab-content-hot" key={index}>
+                        <View className="at-col at-col-1">
+                          <Text className={'hot-index ' + (index < 3 ? 'hot-index-hot' : '')}>
+                            {index + 1}
+                          </Text>
+                        </View>
+                        <View className="at-col at-col-8 at-col--wrap">
+                          <Text className="hot-title">{item.title}</Text>
+                          <View className="hot-footer-text">
+                            <Text>{item.comment + '回答 · ' + item.focus + '关注'}</Text>
+                          </View>
+                        </View>
+                        <View className="at-col at-col-3">
+                          <Image className="hot-image" src={item.image} />
                         </View>
                       </View>
-                      <View className="at-col at-col-3">
-                        <Image className="hot-image" src={item.image} />
-                      </View>
-                    </View>
-                  );
-                })} */}
-                  <View style={{ backgroundColor: 'red', color: 'white', height: '30vh' }}>A</View>
-                  <View style={{ backgroundColor: 'blue', color: 'white', height: '30vh' }}>B</View>
-                  <View style={{ backgroundColor: 'green', color: 'white', height: '30vh' }}>
-                    C
-                  </View>
-                  <View style={{ backgroundColor: 'orange', color: 'white', height: '30vh' }}>
-                    D
-                  </View>
+                    );
+                  })}
                 </View>
-                <AtLoadMore
-                  onClick={this.onReachBottom}
-                  status={this.state.status}
-                  moreText="查看数据"
-                  loadingText="正在加载数据"
-                  noMoreText="没有更多了"
-                  noMoreTextStyle={{
-                    boder: 'none'
-                  }}
-                  moreBtnStyle={{
-                    boder: 'none'
-                  }}
-                />
+                <View className="upDragBox">
+                  <AtLoadMore
+                    status={status}
+                    moreText="查看数据"
+                    loadingText="数据加载中..."
+                    noMoreText="没有更多了"
+                    noMoreTextStyle={{
+                      boder: 'none'
+                    }}
+                    moreBtnStyle={{
+                      boder: 'none'
+                    }}
+                  />
+                </View>
               </ScrollView>
-              {/* <View className="upDragBox" style={upPullStyle}>
-                <AtActivityIndicator content={upPullText}></AtActivityIndicator>
-              </View> */}
             </View>
           </AtTabsPane>
         </AtTabs>
