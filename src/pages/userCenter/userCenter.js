@@ -1,5 +1,5 @@
-import { Block, View, Image, Text, Switch } from '@tarojs/components';
-import { AtAvatar } from 'taro-ui';
+import { AtAvatar, AtList, AtListItem } from 'taro-ui';
+import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import util from '@/utils/index';
 import api from '@/api/index';
@@ -16,7 +16,9 @@ class UserCenter extends Taro.Component {
     };
   }
 
-  config = {};
+  config = {
+    navigationBarTitleText: '信息'
+  };
   // 获取用户列表API
   getUserCenterList = () => {
     var that = this;
@@ -56,25 +58,20 @@ class UserCenter extends Taro.Component {
         {/*  用户列表信息   */}
         {userCenterList.map((item, index) => {
           return (
-            <View className="user-list" key={index.id}>
-              {item.map((i, index) => {
+            <AtList className="user-list" key={index.id}>
+              {item.map((i, itemIndex) => {
                 return (
-                  <View className="user-list-item" key={index.id}>
-                    <Image className="user-list-icon" src={i.icon} />
-                    <Text className="user-list-title">{i.title}</Text>
-                    {i.moreLink && (
-                      <Image
-                        className="user-list-more"
-                        src={require('../../assets/images/to-more.png')}
-                      />
-                    )}
-                    {i.theme && (
-                      <Switch className="user-list-switch" checked={i.theme !== 'light'} />
-                    )}
+                  <View className="user-list-item" key={itemIndex.id}>
+                    <AtListItem
+                      className="user-list-title"
+                      arrow="right"
+                      title={i.title}
+                      thumb={i.icon}
+                    />
                   </View>
                 );
               })}
-            </View>
+            </AtList>
           );
         })}
       </View>

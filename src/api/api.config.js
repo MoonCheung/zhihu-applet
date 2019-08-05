@@ -1,4 +1,4 @@
-const base = 'https://www.easy-mock.com/mock/59127536acb959185b0c62b9/applet';
+const base = 'https://mock.ikmoons.com/mock/11/applet';
 const api = {
   // 关注列表API
   focusListApi: {

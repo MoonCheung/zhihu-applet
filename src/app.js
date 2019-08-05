@@ -1,4 +1,3 @@
-import { Block } from '@tarojs/components';
 import 'taro-ui/dist/style/index.scss';
 import Taro from '@tarojs/taro';
 import './app.scss';
@@ -23,7 +22,7 @@ class App extends Taro.Component {
       backgroundColor: '#FFF',
       backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#FFF',
-      navigationBarTitleText: '知小乎',
+      navigationBarTitleText: '知乎',
       navigationBarTextStyle: 'black',
       enablePullDownRefresh: true,
       onReachBottomDistance: 50
@@ -60,9 +59,9 @@ class App extends Taro.Component {
         },
         {
           pagePath: 'pages/userCenter/userCenter',
-          text: '更多',
-          iconPath: 'assets/images/more.png',
-          selectedIconPath: 'assets/images/more-light.png'
+          text: '我的',
+          iconPath: 'assets/images/me.png',
+          selectedIconPath: 'assets/images/me-light.png'
         }
       ]
     }

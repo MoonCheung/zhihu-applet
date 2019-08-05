@@ -41,11 +41,9 @@ page {
   width: 750px;
   margin-top: 20px;
   text-align: left;
-  border: 2px solid rgba(0, 0, 0, .1);
   border-left: none;
   border-right: none;
   background: #FFF;
-  padding: 20px 0;
 }
 
 .user-list-item {
@@ -53,45 +51,7 @@ page {
   position: relative;
 }
 
-.user-list-icon {
-  width: 50px;
-  height: 50px;
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 20px;
-  border-radius: 10px;
-}
-
 .user-list-title {
   font-size: 28px;
   color: #323233;
-  display: inline-block;
-  padding: 20px 0;
-  width: 650px;
-  border-bottom: 1px solid #ddd;
 }
-
-.user-list-more {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
-// .user-list-item .wx-switch-input{
-//   display: inline-block;
-//   position: absolute;
-//   top: 20px;
-//   right: 20px;
-//   width: 84px !important;
-//   height: 44px !important;
-// }
-// .user-list-item .c::before{
-//   width: 80px !important;
-//   height: 40px !important;
-// }
-// .user-list-item .wx-switch-input::after{
-//   width: 40px !important;
-//   height: 40px !important;
-// }
