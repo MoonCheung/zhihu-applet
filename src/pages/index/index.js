@@ -378,7 +378,9 @@ class Index extends Taro.Component {
         '&content=' +
         event.target.dataset.content +
         '&like=' +
-        event.target.dataset.like
+        event.target.dataset.like +
+        '&time=' +
+        event.target.dataset.time
     });
   };
 
@@ -585,6 +587,7 @@ class Index extends Taro.Component {
                           data-avatar={item.avatar}
                           data-content={item.fineAnswer.content}
                           data-like={item.fineAnswer.like}
+                          data-time={item.fineAnswer.time}
                           data-comment={item.fineAnswer.comment}
                           onClick={this.goContentDetail}>
                           {item.fineAnswer.content}

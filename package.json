@@ -24,8 +24,7 @@
     "dev:h5": "npm run build:h5 -- --watch",
     "dev:rn": "npm run build:rn -- --watch",
     "dev:qq": "npm run build:qq -- --watch",
-    "dev:quickapp": "npm run build:quickapp -- --watch",
-    "mock": "easymock init"
+    "dev:quickapp": "npm run build:quickapp -- --watch"
   },
   "author": "MoonCheung <Salvador23@163.com>",
   "license": "MIT",

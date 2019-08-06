@@ -127,6 +127,10 @@ page {
   padding: 20px 0;
   margin-left: 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .message-list-icon,
@@ -136,8 +140,8 @@ page {
 }
 
 .message-list-icon {
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
 }
 
 .message-list-time {
@@ -151,8 +155,4 @@ page {
   font-size: 28px;
   color: #999;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.message-list-noline {
-  border: none;
 }

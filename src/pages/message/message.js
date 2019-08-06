@@ -89,13 +89,9 @@ class Message extends Taro.Component {
         <View className="message-list">
           {messageList.map((item, index) => {
             return (
-              <View className="message-list-item" key={index}>
+              <View className="message-list-item" key={item.id}>
                 <Image className="message-list-avatar" src={item.avatar} />
-                <View
-                  className={
-                    'message-list-detail ' +
-                    (index === messageList.length - 1 ? 'message-list-noline' : '')
-                  }>
+                <View className="message-list-detail">
                   {item.isAnswer ? (
                     <View>
                       {item.nickname + '的提问等您来回答:'}
@@ -115,11 +111,11 @@ class Message extends Taro.Component {
                     className="message-list-icon"
                     src={
                       item.isAnswer
-                        ? '../../assets/images/is-answer.png'
-                        : '../../assets/images/answer.png'
+                        ? require('../../assets/images/is-answer.png')
+                        : require('../../assets/images/answer.png')
                     }
                   />
-                  <View className="message-list-time">{item.time + '小时'}</View>
+                  <View className="message-list-time">{item.time + '小时前'}</View>
                 </View>
               </View>
             );

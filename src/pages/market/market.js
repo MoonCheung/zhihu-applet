@@ -32,8 +32,7 @@ class Market extends Taro.Component {
       specialList: [],
       bookList: [],
       scrollBanner: [],
-      guessList: [] /* 以上数据接口 */,
-      scoreList: [0, 1, 2, 3, 4] /* 评分星星 */
+      guessList: [] /* 以上数据接口 */
     };
   }
 
@@ -110,8 +109,7 @@ class Market extends Taro.Component {
       specialList,
       bookList,
       scrollBanner,
-      guessList,
-      scoreList
+      guessList
     } = this.state;
     return (
       <View className="container">

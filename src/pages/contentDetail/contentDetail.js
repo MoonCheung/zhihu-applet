@@ -11,7 +11,10 @@ class ContentDetail extends Taro.Component {
       historyList: [],
       searchVal: '',
       questionTitle: '',
-      contentDetail: ''
+      contentDetail: '',
+      like: '',
+      time: '',
+      comment: ''
     };
   }
 
@@ -21,6 +24,7 @@ class ContentDetail extends Taro.Component {
       questionTitle: options.title,
       contentDetail: options.content,
       like: options.like,
+      time: options.time,
       comment: options.comment
     });
   }
@@ -44,6 +48,7 @@ class ContentDetail extends Taro.Component {
       questionTitle,
       contentDetail,
       like,
+      time,
       comment
     } = this.state;
     return (
@@ -118,7 +123,7 @@ class ContentDetail extends Taro.Component {
           <View className="content-detail-answer">
             {contentDetail}
             <View className="content-detail-bottom">
-              <View>编辑于2018-01-18</View>
+              <View>编辑于{time}</View>
               <View>著作权归作者所有</View>
             </View>
           </View>
