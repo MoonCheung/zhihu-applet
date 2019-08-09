@@ -1,0 +1,116 @@
+.search-component {
+  width: auto;
+  display: inline-block;
+
+  .search-input,
+  .search-mask-input {
+    width: 560px;
+    height: 70px;
+    margin: 15px 20px;
+    display: inline-block;
+    vertical-align: middle;
+    background: #f6f6f6;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 20px;
+    line-height: 70px;
+    color: #cdcdcd;
+
+    .search-input-icon {
+      width: 40px;
+      height: 40px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  .search-mask {
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background: #fff;
+
+    // 搜索输入框
+    .search-input-wrap {
+      position: relative;
+
+      .search-mask-icon {
+        width: 35px;
+        height: 35px;
+        position: absolute;
+        top: 30px;
+        left: 35px;
+      }
+
+      .search-mask-input {
+        text-align: left;
+        padding-left: 60px;
+        color: #000;
+        caret-color: #1e8ae8;
+      }
+
+      .search-mask-cancel {
+        font-size: 28px;
+        color: #1e8ae8;
+      }
+    }
+
+    // 搜索历史
+    .search-history {
+      width: 1500px;
+      color: #999;
+      font-size: 28px;
+      padding: 20px;
+
+      .search-history-title {
+        color: #323233;
+        font-size: 30px;
+      }
+
+      .search-item,
+      .search-clear-all {
+        width: 670px;
+        padding: 20px 10px;
+        margin-right: 10px;
+        border-bottom: 1px solid #f6f6f6;
+
+        .search-icon-time,
+        .search-icon-del,
+        .search-del-all {
+          width: 30px;
+          height: 30px;
+        }
+
+        .search-icon-time,
+        .search-icon-del,
+        .search-item-text,
+        .search-del-all {
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        .search-icon-time,
+        .search-del-all {
+          margin-right: 20px;
+        }
+
+        .search-icon-del {
+          float: right;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+
+  .show {
+    display: block;
+  }
+
+  .hide {
+    display: none;
+  }
+}

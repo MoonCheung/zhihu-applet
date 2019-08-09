@@ -1,5 +1,6 @@
 import { Block, View, Image, Text, Input, Textarea, ScrollView } from '@tarojs/components';
 import { AtTabs, AtTabsPane, AtActivityIndicator, AtLoadMore } from 'taro-ui';
+import SearchInput from '@/components/searchInput/index';
 import util from '@/utils/index';
 import Taro from '@tarojs/taro';
 import api from '@/api/index';
@@ -10,9 +11,8 @@ class Index extends Taro.Component {
     super(...arguments);
     this.state = {
       isShow: false,
+      searchVal: '', // 空值，以上搜索输入框状态
       isShowQues: false,
-      historyList: [],
-      searchVal: '',
       isActive: 1 /* tabs标签页 */,
       focusList: [],
       recList: [],
@@ -46,81 +46,29 @@ class Index extends Taro.Component {
       searchVal: ''
     });
   };
-  showQuesMask = () => {
-    let that = this;
-    that.setState({
-      isShowQues: true
-    });
-  };
+
   hideMask = () => {
     let that = this;
     that.setState({
       isShow: false
     });
   };
+
+  showQuesMask = () => {
+    let that = this;
+    that.setState({
+      isShowQues: true
+    });
+  };
+
   hideQuesMask = () => {
     let that = this;
     that.setState({
       isShowQues: false
     });
   };
-  searchTopic = evet => {
-    let history = [];
-    let that = this;
-    Taro.getStorage({
-      key: 'searchHistory',
-      success: function(res) {
-        that.setState({
-          historyList: res.state.historyList
-        });
-      }
-    });
-    console.log('--- 存储搜索历史 ---');
-    evet.detail.value &&
-      that.state.historyList.indexOf(evet.detail.value) === -1 &&
-      that.setState({
-        historyList: that.state.historyList.concat(evet.detail.value)
-      });
-    Taro.setStorage({
-      key: 'searchHistory',
-      data: that.state.historyList
-    });
-    Taro.navigateTo({
-      url: '../../pages/searchResult/searchResult?key=' + evet.detail.value,
-      complete: function(res) {
-        console.log(res, '跳转到搜索结果页');
-        that.setState({
-          isShow: false
-        });
-      }
-    });
-  };
-  clearItem = event => {
-    let that = this;
-    // 获取当前点击的Index
-    let index = event.target.dataset.index;
-    that.state.historyList.splice(index, 1);
-    console.log('删除成功:', that.state.historyList);
-    that.setState({
-      historyList: that.state.historyList
-    });
-    Taro.setStorage({
-      key: 'searchHistory',
-      data: that.state.historyList
-    });
-  };
-  clearAll = event => {
-    var that = this;
-    Taro.removeStorage({
-      key: 'searchHistory',
-      success: function(res) {
-        console.log(res, '清除成功');
-      }
-    });
-    that.setState({
-      historyList: []
-    });
-  };
+
+  // 切换tabs标签页
   setActive = index => {
     let that = this;
     // 获取当前点击的index索引值
@@ -396,7 +344,6 @@ class Index extends Taro.Component {
     const {
       isShow,
       searchVal,
-      historyList,
       isShowQues,
       isActive,
       focusList,
@@ -416,10 +363,13 @@ class Index extends Taro.Component {
       <View className="container">
         <View className="search-wrap">
           {/* 搜索栏 */}
-          <View className="search-input" onClick={this.showMack}>
-            <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
-            <Text className="search-input-text">搜索内容提问</Text>
-          </View>
+          <SearchInput
+            ref="searchRef"
+            show={isShow}
+            value={searchVal}
+            showMack={this.showMack.bind(this)}
+            hideMask={this.hideMask.bind(this)}
+          />
           {/* 提问 */}
           <View className="search-button">
             <Image className="search-button-icon" src={require('../../assets/images/edit.png')} />
@@ -428,58 +378,6 @@ class Index extends Taro.Component {
             </Text>
           </View>
         </View>
-        {/*  隐藏搜索或者提问蒙层  */}
-        <View className={'search-mask ' + (isShow ? 'show' : 'hide')}>
-          <View className="search-input-wrap">
-            <Image className="search-mask-icon" src={require('../../assets/images/search.png')} />
-            <Input
-              className="search-mask-input"
-              type="text"
-              confirmType="search"
-              value={searchVal}
-              autoFocus={isShow}
-              focus={isShow}
-              placeholderStyle="color:#cdcdcd"
-              placeholder="搜索想知道内容"
-              onConfirm={this.searchTopic}
-            />
-            <Text className="search-mask-cancel" onClick={this.hideMask}>
-              取消
-            </Text>
-          </View>
-          {historyList.length > 0 && (
-            <View className="search-history">
-              <View className="search-history-title">搜索历史</View>
-              {historyList.map((item, index) => {
-                return (
-                  <View className="search-item" key={index.id}>
-                    <Image
-                      className="search-icon-time"
-                      src={require('../../assets/images/time.png')}
-                    />
-                    <Text className="search-item-text">{item}</Text>
-                    <Image
-                      className="search-icon-del"
-                      data-index={index}
-                      onClick={this.clearItem}
-                      src={require('../../assets/images/del-item.png')}
-                    />
-                  </View>
-                );
-              })}
-              {historyList.length > 1 && (
-                <View className="search-clear-all" onClick={this.clearAll}>
-                  <Image
-                    className="search-del-all"
-                    src={require('../../assets/images/del-all.png')}
-                  />
-                  <Text className="search-del-text">清空搜索历史</Text>
-                </View>
-              )}
-            </View>
-          )}
-        </View>
-        {/*  搜索end  */}
         {/*  提问   */}
         <View className={'question-mask ' + (isShowQues ? 'show' : 'hide')}>
           <View className="question-input-wrap">
@@ -611,7 +509,7 @@ class Index extends Taro.Component {
                 <View className="upDragBox">
                   <AtLoadMore
                     status={status}
-                    moreText="查看数据"
+                    moreText="加载更多"
                     loadingText="数据加载中..."
                     noMoreText="没有更多了"
                     noMoreTextStyle={{
@@ -668,7 +566,7 @@ class Index extends Taro.Component {
                 <View className="upDragBox">
                   <AtLoadMore
                     status={status}
-                    moreText="查看数据"
+                    moreText="加载更多"
                     loadingText="数据加载中..."
                     noMoreText="没有更多了"
                     noMoreTextStyle={{

@@ -1,4 +1,5 @@
 import { Block, View, Image, Text, Input } from '@tarojs/components';
+import SearchInput from '@/components/searchInput/index';
 import Taro from '@tarojs/taro';
 import './contentDetail.scss';
 
@@ -7,9 +8,8 @@ class ContentDetail extends Taro.Component {
     super(...arguments);
     this.state = {
       isShow: false,
+      searchVal: '', // 空值, 以上搜索输入框状态
       isShowQues: false,
-      historyList: [],
-      searchVal: '',
       questionTitle: '',
       contentDetail: '',
       like: '',
@@ -36,15 +36,45 @@ class ContentDetail extends Taro.Component {
   onPullDownRefresh = () => {
     Taro.stopPullDownRefresh();
   };
-  onReachBottom = () => {};
-  onShareAppMessage = () => {};
-  config = {};
+
+  config = {
+    navigationBarTitleText: '详情'
+  };
+
+  showMack = () => {
+    let that = this;
+    that.setState({
+      isShow: true,
+      searchVal: ''
+    });
+  };
+
+  hideMask = () => {
+    let that = this;
+    that.setState({
+      isShow: false
+    });
+  };
+
+  showQuesMask = () => {
+    let that = this;
+    that.setState({
+      isShowQues: true
+    });
+  };
+
+  hideQuesMask = () => {
+    let that = this;
+    that.setState({
+      isShowQues: false
+    });
+  };
 
   render() {
     const {
       isShow,
       searchVal,
-      historyList,
+      isShowQues,
       questionTitle,
       contentDetail,
       like,
@@ -54,10 +84,14 @@ class ContentDetail extends Taro.Component {
     return (
       <View className="container">
         <View className="search-wrap">
-          <View className="search-input" onClick={this.showMack}>
-            <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
-            <Text className="search-input-text">搜索内容提问</Text>
-          </View>
+          {/* 搜索栏 */}
+          <SearchInput
+            show={isShow}
+            value={searchVal}
+            showMack={this.showMack.bind(this)}
+            hideMask={this.hideMask.bind(this)}
+          />
+          {/* 提问 */}
           <View className="search-button">
             <Image className="search-button-icon" src={require('../../assets/images/edit.png')} />
             <Text className="search-button-text" onClick={this.showQuesMask}>
@@ -65,58 +99,31 @@ class ContentDetail extends Taro.Component {
             </Text>
           </View>
         </View>
-        {/*  隐藏搜索或者提问蒙层  */}
-        <View className={'search-mask ' + (isShow ? 'show' : 'hide')}>
-          <View className="search-input-wrap">
-            <Image className="search-mask-icon" src={require('../../assets/images/search.png')} />
-            <Input
-              className="search-mask-input"
-              type="text"
-              confirmType="search"
-              value={searchVal}
-              autoFocus={isShow}
-              focus={isShow}
-              placeholderStyle="color:#cdcdcd"
-              placeholder="搜索想知道内容"
-              onConfirm={this.searchTopic}
-            />
-            <Text className="search-mask-cancel" onClick={this.hideMask}>
-              取消
-            </Text>
-          </View>
-          {historyList.length > 0 && (
-            <View className="search-history">
-              <View className="search-history-title">搜索历史</View>
-              {historyList.map((item, index) => {
-                return (
-                  <View className="search-item" key={index.id}>
-                    <Image
-                      className="search-icon-time"
-                      src={require('../../assets/images/time.png')}
-                    />
-                    <Text className="search-item-text">{item}</Text>
-                    <Image
-                      className="search-icon-del"
-                      data-index={index}
-                      onClick={this.clearItem}
-                      src={require('../../assets/images/del-item.png')}
-                    />
-                  </View>
-                );
-              })}
-              {historyList.length > 1 && (
-                <View className="search-clear-all" onClick={this.clearAll}>
-                  <Image
-                    className="search-del-all"
-                    src={require('../../assets/images/del-all.png')}
-                  />
-                  <Text className="search-del-text">清空搜索历史</Text>
-                </View>
-              )}
+        {/*  提问   */}
+        <View className={'question-mask ' + (isShowQues ? 'show' : 'hide')}>
+          <View className="question-input-wrap">
+            <View className="question-title-wrap">
+              <View className="question-mask-cancel" onClick={this.hideQuesMask}>
+                取消
+              </View>
+              <Text className="mask-title">提问</Text>
+              <View className="question-mask-next">下一步</View>
             </View>
-          )}
+            <Input
+              className="question-mask-input"
+              placeholderStyle="color: #cdcdcd"
+              placeholder="输入问题并以问号结尾"
+              type="text"
+            />
+            <Textarea
+              className="quesion-mask-text"
+              placeholderStyle="color: #cdcdcd"
+              placeholder="问题描述(选填)"
+              autoFocus="true"
+            />
+          </View>
         </View>
-        {/*  搜索end  */}
+        {/*  提问end   */}
         {/*  内容详情页   */}
         <View className="content-detail">
           <View className="content-detail-title">{questionTitle}</View>
