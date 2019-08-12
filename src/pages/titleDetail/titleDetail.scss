@@ -1,5 +1,6 @@
 /* titleDetail.wxss */
 page {
+<<<<<<< HEAD
     background: #F6F6F6;
     display: flex;
     flex-direction: column;
@@ -12,10 +13,25 @@ page {
   width: 750px;
   height: 100px;
   background: #FFF;
+=======
+  background: #F6F6F6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+/* 搜索 */
+.search-wrap {
+  width: 750px;
+  height: 100px;
+  background: #fff;
+>>>>>>> update pages
   position: fixed;
   top: 0;
   left: 0;
 }
+<<<<<<< HEAD
 .search-input,
 .search-mask-input{
   width: 560px;
@@ -31,6 +47,10 @@ page {
   color: #cdcdcd;
 }
 .search-button{
+=======
+
+.search-button {
+>>>>>>> update pages
   width: 110px;
   height: 80px;
   font-size: 28px;
@@ -38,13 +58,19 @@ page {
   vertical-align: middle;
   line-height: 80px;
 }
+<<<<<<< HEAD
 .search-input-icon,
 .search-button-icon{
+=======
+
+.search-button-icon {
+>>>>>>> update pages
   width: 40px;
   height: 40px;
   display: inline-block;
   vertical-align: middle;
 }
+<<<<<<< HEAD
 .search-button-text{
   color: #1E8AE8;
   display: inline-block;
@@ -52,6 +78,16 @@ page {
 }
 .search-mask,
 .question-mask{
+=======
+
+.search-button-text {
+  color: #1e8ae8;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.question-mask {
+>>>>>>> update pages
   display: none;
   position: fixed;
   top: 0;
@@ -61,6 +97,7 @@ page {
   z-index: 999;
   background: #fff;
 }
+<<<<<<< HEAD
 .search-input-wrap{
   position: relative;
 }
@@ -124,6 +161,16 @@ page {
   position: relative; 
 }
 .question-title-wrap{
+=======
+
+/* 暂时提问style  */
+.question-input-wrap {
+  margin: 10px auto;
+  position: relative;
+}
+
+.question-title-wrap {
+>>>>>>> update pages
   width: 700px;
   height: 60px;
   margin: 0 auto;
@@ -132,17 +179,33 @@ page {
   top: 0;
   left: 0;
 }
+<<<<<<< HEAD
 .question-mask-next,
 .question-mask-cancel{
   font-size: 28px;
   color: #1E8AE8
 }
 .question-mask-cancel{
+=======
+
+.question-mask-next,
+.question-mask-cancel {
+  font-size: 28px;
+  color: #1e8ae8;
+}
+
+.question-mask-cancel {
+>>>>>>> update pages
   width: 100px;
   height: 100%;
   float: left;
 }
+<<<<<<< HEAD
 .mask-title{
+=======
+
+.mask-title {
+>>>>>>> update pages
   width: 60px;
   font-size: 28px;
   font-weight: 600px;
@@ -152,24 +215,43 @@ page {
   left: 345px;
   z-index: 0;
 }
+<<<<<<< HEAD
 .question-mask-next{
+=======
+
+.question-mask-next {
+>>>>>>> update pages
   width: 100px;
   height: 100%;
   float: right;
 }
+<<<<<<< HEAD
 .question-mask-input,
 .quesion-mask-text{
+=======
+
+.question-mask-input,
+.quesion-mask-text {
+>>>>>>> update pages
   max-width: 700px;
   padding: 10px 25px;
   font-size: 28px;
   border-bottom: 1px solid #f6f6f6;
+<<<<<<< HEAD
   caret-color: #1E8AE8;
 }
 .question-mask-input{
+=======
+  caret-color: #1e8ae8;
+}
+
+.question-mask-input {
+>>>>>>> update pages
   width: 100%;
   height: 50px;
   left: 0;
 }
+<<<<<<< HEAD
 .quesion-mask-text{
   width: 100%;
   mix-width: 600px;
@@ -179,21 +261,50 @@ page {
   display: block;
 }
 .hide{
+=======
+
+.quesion-mask-text {
+  width: 100%;
+  min-width: 600px;
+  left: 0;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+>>>>>>> update pages
   display: none;
 }
 
 /* 获取每当一条详情页  */
+<<<<<<< HEAD
 .title-detail-wrap{
   margin-top: 100px;
   font-size: 36px;
 }
 .title-detail{
+=======
+.title-detail-wrap {
+  margin-top: 100px;
+  font-size: 36px;
+}
+
+.title-detail {
+>>>>>>> update pages
   width: 700px;
   background: #fff;
   padding: 20px 25px;
 }
+<<<<<<< HEAD
 .title-detail-describe,
 .title-answer-content{
+=======
+
+.title-detail-describe,
+.title-answer-content {
+>>>>>>> update pages
   font-size: 28px;
   color: #444;
   max-width: 700px;
@@ -206,13 +317,19 @@ page {
   line-height: 1.6;
   margin: 10px 0;
 }
+<<<<<<< HEAD
 .title-answer-middle{
+=======
+
+.title-answer-middle {
+>>>>>>> update pages
   width: 700px;
   color: #999;
   font-size: 28px;
   padding: 20px 25px 0;
   overflow: hidden;
 }
+<<<<<<< HEAD
 .title-answer-number{
   float: left;
 }
@@ -220,23 +337,54 @@ page {
   float: right;
 }
 .title-answer-item{
+=======
+
+.title-answer-number {
+  float: left;
+}
+
+.title-answer-sort {
+  float: right;
+}
+
+.title-answer-item {
+>>>>>>> update pages
   margin-top: 20px;
   width: 700px;
   background: #fff;
   padding: 20px 25px;
 }
+<<<<<<< HEAD
 .title-answer-avatar,
 .title-answer-nickname{
   display: inline-block;
   vertical-align: middle;
 }
 .title-answer-avatar{
+=======
+
+.title-answer-avatar,
+.title-answer-nickname {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.title-answer-avatar {
+>>>>>>> update pages
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin-right: 20px;
 }
+<<<<<<< HEAD
 .title-answer-footer{
   color: #999;
   font-size: 28px;
 }
+=======
+
+.title-answer-footer {
+  color: #999;
+  font-size: 28px;
+}
+>>>>>>> update pages

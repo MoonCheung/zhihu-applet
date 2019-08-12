@@ -252,9 +252,13 @@ class Index extends Taro.Component {
     });
     setTimeout(() => {
       api.http('recommendListApi', {}, res => {
+<<<<<<< HEAD
         !res.errorMsg
           ? that.setState({ recList: that.state.recList.concat(res.list) })
           : util.showModel(res.errMsg);
+=======
+        !res.errorMsg ? that.setState({ recList: that.state.recList.concat(res.list) }) : util.showModel(res.errMsg);
+>>>>>>> update pages
         that.setState({
           status: 'more'
         });
@@ -293,9 +297,13 @@ class Index extends Taro.Component {
     });
     setTimeout(() => {
       api.http('hotListApi', {}, res => {
+<<<<<<< HEAD
         !res.errorMsg
           ? that.setState({ hotList: that.state.hotList.concat(res.list) })
           : util.showModel(res.errMsg);
+=======
+        !res.errorMsg ? that.setState({ hotList: that.state.hotList.concat(res.list) }) : util.showModel(res.errMsg);
+>>>>>>> update pages
         that.setState({
           status: 'more'
         });
@@ -305,11 +313,15 @@ class Index extends Taro.Component {
 
   goTitleDetail = event => {
     Taro.navigateTo({
+<<<<<<< HEAD
       url:
         '../../pages/titleDetail/titleDetail?id=' +
         event.target.dataset.id +
         '&title=' +
         event.target.dataset.title
+=======
+      url: '../../pages/titleDetail/titleDetail?id=' + event.target.dataset.id + '&title=' + event.target.dataset.title
+>>>>>>> update pages
     });
   };
   goContentDetail = event => {
@@ -424,10 +436,14 @@ class Index extends Taro.Component {
               )}
               {focusList.length == 0 && (
                 <View>
+<<<<<<< HEAD
                   <Image
                     className="to-recommend-img"
                     src={require('../../assets/images/to-recommend.png')}
                   />
+=======
+                  <Image className="to-recommend-img" src={require('../../assets/images/to-recommend.png')} />
+>>>>>>> update pages
                   <View className="to-recommend-title">还没关注的人</View>
                   <View className="to-recommend-tip">去【推荐】看看吧</View>
                 </View>
@@ -546,9 +562,13 @@ class Index extends Taro.Component {
                     return (
                       <View className="at-row tab-content-hot" key={index}>
                         <View className="at-col at-col-1">
+<<<<<<< HEAD
                           <Text className={'hot-index ' + (index < 3 ? 'hot-index-hot' : '')}>
                             {index + 1}
                           </Text>
+=======
+                          <Text className={'hot-index ' + (index < 3 ? 'hot-index-hot' : '')}>{index + 1}</Text>
+>>>>>>> update pages
                         </View>
                         <View className="at-col at-col-8 at-col--wrap">
                           <Text className="hot-title">{item.title}</Text>

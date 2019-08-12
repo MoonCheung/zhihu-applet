@@ -8,16 +8,32 @@ import {
   SwiperItem,
   ScrollView
 } from '@tarojs/components';
+<<<<<<< HEAD
+=======
+import SearchInput from '@/components/searchInput/index';
+>>>>>>> update pages
 import { AtRate } from 'taro-ui';
 import Taro from '@tarojs/taro';
 import util from '@/utils/index';
 import api from '@/api/index';
 import './market.scss';
 
+<<<<<<< HEAD
+=======
+const parentStyle = {
+  width: '650px'
+};
+
+>>>>>>> update pages
 class Market extends Taro.Component {
   constructor() {
     super(...arguments);
     this.state = {
+<<<<<<< HEAD
+=======
+      isShow: false,
+      searchVal: '' /* 空值，以上搜索输入框状态 */,
+>>>>>>> update pages
       indicatorDots: false,
       autoplay: true,
       circular: true,
@@ -36,6 +52,24 @@ class Market extends Taro.Component {
     };
   }
 
+<<<<<<< HEAD
+=======
+  showMack = () => {
+    let that = this;
+    that.setState({
+      isShow: true,
+      searchVal: ''
+    });
+  };
+
+  hideMask = () => {
+    let that = this;
+    that.setState({
+      isShow: false
+    });
+  };
+
+>>>>>>> update pages
   // 获取市场列表API
   getMarketList = () => {
     let that = this;
@@ -94,7 +128,10 @@ class Market extends Taro.Component {
     const {
       isShow,
       searchVal,
+<<<<<<< HEAD
       historyList,
+=======
+>>>>>>> update pages
       indicatorDots,
       circular,
       autoplay,
@@ -114,10 +151,23 @@ class Market extends Taro.Component {
     return (
       <View className="container">
         <View className="search-wrap">
+<<<<<<< HEAD
           <View className="search-input" onClick={this.showMack}>
             <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
             <Text className="search-input-text">搜索内容提问</Text>
           </View>
+=======
+          {/* 提问 */}
+          <SearchInput
+            ref="searchRef"
+            show={isShow}
+            value={searchVal}
+            market-class="search-input search-mask-input"
+            showMack={this.showMack.bind(this)}
+            hideMask={this.hideMask.bind(this)}
+          />
+          {/* 喇叭图标 */}
+>>>>>>> update pages
           <View className="search-button">
             <Image
               className="search-button-icon"
@@ -125,6 +175,7 @@ class Market extends Taro.Component {
             />
           </View>
         </View>
+<<<<<<< HEAD
         {/*  隐藏搜索或者提问蒙层  */}
         {/* <View className={'search-mask ' + (isShow ? 'show' : 'hide')}>
           <View className="search-input-wrap">
@@ -177,6 +228,8 @@ class Market extends Taro.Component {
           )}
         </View> */}
         {/*  搜索end  */}
+=======
+>>>>>>> update pages
         {/*  滑块视图容器   */}
         <Swiper
           className="market-swiper-wrap"

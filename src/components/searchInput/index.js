@@ -25,6 +25,12 @@ class SearchInput extends Taro.Component {
     hideMask: () => {}
   };
 
+<<<<<<< HEAD
+=======
+  //利用externalClasses 可定义若个外部样式表，不是全局覆盖
+  static externalClasses = ['index-class', 'contentDetl-class', 'titleDetl-class', 'market-class'];
+
+>>>>>>> update pages
   // 用来搜索历史方法函数
   searchTopic = event => {
     event.preventDefault();
@@ -77,7 +83,13 @@ class SearchInput extends Taro.Component {
     const { historyList } = this.state;
     return (
       <View className="search-component">
+<<<<<<< HEAD
         <View className="search-input" onClick={showMack}>
+=======
+        <View
+          className="search-input index-class contentDetl-class titleDetl-class market-class"
+          onClick={showMack}>
+>>>>>>> update pages
           <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
           <Text className="search-input-text">搜索内容提问</Text>
         </View>
@@ -86,7 +98,11 @@ class SearchInput extends Taro.Component {
           <View className="search-input-wrap">
             <Image className="search-mask-icon" src={require('../../assets/images/search.png')} />
             <Input
+<<<<<<< HEAD
               className="search-mask-input"
+=======
+              className="search-mask-input index-class contentDetl-class titleDetl-class market-class"
+>>>>>>> update pages
               type="text"
               confirmType="search"
               focus={show}
