@@ -1,39 +1,17 @@
-import {
-  Block,
-  View,
-  Image,
-  Text,
-  Input,
-  Swiper,
-  SwiperItem,
-  ScrollView
-} from '@tarojs/components';
-<<<<<<< HEAD
-=======
+import { Block, View, Image, Text, Input, Swiper, SwiperItem, ScrollView } from '@tarojs/components';
 import SearchInput from '@/components/searchInput/index';
->>>>>>> update pages
 import { AtRate } from 'taro-ui';
 import Taro from '@tarojs/taro';
 import util from '@/utils/index';
 import api from '@/api/index';
 import './market.scss';
 
-<<<<<<< HEAD
-=======
-const parentStyle = {
-  width: '650px'
-};
-
->>>>>>> update pages
 class Market extends Taro.Component {
   constructor() {
     super(...arguments);
     this.state = {
-<<<<<<< HEAD
-=======
       isShow: false,
       searchVal: '' /* 空值，以上搜索输入框状态 */,
->>>>>>> update pages
       indicatorDots: false,
       autoplay: true,
       circular: true,
@@ -52,8 +30,6 @@ class Market extends Taro.Component {
     };
   }
 
-<<<<<<< HEAD
-=======
   showMack = () => {
     let that = this;
     that.setState({
@@ -69,7 +45,6 @@ class Market extends Taro.Component {
     });
   };
 
->>>>>>> update pages
   // 获取市场列表API
   getMarketList = () => {
     let that = this;
@@ -128,10 +103,6 @@ class Market extends Taro.Component {
     const {
       isShow,
       searchVal,
-<<<<<<< HEAD
-      historyList,
-=======
->>>>>>> update pages
       indicatorDots,
       circular,
       autoplay,
@@ -151,12 +122,6 @@ class Market extends Taro.Component {
     return (
       <View className="container">
         <View className="search-wrap">
-<<<<<<< HEAD
-          <View className="search-input" onClick={this.showMack}>
-            <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
-            <Text className="search-input-text">搜索内容提问</Text>
-          </View>
-=======
           {/* 提问 */}
           <SearchInput
             ref="searchRef"
@@ -167,69 +132,10 @@ class Market extends Taro.Component {
             hideMask={this.hideMask.bind(this)}
           />
           {/* 喇叭图标 */}
->>>>>>> update pages
           <View className="search-button">
-            <Image
-              className="search-button-icon"
-              src={require('../../assets/images/message.png')}
-            />
+            <Image className="search-button-icon" src={require('../../assets/images/message.png')} />
           </View>
         </View>
-<<<<<<< HEAD
-        {/*  隐藏搜索或者提问蒙层  */}
-        {/* <View className={'search-mask ' + (isShow ? 'show' : 'hide')}>
-          <View className="search-input-wrap">
-            <Image className="search-mask-icon" src={require('../../assets/images/search.png')} />
-            <Input
-              className="search-mask-input"
-              type="text"
-              confirmType="search"
-              value={searchVal}
-              autoFocus={isShow}
-              focus={isShow}
-              placeholderStyle="color:#cdcdcd"
-              placeholder="搜索想知道内容"
-              onConfirm={this.searchTopic}
-            />
-            <Text className="search-mask-cancel" onClick={this.hideMask}>
-              取消
-            </Text>
-          </View>
-          {historyList.length > 0 && (
-            <View className="search-history">
-              <View className="search-history-title">搜索历史</View>
-              {historyList.map((item, index) => {
-                return (
-                  <View className="search-item" key={index}>
-                    <Image
-                      className="search-icon-time"
-                      src={require('../../assets/images/time.png')}
-                    />
-                    <Text className="search-item-text">{item}</Text>
-                    <Image
-                      className="search-icon-del"
-                      data-index={index}
-                      onClick={this.clearItem}
-                      src={require('../../assets/images/del-item.png')}
-                    />
-                  </View>
-                );
-              })}
-              {historyList.length > 1 && (
-                <View className="search-clear-all" onClick={this.clearAll}>
-                  <Image
-                    className="search-del-all"
-                    src={require('../../assets/images/del-all.png')}
-                  />
-                  <Text className="search-del-text">清空搜索历史</Text>
-                </View>
-              )}
-            </View>
-          )}
-        </View> */}
-        {/*  搜索end  */}
-=======
->>>>>>> update pages
         {/*  滑块视图容器   */}
         <Swiper
           className="market-swiper-wrap"
@@ -280,10 +186,7 @@ class Market extends Taro.Component {
           })}
           <View className="market-news-footer">
             <View className="market-news-btn">
-              <Image
-                className="market-news-img"
-                src={require('../../assets/images/play-color.png')}
-              />
+              <Image className="market-news-img" src={require('../../assets/images/play-color.png')} />
               <View className="market-news-text">免费播放全部</View>
             </View>
             <View className="market-news-more">查看更多>></View>
@@ -308,10 +211,7 @@ class Market extends Taro.Component {
                     </View>
                   </View>
                   <View className="market-video-play">
-                    <Image
-                      className="market-play-btn"
-                      src={require('../../assets/images/video-circle.png')}
-                    />
+                    <Image className="market-play-btn" src={require('../../assets/images/video-circle.png')} />
                     <View className="market-play-text">试听</View>
                   </View>
                 </View>
@@ -346,10 +246,7 @@ class Market extends Taro.Component {
         {/*  课程特邀嘉宾   */}
         <View className="market-lesson">
           <View className="market-lesson-header">
-            <Image
-              className="market-lesson-icon"
-              src={require('../../assets/images/file-header.png')}
-            />
+            <Image className="market-lesson-icon" src={require('../../assets/images/file-header.png')} />
             <View className="market-lesson-text">课程 · 特邀嘉宾</View>
           </View>
           <View className="market-lesson-list">
@@ -395,9 +292,7 @@ class Market extends Taro.Component {
             {scrollBanner.map(item => {
               return (
                 <View
-                  className={
-                    'market-banner-item ' + (index == scrollBanner.length - 1 ? 'last-item' : '')
-                  }
+                  className={'market-banner-item ' + (index == scrollBanner.length - 1 ? 'last-item' : '')}
                   key={item.id}>
                   <Image className="market-banner-img" src={item.src} />
                 </View>

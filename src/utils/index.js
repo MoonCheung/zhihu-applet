@@ -8,15 +8,7 @@ const formatTime = date => {
   const minute = date.getMinutes();
   const second = date.getSeconds();
 
-<<<<<<< HEAD
-  return (
-    [year, month, day].map(formatNumber).join('/') +
-    ' ' +
-    [hour, minute, second].map(formatNumber).join(':')
-  );
-=======
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':');
->>>>>>> update pages
 };
 
 const formatNumber = n => {

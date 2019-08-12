@@ -4,9 +4,9 @@
 
   .search-input,
   .search-mask-input {
-    width: 560px;
+    width: 590px;
     height: 70px;
-    margin: 15px 20px;
+    margin: 15px 0 10px 15px;
     display: inline-block;
     vertical-align: middle;
     background: #f6f6f6;
@@ -56,6 +56,7 @@
       .search-mask-cancel {
         font-size: 28px;
         color: #1e8ae8;
+        margin-left: 16px;
       }
     }
 

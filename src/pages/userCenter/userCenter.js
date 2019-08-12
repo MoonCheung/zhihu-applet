@@ -62,12 +62,7 @@ class UserCenter extends Taro.Component {
               {item.map((i, itemIndex) => {
                 return (
                   <View className="user-list-item" key={itemIndex.id}>
-                    <AtListItem
-                      className="user-list-title"
-                      arrow="right"
-                      title={i.title}
-                      thumb={i.icon}
-                    />
+                    <AtListItem className="user-list-title" arrow="right" title={i.title} thumb={i.icon} />
                   </View>
                 );
               })}

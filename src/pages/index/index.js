@@ -1,4 +1,12 @@
-import { Block, View, Image, Text, Input, Textarea, ScrollView } from '@tarojs/components';
+import {
+  Block,
+  View,
+  Image,
+  Text,
+  Input,
+  Textarea,
+  ScrollView
+} from '@tarojs/components';
 import { AtTabs, AtTabsPane, AtActivityIndicator, AtLoadMore } from 'taro-ui';
 import SearchInput from '@/components/searchInput/index';
 import util from '@/utils/index';
@@ -252,13 +260,9 @@ class Index extends Taro.Component {
     });
     setTimeout(() => {
       api.http('recommendListApi', {}, res => {
-<<<<<<< HEAD
         !res.errorMsg
           ? that.setState({ recList: that.state.recList.concat(res.list) })
           : util.showModel(res.errMsg);
-=======
-        !res.errorMsg ? that.setState({ recList: that.state.recList.concat(res.list) }) : util.showModel(res.errMsg);
->>>>>>> update pages
         that.setState({
           status: 'more'
         });
@@ -297,13 +301,9 @@ class Index extends Taro.Component {
     });
     setTimeout(() => {
       api.http('hotListApi', {}, res => {
-<<<<<<< HEAD
         !res.errorMsg
           ? that.setState({ hotList: that.state.hotList.concat(res.list) })
           : util.showModel(res.errMsg);
-=======
-        !res.errorMsg ? that.setState({ hotList: that.state.hotList.concat(res.list) }) : util.showModel(res.errMsg);
->>>>>>> update pages
         that.setState({
           status: 'more'
         });
@@ -313,15 +313,11 @@ class Index extends Taro.Component {
 
   goTitleDetail = event => {
     Taro.navigateTo({
-<<<<<<< HEAD
       url:
         '../../pages/titleDetail/titleDetail?id=' +
         event.target.dataset.id +
         '&title=' +
         event.target.dataset.title
-=======
-      url: '../../pages/titleDetail/titleDetail?id=' + event.target.dataset.id + '&title=' + event.target.dataset.title
->>>>>>> update pages
     });
   };
   goContentDetail = event => {
@@ -384,7 +380,10 @@ class Index extends Taro.Component {
           />
           {/* 提问 */}
           <View className="search-button">
-            <Image className="search-button-icon" src={require('../../assets/images/edit.png')} />
+            <Image
+              className="search-button-icon"
+              src={require('../../assets/images/edit.png')}
+            />
             <Text className="search-button-text" onClick={this.showQuesMask}>
               提问
             </Text>
@@ -394,7 +393,9 @@ class Index extends Taro.Component {
         <View className={'question-mask ' + (isShowQues ? 'show' : 'hide')}>
           <View className="question-input-wrap">
             <View className="question-title-wrap">
-              <View className="question-mask-cancel" onClick={this.hideQuesMask}>
+              <View
+                className="question-mask-cancel"
+                onClick={this.hideQuesMask}>
                 取消
               </View>
               <Text className="mask-title">提问</Text>
@@ -416,18 +417,28 @@ class Index extends Taro.Component {
         </View>
         {/*  提问end   */}
         {/*  tabs标签页 begin   */}
-        <AtTabs className="tab-wrap" current={isActive} tabList={tabList} onClick={this.setActive}>
+        <AtTabs
+          className="tab-wrap"
+          current={isActive}
+          tabList={tabList}
+          onClick={this.setActive}>
           <AtTabsPane current={isActive} index={0}>
             {/* 关注内容 */}
-            <View className={'tab-content ' + (isActive == 0 ? 'show' : 'hide')}>
+            <View
+              className={'tab-content ' + (isActive == 0 ? 'show' : 'hide')}>
               {focusList.length > 0 && (
                 <Block>
                   {focusList.map((item, index) => {
                     return (
                       <View className="tab-content-focus" key={index}>
                         <View className="content-category">
-                          <Image className="category-avatar" src={item.avatar} />
-                          <Text className="category-title">{item.category}</Text>
+                          <Image
+                            className="category-avatar"
+                            src={item.avatar}
+                          />
+                          <Text className="category-title">
+                            {item.category}
+                          </Text>
                         </View>
                       </View>
                     );
@@ -436,14 +447,10 @@ class Index extends Taro.Component {
               )}
               {focusList.length == 0 && (
                 <View>
-<<<<<<< HEAD
                   <Image
                     className="to-recommend-img"
                     src={require('../../assets/images/to-recommend.png')}
                   />
-=======
-                  <Image className="to-recommend-img" src={require('../../assets/images/to-recommend.png')} />
->>>>>>> update pages
                   <View className="to-recommend-title">还没关注的人</View>
                   <View className="to-recommend-tip">去【推荐】看看吧</View>
                 </View>
@@ -465,7 +472,7 @@ class Index extends Taro.Component {
           <AtTabsPane current={isActive} index={1}>
             <View className="dragUpdatePage">
               <View className="downDragBox" style={downPullStyle}>
-                <AtActivityIndicator content={downPullText}></AtActivityIndicator>
+                <AtActivityIndicator content={downPullText} />
               </View>
               <ScrollView
                 style={dragStyle}
@@ -484,7 +491,10 @@ class Index extends Taro.Component {
                     return (
                       <View className="tab-content-recommend" key={index}>
                         <View className="content-category">
-                          <Image className="category-avatar" src={item.avatar} />
+                          <Image
+                            className="category-avatar"
+                            src={item.avatar}
+                          />
                           <Text className="category-title">{item.author}</Text>
                         </View>
                         <View
@@ -515,7 +525,9 @@ class Index extends Taro.Component {
                                 item.fineAnswer.comment +
                                 (item.from == 'live' ? '人参与' : '评论')}
                             </Text>
-                            {item.from && <Text>{'· ' + footerTip[item.from]}</Text>}
+                            {item.from && (
+                              <Text>{'· ' + footerTip[item.from]}</Text>
+                            )}
                           </View>
                         </View>
                       </View>
@@ -543,7 +555,7 @@ class Index extends Taro.Component {
           <AtTabsPane current={isActive} index={2}>
             <View className="dragUpdatePage">
               <View className="downDragBox" style={downPullStyle}>
-                <AtActivityIndicator content={downPullText}></AtActivityIndicator>
+                <AtActivityIndicator content={downPullText} />
               </View>
               <ScrollView
                 style={dragStyle}
@@ -562,18 +574,19 @@ class Index extends Taro.Component {
                     return (
                       <View className="at-row tab-content-hot" key={index}>
                         <View className="at-col at-col-1">
-<<<<<<< HEAD
-                          <Text className={'hot-index ' + (index < 3 ? 'hot-index-hot' : '')}>
+                          <Text
+                            className={
+                              'hot-index ' + (index < 3 ? 'hot-index-hot' : '')
+                            }>
                             {index + 1}
                           </Text>
-=======
-                          <Text className={'hot-index ' + (index < 3 ? 'hot-index-hot' : '')}>{index + 1}</Text>
->>>>>>> update pages
                         </View>
                         <View className="at-col at-col-8 at-col--wrap">
                           <Text className="hot-title">{item.title}</Text>
                           <View className="hot-footer-text">
-                            <Text>{item.comment + '回答 · ' + item.focus + '关注'}</Text>
+                            <Text>
+                              {item.comment + '回答 · ' + item.focus + '关注'}
+                            </Text>
                           </View>
                         </View>
                         <View className="at-col at-col-3">

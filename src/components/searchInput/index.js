@@ -25,12 +25,9 @@ class SearchInput extends Taro.Component {
     hideMask: () => {}
   };
 
-<<<<<<< HEAD
-=======
   //利用externalClasses 可定义若个外部样式表，不是全局覆盖
-  static externalClasses = ['index-class', 'contentDetl-class', 'titleDetl-class', 'market-class'];
+  static externalClasses = ['market-class'];
 
->>>>>>> update pages
   // 用来搜索历史方法函数
   searchTopic = event => {
     event.preventDefault();
@@ -83,13 +80,7 @@ class SearchInput extends Taro.Component {
     const { historyList } = this.state;
     return (
       <View className="search-component">
-<<<<<<< HEAD
-        <View className="search-input" onClick={showMack}>
-=======
-        <View
-          className="search-input index-class contentDetl-class titleDetl-class market-class"
-          onClick={showMack}>
->>>>>>> update pages
+        <View className="search-input market-class" onClick={showMack}>
           <Image className="search-input-icon" src={require('../../assets/images/search.png')} />
           <Text className="search-input-text">搜索内容提问</Text>
         </View>
@@ -98,11 +89,7 @@ class SearchInput extends Taro.Component {
           <View className="search-input-wrap">
             <Image className="search-mask-icon" src={require('../../assets/images/search.png')} />
             <Input
-<<<<<<< HEAD
-              className="search-mask-input"
-=======
-              className="search-mask-input index-class contentDetl-class titleDetl-class market-class"
->>>>>>> update pages
+              className="search-mask-input market-class"
               type="text"
               confirmType="search"
               focus={show}
@@ -122,10 +109,7 @@ class SearchInput extends Taro.Component {
               {historyList.map((item, index) => {
                 return (
                   <View className="search-item" key={index.id}>
-                    <Image
-                      className="search-icon-time"
-                      src={require('../../assets/images/time.png')}
-                    />
+                    <Image className="search-icon-time" src={require('../../assets/images/time.png')} />
                     <Text className="search-item-text">{item}</Text>
                     <Image
                       className="search-icon-del"
@@ -138,10 +122,7 @@ class SearchInput extends Taro.Component {
               })}
               {historyList.length > 1 && (
                 <View className="search-clear-all" onClick={this.clearAll}>
-                  <Image
-                    className="search-del-all"
-                    src={require('../../assets/images/del-all.png')}
-                  />
+                  <Image className="search-del-all" src={require('../../assets/images/del-all.png')} />
                   <Text className="search-del-text">清空搜索历史</Text>
                 </View>
               )}

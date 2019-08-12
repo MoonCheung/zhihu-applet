@@ -82,15 +82,7 @@ class TitleDetail extends Taro.Component {
   };
 
   render() {
-    const {
-      isShow,
-      searchVal,
-      isShowQues,
-      questionTitle,
-      describe,
-      answerNumber,
-      answerList
-    } = this.state;
+    const { isShow, searchVal, isShowQues, questionTitle, describe, answerNumber, answerList } = this.state;
     return (
       <View className="container">
         <View className="search-wrap">
