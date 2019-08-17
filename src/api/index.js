@@ -13,8 +13,8 @@ const http = (url, data, fun) => {
       'content-type': 'application/json' //默认值
     },
     success: function(res) {
-      console.log(res.errMsg);
-      console.log(res.data);
+      // res.errMsg 打印出request:ok
+      // res.data 打印出从mock服务器获取数据
       res.statusCode === 200 ? fun(res.data) : fun(res);
     },
     fail: function(res) {

@@ -1,12 +1,24 @@
+import '@tarojs/async-await';
+import Taro, { Component } from '@tarojs/taro';
 import 'taro-ui/dist/style/index.scss';
-import Taro from '@tarojs/taro';
+import { Provider } from '@tarojs/redux';
+import Index from '@/pages/index/index';
+import models from '@/models/index';
+import action from '@/utils/action';
+import dva from '@/utils/dva';
 import './app.scss';
 
-class App extends Taro.Component {
-  componentWillMount() {
-    this.$app.globalData = this.globalData;
+const dvaApp = dva.createApp({
+  initialState: {},
+  models: models,
+  onError: (err, dispatch) => {
+    console.error(`error:`, err);
   }
+});
 
+const store = dvaApp.getStore();
+
+export default class App extends Component {
   config = {
     pages: [
       'pages/index/index',
@@ -67,10 +79,21 @@ class App extends Taro.Component {
     }
   };
 
+  componentWillMount() {
+    this.$app.globalData = this.globalData;
+  }
+
+  // 在组件挂载之后立即调用
+  componentDidMount() {}
+
   render() {
     return null;
   }
 }
 
-export default App;
-Taro.render(<App />, document.getElementById('app'));
+Taro.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('app')
+);

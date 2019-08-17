@@ -23,6 +23,7 @@ const config = {
         ]
       ],
       plugins: [
+        'transform-runtime',
         'transform-decorators-legacy',
         'transform-class-properties',
         'transform-object-rest-spread'

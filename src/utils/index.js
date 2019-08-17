@@ -8,7 +8,11 @@ const formatTime = date => {
   const minute = date.getMinutes();
   const second = date.getSeconds();
 
-  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':');
+  return (
+    [year, month, day].map(formatNumber).join('/') +
+    ' ' +
+    [hour, minute, second].map(formatNumber).join(':')
+  );
 };
 
 const formatNumber = n => {
@@ -16,7 +20,10 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n;
 };
 
-// 显示繁忙提示
+/**
+ * 显示繁忙提示
+ * @param {*} text
+ */
 const showBusy = text =>
   Taro.showToast({
     title: text,
@@ -24,14 +31,21 @@ const showBusy = text =>
     duration: 10000
   });
 
-// 显示成功提示
+/**
+ * 显示成功提示
+ * @param {*} text
+ */
 const showSuccess = text =>
   Taro.showToast({
     title: text,
     icon: 'success'
   });
 
-// 显示失败提示
+/**
+ * 显示失败提示
+ * @param {*} title
+ * @param {*} content
+ */
 const showModel = (title, content) => {
   Taro.hideToast();
 
@@ -42,4 +56,17 @@ const showModel = (title, content) => {
   });
 };
 
-module.exports = { formatTime, showBusy, showSuccess, showModel };
+/**
+ * 需通过dispatch函数派发单个
+ * @param {*} type 类型
+ * @param {*} payload 有效载荷
+ */
+const action = (type, payload) => ({ type, payload });
+
+/**
+ * 异步延时
+ * @param {*} timeout
+ */
+const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
+
+module.exports = { formatTime, showBusy, showSuccess, showModel, action, delay };

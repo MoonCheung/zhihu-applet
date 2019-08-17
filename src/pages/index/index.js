@@ -1,20 +1,18 @@
-import {
-  Block,
-  View,
-  Image,
-  Text,
-  Input,
-  Textarea,
-  ScrollView
-} from '@tarojs/components';
+import Taro, { Component } from '@tarojs/taro';
+import { Block, View, Image, Text, Input, Textarea, ScrollView } from '@tarojs/components';
 import { AtTabs, AtTabsPane, AtActivityIndicator, AtLoadMore } from 'taro-ui';
 import SearchInput from '@/components/searchInput/index';
-import util from '@/utils/index';
-import Taro from '@tarojs/taro';
+import { connect } from '@tarojs/redux';
+// import util from '@/utils/index';
+import { action } from '@/utils/index';
 import api from '@/api/index';
 import './index.scss';
 
-class Index extends Taro.Component {
+@connect(({ home, loading }) => ({
+  ...home,
+  isload: loading.effects['home/load']
+}))
+export default class Index extends Component {
   constructor() {
     super(...arguments);
     this.state = {
@@ -22,9 +20,9 @@ class Index extends Taro.Component {
       searchVal: '', // 空值，以上搜索输入框状态
       isShowQues: false,
       isActive: 1 /* tabs标签页 */,
-      focusList: [],
-      recList: [],
-      hotList: [],
+      // focusList: [],
+      // recList: [],
+      // hotList: [],
       footerTip: {
         topic: '去文章列表',
         question: '关注话题',
@@ -198,26 +196,26 @@ class Index extends Taro.Component {
   };
 
   // 获得关注列表API
-  getFocusList = flag => {
-    let that = this;
-    api.http('focusListApi', {}, res => {
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        that.setState({
-          focusList: res.list
-        });
-        if (flag) {
-          that.setState({
-            focusList: res.list.concat(that.state.focusList) // 多个数组会返回新的数组
-          });
-          Taro.stopPullDownRefresh();
-          Taro.hideNavigationBarLoading();
-          util.showSuccess(res.list.length + '条新内容');
-        }
-      }
-    });
-  };
+  // getFocusList = flag => {
+  //   let that = this;
+  //   api.http('focusListApi', {}, res => {
+  //     if (res.errMsg) {
+  //       util.showModel(res.errMsg);
+  //     } else {
+  //       that.setState({
+  //         focusList: res.list
+  //       });
+  //       if (flag) {
+  //         that.setState({
+  //           focusList: res.list.concat(that.state.focusList) // 多个数组会返回新的数组
+  //         });
+  //         Taro.stopPullDownRefresh();
+  //         Taro.hideNavigationBarLoading();
+  //         util.showSuccess(res.list.length + '条新内容');
+  //       }
+  //     }
+  //   });
+  // };
   // 暂时写
   // getMorefocusList = () => {
   //   let that = this;
@@ -227,89 +225,89 @@ class Index extends Taro.Component {
   //   });
   // };
   // 获得推荐列表API
-  getRecommendList = flag => {
-    // console.log('flag:', flag); //undefined
-    let that = this;
-    api.http('recommendListApi', {}, res => {
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        if (!flag) {
-          that.setState({
-            recList: res.list
-          });
-        }
-        if (flag) {
-          that.setState({
-            recList: res.list.concat(that.state.recList)
-          });
-          console.log('---刷新推荐列表数据---');
-          Taro.stopPullDownRefresh();
-          Taro.hideNavigationBarLoading();
-          util.showSuccess(res.list.length + '条新内容');
-        }
-      }
-    });
-  };
+  // getRecommendList = flag => {
+  //   // console.log('flag:', flag); //undefined
+  //   let that = this;
+  //   api.http('recommendListApi', {}, res => {
+  //     if (res.errMsg) {
+  //       util.showModel(res.errMsg);
+  //     } else {
+  //       if (!flag) {
+  //         that.setState({
+  //           recList: res.list
+  //         });
+  //       }
+  //       if (flag) {
+  //         that.setState({
+  //           recList: res.list.concat(that.state.recList)
+  //         });
+  //         console.log('---刷新推荐列表数据---');
+  //         Taro.stopPullDownRefresh();
+  //         Taro.hideNavigationBarLoading();
+  //         util.showSuccess(res.list.length + '条新内容');
+  //       }
+  //     }
+  //   });
+  // };
 
-  // 获取更多推荐列表
-  getMoreRecList = () => {
-    let that = this;
-    that.setState({
-      status: 'loading'
-    });
-    setTimeout(() => {
-      api.http('recommendListApi', {}, res => {
-        !res.errorMsg
-          ? that.setState({ recList: that.state.recList.concat(res.list) })
-          : util.showModel(res.errMsg);
-        that.setState({
-          status: 'more'
-        });
-      });
-    }, 500);
-  };
-  // 获取热榜列表API
-  getHotList = flag => {
-    console.log('滚动到顶部事件');
-    let that = this;
-    api.http('hotListApi', {}, res => {
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        if (!flag) {
-          console.log('---设置数据---');
-          that.setState({ hotList: res.list });
-        }
-        if (flag) {
-          that.setState({
-            hotList: res.list.concat(that.state.hotList)
-          });
-          console.log('---刷新热门列表数据---');
-          Taro.stopPullDownRefresh();
-          Taro.hideNavigationBarLoading();
-          util.showSuccess(res.list.length + '条新内容');
-        }
-      }
-    });
-  };
-  // 获取更多热榜列表
-  getMoreHotList = () => {
-    let that = this;
-    that.setState({
-      status: 'loading'
-    });
-    setTimeout(() => {
-      api.http('hotListApi', {}, res => {
-        !res.errorMsg
-          ? that.setState({ hotList: that.state.hotList.concat(res.list) })
-          : util.showModel(res.errMsg);
-        that.setState({
-          status: 'more'
-        });
-      });
-    }, 500);
-  };
+  // // 获取更多推荐列表
+  // getMoreRecList = () => {
+  //   let that = this;
+  //   that.setState({
+  //     status: 'loading'
+  //   });
+  //   setTimeout(() => {
+  //     api.http('recommendListApi', {}, res => {
+  //       !res.errorMsg
+  //         ? that.setState({ recList: that.state.recList.concat(res.list) })
+  //         : util.showModel(res.errMsg);
+  //       that.setState({
+  //         status: 'more'
+  //       });
+  //     });
+  //   }, 500);
+  // };
+  // // 获取热榜列表API
+  // getHotList = flag => {
+  //   console.log('滚动到顶部事件');
+  //   let that = this;
+  //   api.http('hotListApi', {}, res => {
+  //     if (res.errMsg) {
+  //       util.showModel(res.errMsg);
+  //     } else {
+  //       if (!flag) {
+  //         console.log('---设置数据---');
+  //         that.setState({ hotList: res.list });
+  //       }
+  //       if (flag) {
+  //         that.setState({
+  //           hotList: res.list.concat(that.state.hotList)
+  //         });
+  //         console.log('---刷新热门列表数据---');
+  //         Taro.stopPullDownRefresh();
+  //         Taro.hideNavigationBarLoading();
+  //         util.showSuccess(res.list.length + '条新内容');
+  //       }
+  //     }
+  //   });
+  // };
+  // // 获取更多热榜列表
+  // getMoreHotList = () => {
+  //   let that = this;
+  //   that.setState({
+  //     status: 'loading'
+  //   });
+  //   setTimeout(() => {
+  //     api.http('hotListApi', {}, res => {
+  //       !res.errorMsg
+  //         ? that.setState({ hotList: that.state.hotList.concat(res.list) })
+  //         : util.showModel(res.errMsg);
+  //       that.setState({
+  //         status: 'more'
+  //       });
+  //     });
+  //   }, 500);
+  // };
 
   goTitleDetail = event => {
     Taro.navigateTo({
@@ -341,9 +339,10 @@ class Index extends Taro.Component {
   };
 
   componentDidMount() {
-    this.getFocusList();
-    this.getRecommendList();
-    this.getHotList();
+    // this.getFocusList();
+    // this.getRecommendList();
+    // this.getHotList();
+    this.props.dispatch(action('home/load'));
   }
 
   config = {};
@@ -354,16 +353,17 @@ class Index extends Taro.Component {
       searchVal,
       isShowQues,
       isActive,
-      focusList,
-      recList,
       footerTip,
-      hotList,
+      // focusList,
+      // recList,
+      // hotList,
       scrollY,
       dragStyle,
       downPullStyle,
       downPullText,
       status
     } = this.state;
+    const { focusList, recList, hotList, isload } = this.props;
     const tabList = [{ title: '关注' }, { title: '推荐' }, { title: '热榜' }];
     const Threshold = 50;
     const scrollAnimation = true;
@@ -380,10 +380,7 @@ class Index extends Taro.Component {
           />
           {/* 提问 */}
           <View className="search-button">
-            <Image
-              className="search-button-icon"
-              src={require('../../assets/images/edit.png')}
-            />
+            <Image className="search-button-icon" src={require('../../assets/images/edit.png')} />
             <Text className="search-button-text" onClick={this.showQuesMask}>
               提问
             </Text>
@@ -393,9 +390,7 @@ class Index extends Taro.Component {
         <View className={'question-mask ' + (isShowQues ? 'show' : 'hide')}>
           <View className="question-input-wrap">
             <View className="question-title-wrap">
-              <View
-                className="question-mask-cancel"
-                onClick={this.hideQuesMask}>
+              <View className="question-mask-cancel" onClick={this.hideQuesMask}>
                 取消
               </View>
               <Text className="mask-title">提问</Text>
@@ -417,28 +412,18 @@ class Index extends Taro.Component {
         </View>
         {/*  提问end   */}
         {/*  tabs标签页 begin   */}
-        <AtTabs
-          className="tab-wrap"
-          current={isActive}
-          tabList={tabList}
-          onClick={this.setActive}>
-          <AtTabsPane current={isActive} index={0}>
-            {/* 关注内容 */}
-            <View
-              className={'tab-content ' + (isActive == 0 ? 'show' : 'hide')}>
+        {/* <AtTabs className="tab-wrap" current={isActive} tabList={tabList} onClick={this.setActive}>
+          <AtTabsPane current={isActive} index={0}> */}
+        {/* 关注内容 */}
+        {/* <View className={'tab-content ' + (isActive == 0 ? 'show' : 'hide')}>
               {focusList.length > 0 && (
                 <Block>
                   {focusList.map((item, index) => {
                     return (
                       <View className="tab-content-focus" key={index}>
                         <View className="content-category">
-                          <Image
-                            className="category-avatar"
-                            src={item.avatar}
-                          />
-                          <Text className="category-title">
-                            {item.category}
-                          </Text>
+                          <Image className="category-avatar" src={item.avatar} />
+                          <Text className="category-title">{item.category}</Text>
                         </View>
                       </View>
                     );
@@ -454,8 +439,8 @@ class Index extends Taro.Component {
                   <View className="to-recommend-title">还没关注的人</View>
                   <View className="to-recommend-tip">去【推荐】看看吧</View>
                 </View>
-              )}
-              {/* {focusList.length != 0 && (
+              )} */}
+        {/* {focusList.length != 0 && (
                 <View className="load-more" onClick={this.getMorefocusList}>
                   {isLoading && (
                     <Image
@@ -466,10 +451,10 @@ class Index extends Taro.Component {
                   {loadMore}
                 </View>
               )} */}
-            </View>
-          </AtTabsPane>
-          {/* 推荐内容 */}
-          <AtTabsPane current={isActive} index={1}>
+        {/* </View> */}
+        {/* </AtTabsPane> */}
+        {/* 推荐内容 */}
+        {/* <AtTabsPane current={isActive} index={1}>
             <View className="dragUpdatePage">
               <View className="downDragBox" style={downPullStyle}>
                 <AtActivityIndicator content={downPullText} />
@@ -491,10 +476,7 @@ class Index extends Taro.Component {
                     return (
                       <View className="tab-content-recommend" key={index}>
                         <View className="content-category">
-                          <Image
-                            className="category-avatar"
-                            src={item.avatar}
-                          />
+                          <Image className="category-avatar" src={item.avatar} />
                           <Text className="category-title">{item.author}</Text>
                         </View>
                         <View
@@ -525,9 +507,7 @@ class Index extends Taro.Component {
                                 item.fineAnswer.comment +
                                 (item.from == 'live' ? '人参与' : '评论')}
                             </Text>
-                            {item.from && (
-                              <Text>{'· ' + footerTip[item.from]}</Text>
-                            )}
+                            {item.from && <Text>{'· ' + footerTip[item.from]}</Text>}
                           </View>
                         </View>
                       </View>
@@ -550,9 +530,9 @@ class Index extends Taro.Component {
                 </View>
               </ScrollView>
             </View>
-          </AtTabsPane>
-          {/* 热榜内容 */}
-          <AtTabsPane current={isActive} index={2}>
+          </AtTabsPane> */}
+        {/* 热榜内容 */}
+        {/* <AtTabsPane current={isActive} index={2}>
             <View className="dragUpdatePage">
               <View className="downDragBox" style={downPullStyle}>
                 <AtActivityIndicator content={downPullText} />
@@ -574,19 +554,14 @@ class Index extends Taro.Component {
                     return (
                       <View className="at-row tab-content-hot" key={index}>
                         <View className="at-col at-col-1">
-                          <Text
-                            className={
-                              'hot-index ' + (index < 3 ? 'hot-index-hot' : '')
-                            }>
+                          <Text className={'hot-index ' + (index < 3 ? 'hot-index-hot' : '')}>
                             {index + 1}
                           </Text>
                         </View>
                         <View className="at-col at-col-8 at-col--wrap">
                           <Text className="hot-title">{item.title}</Text>
                           <View className="hot-footer-text">
-                            <Text>
-                              {item.comment + '回答 · ' + item.focus + '关注'}
-                            </Text>
+                            <Text>{item.comment + '回答 · ' + item.focus + '关注'}</Text>
                           </View>
                         </View>
                         <View className="at-col at-col-3">
@@ -613,10 +588,8 @@ class Index extends Taro.Component {
               </ScrollView>
             </View>
           </AtTabsPane>
-        </AtTabs>
+        </AtTabs> */}
       </View>
     );
   }
 }
-
-export default Index;
