@@ -69,4 +69,4 @@ const action = (type, payload) => ({ type, payload });
  */
 const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
-module.exports = { formatTime, showBusy, showSuccess, showModel, action, delay };
+export { formatTime, showBusy, showSuccess, showModel, action, delay };

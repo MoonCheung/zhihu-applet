@@ -48,6 +48,8 @@
     "nerv-devtools": "^1.4.0",
     "nervjs": "^1.4.0",
     "prop-types": "^15.7.2",
+    "qs": "^6.8.0",
+    "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "taro-ui": "^2.2.1"

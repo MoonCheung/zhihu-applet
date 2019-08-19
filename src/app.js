@@ -4,21 +4,17 @@ import 'taro-ui/dist/style/index.scss';
 import { Provider } from '@tarojs/redux';
 import Index from '@/pages/index/index';
 import models from '@/models/index';
-import action from '@/utils/action';
 import dva from '@/utils/dva';
 import './app.scss';
 
 const dvaApp = dva.createApp({
   initialState: {},
-  models: models,
-  onError: (err, dispatch) => {
-    console.error(`error:`, err);
-  }
+  models: models
 });
 
 const store = dvaApp.getStore();
 
-export default class App extends Component {
+class App extends Component {
   config = {
     pages: [
       'pages/index/index',
@@ -87,13 +83,12 @@ export default class App extends Component {
   componentDidMount() {}
 
   render() {
-    return null;
+    return (
+      <Provider store={store}>
+        <Index />
+      </Provider>
+    );
   }
 }
 
-Taro.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('app')
-);
+Taro.render(<App />, document.getElementById('app'));

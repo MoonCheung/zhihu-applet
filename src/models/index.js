@@ -1,3 +1,3 @@
-import home from './home';
+import main from './main';
 
-export default [home];
+export default [main];

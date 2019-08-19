@@ -2,16 +2,25 @@ import Taro, { Component } from '@tarojs/taro';
 import { Block, View, Image, Text, Input, Textarea, ScrollView } from '@tarojs/components';
 import { AtTabs, AtTabsPane, AtActivityIndicator, AtLoadMore } from 'taro-ui';
 import SearchInput from '@/components/searchInput/index';
+import { fetchFocus, fetchRec, fetchHot } from '@/actions/index';
 import { connect } from '@tarojs/redux';
 // import util from '@/utils/index';
-import { action } from '@/utils/index';
-import api from '@/api/index';
 import './index.scss';
 
-@connect(({ home, loading }) => ({
-  ...home,
-  isload: loading.effects['home/load']
-}))
+const mapStateToProps = ({ main }) => ({
+  ...main
+});
+
+const mapDispatchToProps = {
+  onFetchFocus: fetchFocus,
+  onFetchRec: fetchRec,
+  onFetchHot: fetchHot
+};
+
+@connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
 export default class Index extends Component {
   constructor() {
     super(...arguments);
@@ -196,26 +205,27 @@ export default class Index extends Component {
   };
 
   // 获得关注列表API
-  // getFocusList = flag => {
-  //   let that = this;
-  //   api.http('focusListApi', {}, res => {
-  //     if (res.errMsg) {
-  //       util.showModel(res.errMsg);
-  //     } else {
-  //       that.setState({
-  //         focusList: res.list
-  //       });
-  //       if (flag) {
-  //         that.setState({
-  //           focusList: res.list.concat(that.state.focusList) // 多个数组会返回新的数组
-  //         });
-  //         Taro.stopPullDownRefresh();
-  //         Taro.hideNavigationBarLoading();
-  //         util.showSuccess(res.list.length + '条新内容');
-  //       }
-  //     }
-  //   });
-  // };
+  getFocusList = flag => {
+    const { onFetchFocus } = this.props;
+    onFetchFocus({ flag });
+    // api.http('focusListApi', {}, res => {
+    //   if (res.errMsg) {
+    //     util.showModel(res.errMsg);
+    //   } else {
+    //     that.setState({
+    //       focusList: res.list
+    //     });
+    //     if (flag) {
+    //       that.setState({
+    //         focusList: res.list.concat(that.state.focusList) // 多个数组会返回新的数组
+    //       });
+    //       Taro.stopPullDownRefresh();
+    //       Taro.hideNavigationBarLoading();
+    //       util.showSuccess(res.list.length + '条新内容');
+    //     }
+    //   }
+    // });
+  };
   // 暂时写
   // getMorefocusList = () => {
   //   let that = this;
@@ -224,74 +234,76 @@ export default class Index extends Component {
   //     loadMore: '正在加载...'
   //   });
   // };
-  // 获得推荐列表API
-  // getRecommendList = flag => {
-  //   // console.log('flag:', flag); //undefined
-  //   let that = this;
-  //   api.http('recommendListApi', {}, res => {
-  //     if (res.errMsg) {
-  //       util.showModel(res.errMsg);
-  //     } else {
-  //       if (!flag) {
-  //         that.setState({
-  //           recList: res.list
-  //         });
-  //       }
-  //       if (flag) {
-  //         that.setState({
-  //           recList: res.list.concat(that.state.recList)
-  //         });
-  //         console.log('---刷新推荐列表数据---');
-  //         Taro.stopPullDownRefresh();
-  //         Taro.hideNavigationBarLoading();
-  //         util.showSuccess(res.list.length + '条新内容');
-  //       }
-  //     }
-  //   });
-  // };
 
-  // // 获取更多推荐列表
+  // 获得推荐列表API
+  getRecommendList = flag => {
+    const { onFetchRec } = this.props;
+    onFetchRec({ flag });
+    // api.http('recommendListApi', {}, res => {
+    //   if (res.errMsg) {
+    //     util.showModel(res.errMsg);
+    //   } else {
+    //     if (!flag) {
+    //       that.setState({
+    //         recList: res.list
+    //       });
+    //     }
+    //     if (flag) {
+    //       that.setState({
+    //         recList: res.list.concat(that.state.recList)
+    //       });
+    //       console.log('---刷新推荐列表数据---');
+    //       Taro.stopPullDownRefresh();
+    //       Taro.hideNavigationBarLoading();
+    //       util.showSuccess(res.list.length + '条新内容');
+    //     }
+    //   }
+    // });
+  };
+
+  // 获取更多推荐列表
   // getMoreRecList = () => {
   //   let that = this;
   //   that.setState({
   //     status: 'loading'
   //   });
-  //   setTimeout(() => {
+  // setTimeout(() => {
   //     api.http('recommendListApi', {}, res => {
   //       !res.errorMsg
   //         ? that.setState({ recList: that.state.recList.concat(res.list) })
   //         : util.showModel(res.errMsg);
-  //       that.setState({
-  //         status: 'more'
-  //       });
-  //     });
-  //   }, 500);
+  // that.setState({
+  //   status: 'more'
+  // });
+  // });
+  // }, 500);
   // };
-  // // 获取热榜列表API
-  // getHotList = flag => {
-  //   console.log('滚动到顶部事件');
-  //   let that = this;
-  //   api.http('hotListApi', {}, res => {
-  //     if (res.errMsg) {
-  //       util.showModel(res.errMsg);
-  //     } else {
-  //       if (!flag) {
-  //         console.log('---设置数据---');
-  //         that.setState({ hotList: res.list });
-  //       }
-  //       if (flag) {
-  //         that.setState({
-  //           hotList: res.list.concat(that.state.hotList)
-  //         });
-  //         console.log('---刷新热门列表数据---');
-  //         Taro.stopPullDownRefresh();
-  //         Taro.hideNavigationBarLoading();
-  //         util.showSuccess(res.list.length + '条新内容');
-  //       }
-  //     }
-  //   });
-  // };
-  // // 获取更多热榜列表
+
+  // 获取热榜列表API
+  getHotList = flag => {
+    const { onFetchHot } = this.props;
+    onFetchHot({ flag });
+    // api.http('hotListApi', {}, res => {
+    //   if (res.errMsg) {
+    //     util.showModel(res.errMsg);
+    //   } else {
+    //     if (!flag) {
+    //       console.log('---设置数据---');
+    //       that.setState({ hotList: res.list });
+    //     }
+    //     if (flag) {
+    //       that.setState({
+    //         hotList: res.list.concat(that.state.hotList)
+    //       });
+    //       console.log('---刷新热门列表数据---');
+    //       Taro.stopPullDownRefresh();
+    //       Taro.hideNavigationBarLoading();
+    //       util.showSuccess(res.list.length + '条新内容');
+    //     }
+    //   }
+    // });
+  };
+  // 获取更多热榜列表
   // getMoreHotList = () => {
   //   let that = this;
   //   that.setState({
@@ -339,10 +351,9 @@ export default class Index extends Component {
   };
 
   componentDidMount() {
-    // this.getFocusList();
-    // this.getRecommendList();
-    // this.getHotList();
-    this.props.dispatch(action('home/load'));
+    this.getFocusList();
+    this.getRecommendList();
+    this.getHotList();
   }
 
   config = {};
@@ -363,7 +374,7 @@ export default class Index extends Component {
       downPullText,
       status
     } = this.state;
-    const { focusList, recList, hotList, isload } = this.props;
+    const { focusList, recList, hotList } = this.props;
     const tabList = [{ title: '关注' }, { title: '推荐' }, { title: '热榜' }];
     const Threshold = 50;
     const scrollAnimation = true;
@@ -412,10 +423,10 @@ export default class Index extends Component {
         </View>
         {/*  提问end   */}
         {/*  tabs标签页 begin   */}
-        {/* <AtTabs className="tab-wrap" current={isActive} tabList={tabList} onClick={this.setActive}>
-          <AtTabsPane current={isActive} index={0}> */}
-        {/* 关注内容 */}
-        {/* <View className={'tab-content ' + (isActive == 0 ? 'show' : 'hide')}>
+        <AtTabs className="tab-wrap" current={isActive} tabList={tabList} onClick={this.setActive}>
+          <AtTabsPane current={isActive} index={0}>
+            {/* 关注内容 */}
+            <View className={'tab-content ' + (isActive == 0 ? 'show' : 'hide')}>
               {focusList.length > 0 && (
                 <Block>
                   {focusList.map((item, index) => {
@@ -439,8 +450,9 @@ export default class Index extends Component {
                   <View className="to-recommend-title">还没关注的人</View>
                   <View className="to-recommend-tip">去【推荐】看看吧</View>
                 </View>
-              )} */}
-        {/* {focusList.length != 0 && (
+              )}
+              {/* TODO: 以下注释暂时不能去掉 */}
+              {/* {focusList.length != 0 && (
                 <View className="load-more" onClick={this.getMorefocusList}>
                   {isLoading && (
                     <Image
@@ -451,10 +463,10 @@ export default class Index extends Component {
                   {loadMore}
                 </View>
               )} */}
-        {/* </View> */}
-        {/* </AtTabsPane> */}
-        {/* 推荐内容 */}
-        {/* <AtTabsPane current={isActive} index={1}>
+            </View>
+          </AtTabsPane>
+          {/* 推荐内容 */}
+          <AtTabsPane current={isActive} index={1}>
             <View className="dragUpdatePage">
               <View className="downDragBox" style={downPullStyle}>
                 <AtActivityIndicator content={downPullText} />
@@ -514,7 +526,7 @@ export default class Index extends Component {
                     );
                   })}
                 </View>
-                <View className="upDragBox">
+                {/* <View className="upDragBox">
                   <AtLoadMore
                     status={status}
                     moreText="加载更多"
@@ -527,12 +539,12 @@ export default class Index extends Component {
                       boder: 'none'
                     }}
                   />
-                </View>
+                </View> */}
               </ScrollView>
             </View>
-          </AtTabsPane> */}
-        {/* 热榜内容 */}
-        {/* <AtTabsPane current={isActive} index={2}>
+          </AtTabsPane>
+          {/* 热榜内容 */}
+          <AtTabsPane current={isActive} index={2}>
             <View className="dragUpdatePage">
               <View className="downDragBox" style={downPullStyle}>
                 <AtActivityIndicator content={downPullText} />
@@ -571,7 +583,7 @@ export default class Index extends Component {
                     );
                   })}
                 </View>
-                <View className="upDragBox">
+                {/* <View className="upDragBox">
                   <AtLoadMore
                     status={status}
                     moreText="加载更多"
@@ -584,11 +596,11 @@ export default class Index extends Component {
                       boder: 'none'
                     }}
                   />
-                </View>
+                </View> */}
               </ScrollView>
             </View>
           </AtTabsPane>
-        </AtTabs> */}
+        </AtTabs>
       </View>
     );
   }

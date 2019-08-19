@@ -7,13 +7,18 @@ let store;
 let dispatch;
 
 function createApp(opt) {
-  // 在 action 被 dispatch 时触发，用于注册 redux 中间件。
-  opt.onAction = [createLogger()];
-  app = create(opt);
+  const { models } = opt;
+  if (process.env.NODE_ENV === 'development') {
+    // 在 action 被 dispatch 时触发，用于注册 redux 中间件。
+    opt.onAction = [createLogger()];
+  }
+  app = create({
+    ...opt
+  });
   // 配置 hooks 或者注册插件。
   app.use(createLoading({}));
 
-  if (!global.registered) opt.models.forEach(model => app.model(model));
+  if (!global.registered) models.forEach(model => app.model(model));
   global.registered = true;
 
   // 启动应用
