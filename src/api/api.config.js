@@ -4,7 +4,7 @@
  * @Github: https://github.com/MoonCheung
  * @Date: 2019-08-10 14:25:11
  * @LastEditors: MoonCheung
- * @LastEditTime: 2019-08-19 20:39:14
+ * @LastEditTime: 2019-08-20 21:05:50
  */
 
 import Taro from '@tarojs/taro';
