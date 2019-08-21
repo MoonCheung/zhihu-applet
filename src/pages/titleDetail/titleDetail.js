@@ -1,8 +1,7 @@
+import Taro from '@tarojs/taro';
 import { Block, View, Image, Text, Input, Textarea } from '@tarojs/components';
 import SearchInput from '@/components/searchInput/index';
-import Taro from '@tarojs/taro';
-import util from '@/utils/index';
-import api from '@/api/index';
+import { getTitleDetlData } from '@/api/index';
 import './titleDetail.scss';
 
 class TitleDetail extends Taro.Component {
@@ -25,19 +24,20 @@ class TitleDetail extends Taro.Component {
   // 获取详情列表API
   getDetailList = () => {
     let that = this;
-    api.http('titleDetailApi', {}, res => {
-      // console.log(res.data); //用来查看接口数据
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        that.setState({
-          title: res.data.title || '',
-          describe: res.data.describe || '',
-          answerNumber: res.data.answerNumber || '',
-          answerList: res.data.answerList || ''
-        });
-      }
-    });
+    getTitleDetlData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          that.setState({
+            title: res.data.title || '',
+            describe: res.data.describe || '',
+            answerNumber: res.data.answerNumber || '',
+            answerList: res.data.answerList || ''
+          });
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
 
   showMack = () => {
@@ -82,7 +82,15 @@ class TitleDetail extends Taro.Component {
   };
 
   render() {
-    const { isShow, searchVal, isShowQues, questionTitle, describe, answerNumber, answerList } = this.state;
+    const {
+      isShow,
+      searchVal,
+      isShowQues,
+      questionTitle,
+      describe,
+      answerNumber,
+      answerList
+    } = this.state;
     return (
       <View className="container">
         <View className="search-wrap">

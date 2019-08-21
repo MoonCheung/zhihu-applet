@@ -4,8 +4,10 @@
  * @Github: https://github.com/MoonCheung
  * @Date: 2019-08-19 14:36:42
  * @LastEditors: MoonCheung
- * @LastEditTime: 2019-08-20 22:03:30
+ * @LastEditTime: 2019-08-21 16:54:55
  */
+
+// TODO：暂时不写searchResult这个API接口
 
 import api from './api.config';
 
@@ -78,28 +80,3 @@ export function getTitleDetlData() {
     url: '/titleDetail'
   });
 }
-
-// const api = {
-//   // 关注列表API
-//   focusListApi: `${BASE}/focusList`,
-//   // 推荐列表API
-//   recommendListApi: `${BASE}/recommendList`,
-//   // 热榜列表API
-//   hotListApi: `${BASE}/hotList`,
-//   // 没找到
-//   // searchApi:`${BASE}/zhixiaohu/home/searchResult`,
-//   // 用户列表API
-//   userListApi: `${BASE}/userList`,
-//   // 讨论列表API
-//   discussListApi: `${BASE}/discusstList`,
-//   // 推荐关注列表API
-//   recFocusListApi: `${BASE}/recFocusList`,
-//   // 推荐热门列表API
-//   recHotListApi: `${BASE}/recHotList`,
-//   // 市场列表API
-//   marketListApi: `${BASE}/marketList`,
-//   // 用户消息列表API
-//   messageListApi: `${BASE}/messageList`,
-//   // 详情列表API
-//   titleDetailApi: `${BASE}/titleDetail`
-// };

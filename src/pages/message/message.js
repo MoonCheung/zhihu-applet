@@ -1,8 +1,7 @@
-import { Block, ScrollView, View, Image, Text } from '@tarojs/components';
-import { AtAvatar } from 'taro-ui';
 import Taro from '@tarojs/taro';
-import util from '@/utils/index';
-import api from '@/api/index';
+import { Block, ScrollView, View, Image, Text } from '@tarojs/components';
+import { getMessageData } from '@/api/index';
+import { AtAvatar } from 'taro-ui';
 import './message.scss';
 
 class Message extends Taro.Component {
@@ -18,17 +17,18 @@ class Message extends Taro.Component {
   // 获取用户消息列表API
   getUserCenterList = () => {
     let that = this;
-    api.http('messageListApi', {}, res => {
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        console.log('---请求消息列表---');
-        that.setState({
-          messageHeader: res.data.messageHeader || '',
-          messageList: res.data.messageList || []
-        });
-      }
-    });
+    getMessageData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          that.setState({
+            messageHeader: res.data.messageHeader || '',
+            messageList: res.data.messageList || []
+          });
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
   onScroll = event => {
     let that = this;
@@ -52,7 +52,9 @@ class Message extends Taro.Component {
   onPullDownRefresh = () => {};
   onReachBottom = () => {};
   onShareAppMessage = () => {};
-  config = {};
+  config = {
+    navigationBarTitleText: '消息'
+  };
 
   render() {
     const { messageHeader, scorllTop, messageList } = this.state;
@@ -64,7 +66,6 @@ class Message extends Taro.Component {
             circle
             size="small"
             openData={{ type: 'userAvatarUrl' }}></AtAvatar>
-          <View className="message-bar-title">消息</View>
           <Image className="message-bar-icon" src={require('../../assets/images/msg-set.png')} />
         </View>
         <View className="message-header">

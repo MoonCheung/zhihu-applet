@@ -1,3 +1,12 @@
+<!--
+ * @Description: my project
+ * @Author: MoonCheung
+ * @Github: https://github.com/MoonCheung
+ * @Date: 2019-08-10 14:25:12
+ * @LastEditors: MoonCheung
+ * @LastEditTime: 2019-08-21 14:37:40
+ -->
+
 # zhihu-applet
 
 [![GitHub stars](https://img.shields.io/github/stars/MoonCheung/zhihu-applet?style=flat-square)](https://github.com/MoonCheung/zhihu-applet/stargazers)
@@ -9,6 +18,8 @@
 该仿知乎小程序的 API 接口数据来自 Mock 服务器([yapi](https://hellosean1025.github.io/yapi/))部署后能运行,而且页面代码来自[微信仿知乎小程序](https://github.com/gxt19940130/demos/tree/master/weChatApp)
 
 ## 项目描述
+
+## 实现功能
 
 ## 执行命令
 

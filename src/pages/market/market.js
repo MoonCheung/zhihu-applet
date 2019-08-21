@@ -1,9 +1,17 @@
-import { Block, View, Image, Text, Input, Swiper, SwiperItem, ScrollView } from '@tarojs/components';
-import SearchInput from '@/components/searchInput/index';
-import { AtRate } from 'taro-ui';
 import Taro from '@tarojs/taro';
-import util from '@/utils/index';
-import api from '@/api/index';
+import {
+  Block,
+  View,
+  Image,
+  Text,
+  Input,
+  Swiper,
+  SwiperItem,
+  ScrollView
+} from '@tarojs/components';
+import SearchInput from '@/components/searchInput/index';
+import { getMarketData } from '@/api/index';
+import { AtRate } from 'taro-ui';
 import './market.scss';
 
 class Market extends Taro.Component {
@@ -48,36 +56,41 @@ class Market extends Taro.Component {
   // 获取市场列表API
   getMarketList = () => {
     let that = this;
-    api.http('marketListApi', {}, res => {
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        console.log('---请求市场列表---');
-        that.setState({
-          bannerList: res.bannerList || [],
-          iconList: res.iconList || [],
-          adInfo: res.adInfo || {},
-          newsList: res.newsList || [],
-          lessonList: res.lessonList || [],
-          partList: res.partList || [],
-          specialList: res.specialList || [],
-          bookList: res.bookList || [],
-          scrollBanner: res.scrollBanner || [],
-          guessList: res.guessList || []
-        });
-      }
-    });
+    getMarketData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          that.setState({
+            bannerList: res.bannerList || [],
+            iconList: res.iconList || [],
+            adInfo: res.adInfo || {},
+            newsList: res.newsList || [],
+            lessonList: res.lessonList || [],
+            partList: res.partList || [],
+            specialList: res.specialList || [],
+            bookList: res.bookList || [],
+            scrollBanner: res.scrollBanner || [],
+            guessList: res.guessList || []
+          });
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
   getMoreMarketList = () => {
     let that = this;
     that.state.guessList.length < 50 &&
-      api.http('marketListApi', {}, res => {
-        !res.errMsg
-          ? that.setState({
+      getMarketData()
+        .then(res => {
+          if (res.errorMsg == '0') {
+            that.setState({
               guessList: that.state.guessList.concat(res.guessList)
-            })
-          : util.showModel(res.errMsg);
-      });
+            });
+          }
+        })
+        .catch(err => {
+          console.error(`请求接口失败:`, err);
+        });
   };
 
   componentWillMount(options = this.$router.params || {}) {}
@@ -133,7 +146,10 @@ class Market extends Taro.Component {
           />
           {/* 喇叭图标 */}
           <View className="search-button">
-            <Image className="search-button-icon" src={require('../../assets/images/message.png')} />
+            <Image
+              className="search-button-icon"
+              src={require('../../assets/images/message.png')}
+            />
           </View>
         </View>
         {/*  滑块视图容器   */}
@@ -186,7 +202,10 @@ class Market extends Taro.Component {
           })}
           <View className="market-news-footer">
             <View className="market-news-btn">
-              <Image className="market-news-img" src={require('../../assets/images/play-color.png')} />
+              <Image
+                className="market-news-img"
+                src={require('../../assets/images/play-color.png')}
+              />
               <View className="market-news-text">免费播放全部</View>
             </View>
             <View className="market-news-more">查看更多>></View>
@@ -211,7 +230,10 @@ class Market extends Taro.Component {
                     </View>
                   </View>
                   <View className="market-video-play">
-                    <Image className="market-play-btn" src={require('../../assets/images/video-circle.png')} />
+                    <Image
+                      className="market-play-btn"
+                      src={require('../../assets/images/video-circle.png')}
+                    />
                     <View className="market-play-text">试听</View>
                   </View>
                 </View>
@@ -246,7 +268,10 @@ class Market extends Taro.Component {
         {/*  课程特邀嘉宾   */}
         <View className="market-lesson">
           <View className="market-lesson-header">
-            <Image className="market-lesson-icon" src={require('../../assets/images/file-header.png')} />
+            <Image
+              className="market-lesson-icon"
+              src={require('../../assets/images/file-header.png')}
+            />
             <View className="market-lesson-text">课程 · 特邀嘉宾</View>
           </View>
           <View className="market-lesson-list">
@@ -292,7 +317,9 @@ class Market extends Taro.Component {
             {scrollBanner.map(item => {
               return (
                 <View
-                  className={'market-banner-item ' + (index == scrollBanner.length - 1 ? 'last-item' : '')}
+                  className={
+                    'market-banner-item ' + (index == scrollBanner.length - 1 ? 'last-item' : '')
+                  }
                   key={item.id}>
                   <Image className="market-banner-img" src={item.src} />
                 </View>
@@ -338,7 +365,6 @@ class Market extends Taro.Component {
                       <View className="market-guess-price">{'¥' + item.price}</View>
                     </View>
                   </View>
-                  {/* TODO: 该标签删除 */}
                   <Image className="market-guess-img" src={item.image} />
                 </View>
               );

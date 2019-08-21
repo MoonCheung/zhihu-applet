@@ -38,7 +38,8 @@ const showBusy = text =>
 const showSuccess = text =>
   Taro.showToast({
     title: text,
-    icon: 'success'
+    icon: 'success',
+    duration: 2000
   });
 
 /**

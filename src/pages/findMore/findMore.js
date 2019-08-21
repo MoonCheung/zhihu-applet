@@ -1,8 +1,17 @@
-import { Block, View, Image, Text, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
-import { AtAvatar } from 'taro-ui';
-import util from '@/utils/index';
 import Taro from '@tarojs/taro';
-import api from '@/api/index';
+import {
+  Block,
+  View,
+  Image,
+  Text,
+  ScrollView,
+  Swiper,
+  SwiperItem,
+  Navigator
+} from '@tarojs/components';
+import { getDiscusstData, getRecFocusData, getRecHotData } from '@/api/index';
+import { showSuccess } from '@/utils/index';
+import { AtAvatar } from 'taro-ui';
 import './findMore.scss';
 
 class FindMore extends Taro.Component {
@@ -18,6 +27,7 @@ class FindMore extends Taro.Component {
       discussList: [],
       recFocusList: [],
       focusList: [],
+      hotFocusList: [],
       recHotList: [],
       showIndex: [],
       scrollTop: 0
@@ -27,68 +37,89 @@ class FindMore extends Taro.Component {
   // 获取讨论列表API
   getDiscussList = () => {
     let that = this;
-    api.http('discussListApi', {}, res => {
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        console.log('---请求讨论列表---');
-        that.setState({
-          discussList: res.discussList || []
-        });
-      }
-    });
+    getDiscusstData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          that.setState({
+            discussList: res.discussList || []
+          });
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
   // 获取推荐关注列表API
   getRecFocusList = () => {
     let that = this;
-    api.http('recFocusListApi', {}, res => {
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        console.log('---请求推荐关注列表---');
-        that.setState({
-          recFocusList: res.recFocusList || []
-        });
-      }
-    });
+    getRecFocusData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          that.setState({
+            recFocusList: res.recFocusList || []
+          });
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
+
+  // 单个关注方法
   focusIt = event => {
     let that = this;
     let index = event.target.dataset.index;
-    Taro.showToast({
-      title: '关注成功',
-      icon: 'success',
-      duration: 2000
-    });
     that.state.focusList[index] = !that.state.focusList[index];
     that.setState({
       focusList: that.state.focusList
     });
+    showSuccess('关注成功');
   };
+
+  // 全部关注方法
   focusAll = () => {
     let that = this;
-    Taro.showToast({
-      title: '关注成功',
-      icon: 'success',
-      duration: 2000
-    });
-    setTimeout(function() {
-      that.getRecFocusList();
-    }, 2000);
+    const query = Taro.createSelectorQuery();
+    query
+      .selectAll('.find-focus-btn')
+      .boundingClientRect(function(rects) {
+        rects.forEach(function(rect) {
+          let index = rect.dataset.index;
+          that.state.focusList[index] = !that.state.focusList[index];
+          that.setState({
+            focusList: that.state.focusList
+          });
+          showSuccess('关注成功');
+        });
+      })
+      .exec();
   };
+
+  // 单个热榜关注方法
+  hotFocus = event => {
+    let that = this;
+    let index = event.target.dataset.index;
+    that.state.hotFocusList[index] = !that.state.hotFocusList[index];
+    that.setState({
+      hotFocusList: that.state.hotFocusList
+    });
+    showSuccess('关注成功');
+  };
+
   // 获取推荐热门列表API
   getRecHotList = () => {
     let that = this;
-    api.http('recHotListApi', {}, res => {
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        console.log('---请求推荐热门列表---');
-        that.setState({
-          recHotList: res.hotList || []
-        });
-      }
-    });
+    getRecHotData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          that.setState({
+            recHotList: res.hotList || []
+          });
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
   toggleShow = event => {
     let that = this;
@@ -117,7 +148,10 @@ class FindMore extends Taro.Component {
     Taro.stopPullDownRefresh();
   };
   onReachBottom = () => {};
-  config = {};
+
+  config = {
+    navigationBarTitleText: '想法'
+  };
 
   render() {
     const {
@@ -142,8 +176,9 @@ class FindMore extends Taro.Component {
             circle
             size="small"
             openData={{ type: 'userAvatarUrl' }}></AtAvatar>
-          <Text className="find-header-title">想法</Text>
-          <Text className="find-header-rec">推荐</Text>
+          <Navigator url="/pages/index/index" open-type="switchTab">
+            <Text className="find-header-rec">推荐</Text>
+          </Navigator>
         </View>
         <ScrollView className="scroll-view" scrollY onScroll={this.onScroll}>
           <Swiper
@@ -259,7 +294,6 @@ class FindMore extends Taro.Component {
                     <Image
                       className="find-control-image"
                       src={require('../../assets/images/more-control.png')}
-                      onClick={this.toggleDrawer}
                     />
                   </View>
                 </View>
@@ -295,7 +329,9 @@ class FindMore extends Taro.Component {
           </View>
           <View className="find-footer">
             看看我们为您推荐的内容吧(づ￣3￣)づ╭❤
-            <View className="find-footer-btn">立即查看</View>
+            <Navigator url="/pages/index/index" open-type="switchTab">
+              <View className="find-footer-btn">立即查看</View>
+            </Navigator>
           </View>
           {/*  最近热门end  */}
         </ScrollView>

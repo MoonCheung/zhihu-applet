@@ -1,27 +1,12 @@
 import Taro, { Component } from '@tarojs/taro';
 import { Block, View, Image, Text, Input, Textarea, ScrollView } from '@tarojs/components';
 import { AtTabs, AtTabsPane, AtActivityIndicator, AtLoadMore } from 'taro-ui';
+import { getFocusData, getRcmdData, getHotData } from '@/api/index';
 import SearchInput from '@/components/searchInput/index';
-import { fetchFocus, fetchRec, fetchHot } from '@/actions/index';
-import { connect } from '@tarojs/redux';
-// import util from '@/utils/index';
+import { showSuccess } from '@/utils/index';
 import './index.scss';
 
-const mapStateToProps = ({ main }) => ({
-  ...main
-});
-
-const mapDispatchToProps = {
-  onFetchFocus: fetchFocus,
-  onFetchRec: fetchRec,
-  onFetchHot: fetchHot
-};
-
-@connect(
-  mapStateToProps,
-  mapDispatchToProps
-)
-export default class Index extends Component {
+class Index extends Component {
   constructor() {
     super(...arguments);
     this.state = {
@@ -29,9 +14,9 @@ export default class Index extends Component {
       searchVal: '', // 空值，以上搜索输入框状态
       isShowQues: false,
       isActive: 1 /* tabs标签页 */,
-      // focusList: [],
-      // recList: [],
-      // hotList: [],
+      focusList: [],
+      recList: [],
+      hotList: [],
       footerTip: {
         topic: '去文章列表',
         question: '关注话题',
@@ -91,6 +76,7 @@ export default class Index extends Component {
       isActive: index
     });
   };
+
   // 还原初始设置
   reduction = () => {
     let time = 0.5;
@@ -120,18 +106,17 @@ export default class Index extends Component {
       });
     }, time * 1000);
   };
+
   // 鼠标点击移动开始触发事件
   touchStart = e => {
-    console.log(`touchStart`);
     let that = this;
     that.setState({
       creState: e.touches[0]
     });
   };
-  //TODO：等会还要处理API
-  // 移动往上触发顶部回弹实现
-  touchMove = e => {
-    console.log(`touchMove`);
+
+  // 推荐列表移动往上触发顶部回弹实现
+  touchRecMove = e => {
     e.stopPropagation();
     let that = this;
     let move = e.touches[0]; //移动时的位置
@@ -148,20 +133,25 @@ export default class Index extends Component {
     let dev = Math.abs(move_x - start_x) / Math.abs(move_y - start_y);
     //当偏移数值大于设置的偏移数值时则不执行操作
     if (dev < deviationX) {
-      console.log(`下拉操作`, move_y - start_y);
-      console.log(`上拉操作`, start_y - move_y);
       //拖动倍率
       let dragY = Math.abs(move_y - start_y) / 3.5;
-      console.log(`dragY`, dragY);
       //下拉操作
       if (move_y - start_y > 0) {
         if (dragY >= deviationY) {
-          this.setState({
-            pullState: 1,
-            downPullText: '释放刷新'
-          });
+          getRcmdData()
+            .then(res => {
+              that.setState({
+                pullState: 1,
+                downPullText: '释放刷新',
+                recList: res.list.concat(that.state.recList)
+              });
+              showSuccess(res.list.length + '条新内容');
+            })
+            .catch(err => {
+              console.error(`请求接口失败:`, err);
+            });
         } else {
-          this.setState({
+          that.setState({
             pullState: 0,
             downPullText: '下拉刷新'
           });
@@ -169,7 +159,7 @@ export default class Index extends Component {
         if (dragY >= maxY) {
           dragY = maxY;
         }
-        this.setState({
+        that.setState({
           dragStyle: {
             top: dragY + 'px'
           },
@@ -181,9 +171,66 @@ export default class Index extends Component {
       }
     }
   };
+
+  // 热榜列表移动往上触发顶部回弹实现
+  touchHotMove = e => {
+    e.stopPropagation();
+    let that = this;
+    let move = e.touches[0]; //移动时的位置
+    let deviationX = 0.3; //左右偏移量(超过这个偏移量不执行下拉操作)
+    let deviationY = 70; //拉动长度（低于这个值的时候不执行）
+    let maxY = 100; //拉动的最大高度
+
+    let start_x = that.state.creState.clientX;
+    let start_y = that.state.creState.clientY;
+    let move_x = move.clientX;
+    let move_y = move.clientY;
+
+    //得到偏移数值
+    let dev = Math.abs(move_x - start_x) / Math.abs(move_y - start_y);
+    //当偏移数值大于设置的偏移数值时则不执行操作
+    if (dev < deviationX) {
+      //拖动倍率
+      let dragY = Math.abs(move_y - start_y) / 3.5;
+      //下拉操作
+      if (move_y - start_y > 0) {
+        if (dragY >= deviationY) {
+          getHotData()
+            .then(res => {
+              that.setState({
+                pullState: 1,
+                downPullText: '释放刷新',
+                hotList: res.list.concat(that.state.hotList)
+              });
+              showSuccess(res.list.length + '条新内容');
+            })
+            .catch(err => {
+              console.error(`请求接口失败:`, err);
+            });
+        } else {
+          that.setState({
+            pullState: 0,
+            downPullText: '下拉刷新'
+          });
+        }
+        if (dragY >= maxY) {
+          dragY = maxY;
+        }
+        that.setState({
+          dragStyle: {
+            top: dragY + 'px'
+          },
+          downPullStyle: {
+            height: dragY + 'px'
+          },
+          scrollY: false
+        });
+      }
+    }
+  };
+
   // 鼠标离开且未移动会触发事件
   touchEnd = () => {
-    console.log(`touchEnd`);
     let that = this;
     that.reduction();
   };
@@ -206,26 +253,22 @@ export default class Index extends Component {
 
   // 获得关注列表API
   getFocusList = flag => {
-    const { onFetchFocus } = this.props;
-    onFetchFocus({ flag });
-    // api.http('focusListApi', {}, res => {
-    //   if (res.errMsg) {
-    //     util.showModel(res.errMsg);
-    //   } else {
-    //     that.setState({
-    //       focusList: res.list
-    //     });
-    //     if (flag) {
-    //       that.setState({
-    //         focusList: res.list.concat(that.state.focusList) // 多个数组会返回新的数组
-    //       });
-    //       Taro.stopPullDownRefresh();
-    //       Taro.hideNavigationBarLoading();
-    //       util.showSuccess(res.list.length + '条新内容');
-    //     }
-    //   }
-    // });
+    let that = this;
+    getFocusData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          if (!flag) {
+            that.setState({
+              focusList: res.list
+            });
+          }
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
+
   // 暂时写
   // getMorefocusList = () => {
   //   let that = this;
@@ -237,89 +280,76 @@ export default class Index extends Component {
 
   // 获得推荐列表API
   getRecommendList = flag => {
-    const { onFetchRec } = this.props;
-    onFetchRec({ flag });
-    // api.http('recommendListApi', {}, res => {
-    //   if (res.errMsg) {
-    //     util.showModel(res.errMsg);
-    //   } else {
-    //     if (!flag) {
-    //       that.setState({
-    //         recList: res.list
-    //       });
-    //     }
-    //     if (flag) {
-    //       that.setState({
-    //         recList: res.list.concat(that.state.recList)
-    //       });
-    //       console.log('---刷新推荐列表数据---');
-    //       Taro.stopPullDownRefresh();
-    //       Taro.hideNavigationBarLoading();
-    //       util.showSuccess(res.list.length + '条新内容');
-    //     }
-    //   }
-    // });
+    let that = this;
+    getRcmdData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          if (!flag) {
+            that.setState({
+              recList: res.list
+            });
+          }
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
 
   // 获取更多推荐列表
-  // getMoreRecList = () => {
-  //   let that = this;
-  //   that.setState({
-  //     status: 'loading'
-  //   });
-  // setTimeout(() => {
-  //     api.http('recommendListApi', {}, res => {
-  //       !res.errorMsg
-  //         ? that.setState({ recList: that.state.recList.concat(res.list) })
-  //         : util.showModel(res.errMsg);
-  // that.setState({
-  //   status: 'more'
-  // });
-  // });
-  // }, 500);
-  // };
+  getMoreRecList = () => {
+    let that = this;
+    that.setState({
+      status: 'loading'
+    });
+    setTimeout(() => {
+      getRcmdData()
+        .then(res => {
+          that.setState({
+            recList: that.state.recList.concat(res.list),
+            status: 'more'
+          });
+        })
+        .catch(err => {
+          console.error(`请求接口失败:`, err);
+        });
+    }, 500);
+  };
 
   // 获取热榜列表API
   getHotList = flag => {
-    const { onFetchHot } = this.props;
-    onFetchHot({ flag });
-    // api.http('hotListApi', {}, res => {
-    //   if (res.errMsg) {
-    //     util.showModel(res.errMsg);
-    //   } else {
-    //     if (!flag) {
-    //       console.log('---设置数据---');
-    //       that.setState({ hotList: res.list });
-    //     }
-    //     if (flag) {
-    //       that.setState({
-    //         hotList: res.list.concat(that.state.hotList)
-    //       });
-    //       console.log('---刷新热门列表数据---');
-    //       Taro.stopPullDownRefresh();
-    //       Taro.hideNavigationBarLoading();
-    //       util.showSuccess(res.list.length + '条新内容');
-    //     }
-    //   }
-    // });
+    let that = this;
+    getHotData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          if (!flag) {
+            that.setState({ hotList: res.list });
+          }
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
   // 获取更多热榜列表
-  // getMoreHotList = () => {
-  //   let that = this;
-  //   that.setState({
-  //     status: 'loading'
-  //   });
-  //   setTimeout(() => {
-  //     api.http('hotListApi', {}, res => {
-  //       !res.errorMsg
-  //         ? that.setState({ hotList: that.state.hotList.concat(res.list) })
-  //         : util.showModel(res.errMsg);
-  //       that.setState({
-  //         status: 'more'
-  //       });
-  //     });
-  //   }, 500);
-  // };
+  getMoreHotList = () => {
+    let that = this;
+    that.setState({
+      status: 'loading'
+    });
+    setTimeout(() => {
+      getHotData()
+        .then(res => {
+          that.setState({
+            hotList: that.state.hotList.concat(res.list),
+            status: 'more'
+          });
+        })
+        .catch(err => {
+          console.error(`请求接口失败:`, err);
+        });
+    }, 500);
+  };
 
   goTitleDetail = event => {
     Taro.navigateTo({
@@ -356,7 +386,9 @@ export default class Index extends Component {
     this.getHotList();
   }
 
-  config = {};
+  config = {
+    navigationBarTitleText: '首页'
+  };
 
   render() {
     const {
@@ -365,16 +397,15 @@ export default class Index extends Component {
       isShowQues,
       isActive,
       footerTip,
-      // focusList,
-      // recList,
-      // hotList,
+      focusList,
+      recList,
+      hotList,
       scrollY,
       dragStyle,
       downPullStyle,
       downPullText,
       status
     } = this.state;
-    const { focusList, recList, hotList } = this.props;
     const tabList = [{ title: '关注' }, { title: '推荐' }, { title: '热榜' }];
     const Threshold = 50;
     const scrollAnimation = true;
@@ -478,7 +509,7 @@ export default class Index extends Component {
                 upperThreshold={Threshold}
                 lowerThreshold={Threshold}
                 onTouchStart={this.touchStart}
-                onTouchMove={this.touchMove}
+                onTouchMove={this.touchRecMove}
                 onTouchEnd={this.touchEnd}
                 onScrollToUpper={this.getRecommendList}
                 onScrollToLower={this.onReachBottom}
@@ -526,20 +557,20 @@ export default class Index extends Component {
                     );
                   })}
                 </View>
-                {/* <View className="upDragBox">
+                <View className="upDragBox">
                   <AtLoadMore
                     status={status}
-                    moreText="加载更多"
+                    moreText="查看数据"
                     loadingText="数据加载中..."
                     noMoreText="没有更多了"
                     noMoreTextStyle={{
-                      boder: 'none'
+                      border: 'none'
                     }}
                     moreBtnStyle={{
-                      boder: 'none'
+                      border: 'none'
                     }}
                   />
-                </View> */}
+                </View>
               </ScrollView>
             </View>
           </AtTabsPane>
@@ -554,7 +585,7 @@ export default class Index extends Component {
                 scrollY={scrollY}
                 className={'tab-container ' + (isActive == 2 ? 'show' : 'hide')}
                 onTouchStart={this.touchStart}
-                onTouchMove={this.touchMove}
+                onTouchMove={this.touchHotMove}
                 onTouchEnd={this.touchEnd}
                 upperThreshold={Threshold}
                 lowerThreshold={Threshold}
@@ -583,20 +614,20 @@ export default class Index extends Component {
                     );
                   })}
                 </View>
-                {/* <View className="upDragBox">
+                <View className="upDragBox">
                   <AtLoadMore
                     status={status}
-                    moreText="加载更多"
+                    moreText="查看数据"
                     loadingText="数据加载中..."
                     noMoreText="没有更多了"
                     noMoreTextStyle={{
-                      boder: 'none'
+                      border: 'none'
                     }}
                     moreBtnStyle={{
-                      boder: 'none'
+                      border: 'none'
                     }}
                   />
-                </View> */}
+                </View>
               </ScrollView>
             </View>
           </AtTabsPane>
@@ -605,3 +636,5 @@ export default class Index extends Component {
     );
   }
 }
+
+export default Index;

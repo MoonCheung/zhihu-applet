@@ -1,18 +1,8 @@
 import '@tarojs/async-await';
 import Taro, { Component } from '@tarojs/taro';
 import 'taro-ui/dist/style/index.scss';
-import { Provider } from '@tarojs/redux';
 import Index from '@/pages/index/index';
-import models from '@/models/index';
-import dva from '@/utils/dva';
 import './app.scss';
-
-const dvaApp = dva.createApp({
-  initialState: {},
-  models: models
-});
-
-const store = dvaApp.getStore();
 
 class App extends Component {
   config = {
@@ -32,7 +22,6 @@ class App extends Component {
       navigationBarBackgroundColor: '#FFF',
       navigationBarTitleText: '知乎',
       navigationBarTextStyle: 'black',
-      enablePullDownRefresh: true,
       onReachBottomDistance: 50
     },
     tabBar: {
@@ -83,11 +72,7 @@ class App extends Component {
   componentDidMount() {}
 
   render() {
-    return (
-      <Provider store={store}>
-        <Index />
-      </Provider>
-    );
+    return <Index />;
   }
 }
 

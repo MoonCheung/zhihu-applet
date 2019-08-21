@@ -45,6 +45,7 @@
     "@tarojs/with-weapp": "^1.3.10",
     "dva-core": "^1.4.0",
     "dva-loading": "^3.0.12",
+    "dva-model-extend": "^0.1.2",
     "nerv-devtools": "^1.4.0",
     "nervjs": "^1.4.0",
     "prop-types": "^15.7.2",

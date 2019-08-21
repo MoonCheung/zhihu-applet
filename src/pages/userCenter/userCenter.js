@@ -1,8 +1,7 @@
+import Taro from '@tarojs/taro';
 import { AtAvatar, AtList, AtListItem } from 'taro-ui';
 import { View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import util from '@/utils/index';
-import api from '@/api/index';
+import { getUserData } from '@/api/index';
 import './userCenter.scss';
 
 class UserCenter extends Taro.Component {
@@ -21,20 +20,21 @@ class UserCenter extends Taro.Component {
   };
   // 获取用户列表API
   getUserCenterList = () => {
-    var that = this;
-    api.http('userListApi', {}, res => {
-      if (res.errMsg) {
-        util.showModel(res.errMsg);
-      } else {
-        console.log('---请求个人中心列表---');
-        that.setState({
-          privateList: res.privateList || [],
-          walletList: res.walletList || [],
-          controlList: res.controlList || [],
-          userCenterList: [res.privateList].concat([res.walletList], [res.controlList])
-        });
-      }
-    });
+    let that = this;
+    getUserData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          that.setState({
+            privateList: res.privateList || [],
+            walletList: res.walletList || [],
+            controlList: res.controlList || [],
+            userCenterList: [res.privateList].concat([res.walletList], [res.controlList])
+          });
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
 
   componentDidMount() {
@@ -62,7 +62,12 @@ class UserCenter extends Taro.Component {
               {item.map((i, itemIndex) => {
                 return (
                   <View className="user-list-item" key={itemIndex.id}>
-                    <AtListItem className="user-list-title" arrow="right" title={i.title} thumb={i.icon} />
+                    <AtListItem
+                      className="user-list-title"
+                      arrow="right"
+                      title={i.title}
+                      thumb={i.icon}
+                    />
                   </View>
                 );
               })}
