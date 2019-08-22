@@ -4,7 +4,7 @@
  * @Github: https://github.com/MoonCheung
  * @Date: 2019-08-10 14:25:12
  * @LastEditors: MoonCheung
- * @LastEditTime: 2019-08-22 15:20:40
+ * @LastEditTime: 2019-08-22 15:24:45
  -->
 
 # zhihu-applet
@@ -19,8 +19,8 @@
 
 ## 项目技术栈
 
-前端技术: Taro + Taro-router
-UI 组件库: Taro-ui
+前端技术: Taro + Taro-router  
+UI 组件库: Taro-ui  
 前端脚手架: Taro-cli
 
 该项目采用前后端分离技术，前端使用 Taro 二次开发来自 React 框架，暂时不使用相关状态管理，而且 API 接口从 Mock 服务器获取返回数据得到渲染，方便项目配置以及代码管理
