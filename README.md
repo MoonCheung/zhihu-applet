@@ -4,7 +4,7 @@
  * @Github: https://github.com/MoonCheung
  * @Date: 2019-08-10 14:25:12
  * @LastEditors: MoonCheung
- * @LastEditTime: 2019-08-22 15:24:45
+ * @LastEditTime: 2019-08-22 15:26:16
  -->
 
 # zhihu-applet
@@ -14,7 +14,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/MoonCheung/zhihu-applet?style=flat-square)](https://github.com/MoonCheung/zhihu-applet/network)
 [![GitHub license](https://img.shields.io/github/license/MoonCheung/zhihu-applet?style=flat-square)](https://github.com/MoonCheung/zhihu-applet/blob/master/LICENSE)
 
-该仿知乎小程序基于 `Taro` + `Taro-UI` 进行构建应用程序开发 <br/>
+该仿知乎小程序基于 `Taro` + `Taro-UI` 进行构建应用程序开发  
 该仿知乎小程序的 API 接口数据来自 Mock 服务器([yapi](https://hellosean1025.github.io/yapi/))部署后能运行,而且页面代码来自[微信仿知乎小程序](https://github.com/gxt19940130/demos/tree/master/weChatApp)
 
 ## 项目技术栈
