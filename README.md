@@ -1,12 +1,3 @@
-<!--
- * @Description: my project
- * @Author: MoonCheung
- * @Github: https://github.com/MoonCheung
- * @Date: 2019-08-10 14:25:12
- * @LastEditors: MoonCheung
- * @LastEditTime: 2019-08-22 21:08:30
- -->
-
 # zhihu-applet
 
 [![GitHub stars](https://img.shields.io/github/stars/MoonCheung/zhihu-applet?style=flat-square)](https://github.com/MoonCheung/zhihu-applet/stargazers)
@@ -34,7 +25,7 @@ UI 组件库: Taro-ui
 - [x] 触底上拉加载更多
 - [x] 可复用搜索栏组件
 
-![首页](https://img.ikmoons.com/%E9%A6%96%E9%A1%B5.gif)
+![首页](https://github.com/MoonCheung/zhihu-applet/tree/master/src/assets/gif/首页.gif)
 
 ### 想法: 主要功能
 
@@ -43,7 +34,7 @@ UI 组件库: Taro-ui
 - [x] 滑动 tab 条吸顶
 - [x] 文字超出被折叠
 
-![想法](https://img.ikmoons.com/%E6%83%B3%E6%B3%95.gif)
+![想法](https://github.com/MoonCheung/zhihu-applet/tree/master/src/assets/gif/想法.gif)
 
 ### 市场: 主要功能
 
@@ -51,20 +42,20 @@ UI 组件库: Taro-ui
 - [x] 横向滑动图片列表
 - [x] 触底上拉加载更多
 
-![市场](https://img.ikmoons.com/%E5%B8%82%E5%9C%BA.gif)
+![市场](https://github.com/MoonCheung/zhihu-applet/tree/master/src/assets/gif/市场.gif)
 
 ### 消息: 主要功能
 
 - [x] 滑动列表 tab 条吸顶
 - [x] 从 Mock 返回假数据排版
 
-![消息](https://img.ikmoons.com/%E6%B6%88%E6%81%AF.gif)
+![消息](https://github.com/MoonCheung/zhihu-applet/tree/master/src/assets/gif/消息.gif)
 
 ### 我的: 主要功能
 
 - [x] 从 Mock 返回假数据排版
 
-![我的](https://img.ikmoons.com/%E6%88%91%E7%9A%84.gif)
+![我的](https://github.com/MoonCheung/zhihu-applet/tree/master/src/assets/gif/我的.gif)
 
 ## 执行命令
 
