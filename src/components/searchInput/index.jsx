@@ -109,7 +109,10 @@ class SearchInput extends Taro.Component {
               {historyList.map((item, index) => {
                 return (
                   <View className="search-item" key={index.id}>
-                    <Image className="search-icon-time" src={require('../../assets/images/time.png')} />
+                    <Image
+                      className="search-icon-time"
+                      src={require('../../assets/images/time.png')}
+                    />
                     <Text className="search-item-text">{item}</Text>
                     <Image
                       className="search-icon-del"
@@ -122,7 +125,10 @@ class SearchInput extends Taro.Component {
               })}
               {historyList.length > 1 && (
                 <View className="search-clear-all" onClick={this.clearAll}>
-                  <Image className="search-del-all" src={require('../../assets/images/del-all.png')} />
+                  <Image
+                    className="search-del-all"
+                    src={require('../../assets/images/del-all.png')}
+                  />
                   <Text className="search-del-text">清空搜索历史</Text>
                 </View>
               )}

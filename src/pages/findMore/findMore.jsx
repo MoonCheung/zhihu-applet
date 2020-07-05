@@ -130,7 +130,7 @@ class FindMore extends Taro.Component {
     });
   };
 
-  componentWillMount(options = this.$router.params || {}) {}
+  // componentWillMount(options = this.$router.params || {}) {}
 
   componentDidMount() {
     this.getDiscussList();

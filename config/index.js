@@ -11,25 +11,34 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  plugins: {
-    babel: {
-      sourceMap: true,
-      presets: [
-        [
-          'env',
-          {
-            modules: false
-          }
-        ]
-      ],
-      plugins: [
-        'transform-runtime',
-        'transform-decorators-legacy',
-        'transform-class-properties',
-        'transform-object-rest-spread'
+  // babel 编译配置
+  babel: {
+    sourceMap: true,
+    presets: [
+      [
+        'env',
+        {
+          modules: false
+        }
       ]
-    }
+    ],
+    plugins: [
+      'transform-decorators-legacy',
+      'transform-class-properties',
+      'transform-object-rest-spread',
+      [
+        'transform-runtime',
+        {
+          helpers: false,
+          polyfill: false,
+          regenerator: true,
+          moduleName: 'babel-runtime'
+        }
+      ]
+    ]
   },
+  // 编译插件配置
+  plugins: ['@tarojs/plugin-sass', '@tarojs/plugin-terser'],
   defineConstants: {},
   alias: {
     '@': path.resolve(__dirname, '..', 'src')

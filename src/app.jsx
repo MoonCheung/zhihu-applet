@@ -1,10 +1,16 @@
-import '@tarojs/async-await';
 import Taro, { Component } from '@tarojs/taro';
 import 'taro-ui/dist/style/index.scss';
 import Index from '@/pages/index/index';
 import './app.scss';
 
 class App extends Component {
+  componentWillMount() {
+    this.$app.globalData = this.globalData;
+  }
+
+  // 在组件挂载之后立即调用
+  componentDidMount() {}
+
   config = {
     pages: [
       'pages/index/index',
@@ -64,13 +70,8 @@ class App extends Component {
     }
   };
 
-  componentWillMount() {
-    this.$app.globalData = this.globalData;
-  }
-
-  // 在组件挂载之后立即调用
-  componentDidMount() {}
-
+  // 在 App 类中的 render() 函数没有实际作用
+  // 请勿修改此函数
   render() {
     return <Index />;
   }

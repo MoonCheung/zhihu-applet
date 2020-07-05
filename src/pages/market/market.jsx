@@ -1,14 +1,5 @@
 import Taro from '@tarojs/taro';
-import {
-  Block,
-  View,
-  Image,
-  Text,
-  Input,
-  Swiper,
-  SwiperItem,
-  ScrollView
-} from '@tarojs/components';
+import { Block, View, Image, Text, Swiper, SwiperItem, ScrollView } from '@tarojs/components';
 import SearchInput from '@/components/searchInput/index';
 import { getMarketData } from '@/api/index';
 import { AtRate } from 'taro-ui';
@@ -93,7 +84,7 @@ class Market extends Taro.Component {
         });
   };
 
-  componentWillMount(options = this.$router.params || {}) {}
+  // componentWillMount(options = this.$router.params || {}) {}
 
   componentDidMount() {
     this.getMarketList();
@@ -191,7 +182,7 @@ class Market extends Taro.Component {
         {/*  新闻列表   */}
         <View className="market-news-list">
           <View className="market-news-header">每日新知</View>
-          {newsList.map((item, index) => {
+          {newsList.map(item => {
             return (
               <View className="market-news-item" key={item.id}>
                 <Image className="market-news-icon" src={require('../../assets/images/play.png')} />

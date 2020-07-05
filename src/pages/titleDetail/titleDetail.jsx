@@ -1,44 +1,43 @@
-import { Block, View, Image, Text, Input } from '@tarojs/components';
-import SearchInput from '@/components/searchInput/index';
 import Taro from '@tarojs/taro';
-import './contentDetail.scss';
+import { View, Image, Text, Input, Textarea } from '@tarojs/components';
+import SearchInput from '@/components/searchInput/index';
+import { getTitleDetlData } from '@/api/index';
+import './titleDetail.scss';
 
-class ContentDetail extends Taro.Component {
+class TitleDetail extends Taro.Component {
   constructor() {
     super(...arguments);
     this.state = {
       isShow: false,
-      searchVal: '', // 空值, 以上搜索输入框状态
+      searchVal: '', // 空值，以上搜索输入框状态
       isShowQues: false,
-      questionTitle: '',
-      contentDetail: '',
-      like: '',
-      time: '',
-      comment: ''
+      questionTitle: ''
     };
   }
 
   componentWillMount(options = this.$router.params || {}) {
     let that = this;
     that.setState({
-      questionTitle: options.title,
-      contentDetail: options.content,
-      like: options.like,
-      time: options.time,
-      comment: options.comment
+      questionTitle: options.title
     });
   }
-
-  componentDidMount() {}
-
-  componentDidShow() {}
-
-  onPullDownRefresh = () => {
-    Taro.stopPullDownRefresh();
-  };
-
-  config = {
-    navigationBarTitleText: '详情'
+  // 获取详情列表API
+  getDetailList = () => {
+    let that = this;
+    getTitleDetlData()
+      .then(res => {
+        if (res.errorMsg == '0') {
+          that.setState({
+            title: res.data.title || '',
+            describe: res.data.describe || '',
+            answerNumber: res.data.answerNumber || '',
+            answerList: res.data.answerList || ''
+          });
+        }
+      })
+      .catch(err => {
+        console.error(`请求接口失败:`, err);
+      });
   };
 
   showMack = () => {
@@ -70,22 +69,34 @@ class ContentDetail extends Taro.Component {
     });
   };
 
+  onPullDownRefresh = () => {
+    Taro.stopPullDownRefresh();
+  };
+
+  componentDidMount() {
+    this.getDetailList();
+  }
+
+  config = {
+    navigationBarTitleText: '头条详情'
+  };
+
   render() {
     const {
       isShow,
       searchVal,
       isShowQues,
       questionTitle,
-      contentDetail,
-      like,
-      time,
-      comment
+      describe,
+      answerNumber,
+      answerList
     } = this.state;
     return (
       <View className="container">
         <View className="search-wrap">
           {/* 搜索栏 */}
           <SearchInput
+            ref="searchRef"
             show={isShow}
             value={searchVal}
             showMack={this.showMack.bind(this)}
@@ -124,48 +135,35 @@ class ContentDetail extends Taro.Component {
           </View>
         </View>
         {/*  提问end   */}
-        {/*  内容详情页   */}
-        <View className="content-detail">
-          <View className="content-detail-title">{questionTitle}</View>
-          <View className="content-detail-answer">
-            {contentDetail}
-            <View className="content-detail-bottom">
-              <View>编辑于{time}</View>
-              <View>著作权归作者所有</View>
-            </View>
+        {/*  标题详情页   */}
+        <View className="title-detail-wrap">
+          <View className="title-detail">
+            <View className="title-detail-title">{questionTitle}</View>
+            <View className="title-detail-describe">{describe}</View>
+          </View>
+          <View className="title-answer-middle">
+            <View className="title-answer-number">{answerNumber + '个回答'}</View>
+            <View className="title-answer-sort">默认排序</View>
+          </View>
+          <View className="title-answer-list">
+            {answerList.map((item, index) => {
+              return (
+                <View className="title-answer-item" key={index}>
+                  <Image className="title-answer-avatar" src={item.avatar} />
+                  <View className="title-answer-nickname">{item.nickname}</View>
+                  <View className="title-answer-content">{item.content}</View>
+                  <View className="title-answer-footer">
+                    {item.like + '赞同 · ' + item.comment + '评论 · ' + item.time}
+                  </View>
+                </View>
+              );
+            })}
           </View>
         </View>
-        <View className="content-detail-footer">
-          <View className="content-footer-item">
-            <Image className="content-footer-image" src={require('../../assets/images/like.png')} />
-            <View className="content-footer-text">{'赞同' + like}</View>
-          </View>
-          <View className="content-footer-item">
-            <Image
-              className="content-footer-image"
-              src={require('../../assets/images/thanks.png')}
-            />
-            <View className="content-footer-text">感谢作者</View>
-          </View>
-          <View className="content-footer-item">
-            <Image
-              className="content-footer-image"
-              src={require('../../assets/images/collect.png')}
-            />
-            <View className="content-footer-text">收藏</View>
-          </View>
-          <View className="content-footer-item">
-            <Image
-              className="content-footer-image"
-              src={require('../../assets/images/comment-detail.png')}
-            />
-            <View className="content-footer-text">{'评论' + comment}</View>
-          </View>
-        </View>
-        {/*  内容详情页end   */}
+        {/*  标题详情页end   */}
       </View>
     );
   }
 }
 
-export default ContentDetail;
+export default TitleDetail;

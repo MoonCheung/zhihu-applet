@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { Block, ScrollView, View, Image, Text } from '@tarojs/components';
+import { ScrollView, View, Image, Text } from '@tarojs/components';
 import { getMessageData } from '@/api/index';
 import { AtAvatar } from 'taro-ui';
 import './message.scss';
@@ -37,7 +37,7 @@ class Message extends Taro.Component {
     });
   };
 
-  componentWillMount(options = this.$router.params || {}) {}
+  // componentWillMount(options = this.$router.params || {}) {}
 
   componentDidMount() {
     this.getUserCenterList();
@@ -88,7 +88,7 @@ class Message extends Taro.Component {
           </View>
         )}
         <View className="message-list">
-          {messageList.map((item, index) => {
+          {messageList.map(item => {
             return (
               <View className="message-list-item" key={item.id}>
                 <Image className="message-list-avatar" src={item.avatar} />
